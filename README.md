@@ -2,7 +2,9 @@
 
 A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox
 
-![Screenshot](screenshot.jpg?raw=true)
+This fork adds support for more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver in total.
+
+[Preview here](./screenshot/README.md)
 
 ## Installation
 
