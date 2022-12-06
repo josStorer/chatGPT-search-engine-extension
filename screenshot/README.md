@@ -8,3 +8,6 @@
 ![yahoo](./yahoo.png)
 ![yandex](./yandex.png)
 ![baidu](./baidu.png)
+![brave](./brave.png)
+![searx](./searx.png)
+![ecosia](./ecosia.png)
