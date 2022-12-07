@@ -41,6 +41,7 @@ async function build() {
       {src: 'build/background/index.js', dst: 'background/index.js'},
       {src: 'src/manifest.json', dst: 'manifest.json'},
       {src: 'src/styles.css', dst: 'styles.css'},
+      {src: 'src/github-markdown.css', dst: 'github-markdown.css'},
       {src: 'src/logo.png', dst: 'logo.png'}
     ],
     `./${outdir}/chromium.zip`)
@@ -51,6 +52,7 @@ async function build() {
       {src: 'build/background/index.js', dst: 'background/index.js'},
       {src: 'src/manifest.v2.json', dst: 'manifest.json'},
       {src: 'src/styles.css', dst: 'styles.css'},
+      {src: 'src/github-markdown.css', dst: 'github-markdown.css'},
       {src: 'src/logo.png', dst: 'logo.png'}
     ],
     `./${outdir}/firefox.zip`)

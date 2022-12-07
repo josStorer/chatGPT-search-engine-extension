@@ -1,3 +1,4 @@
+import MarkdownIt from "markdown-it";
 import Browser from "webextension-polyfill";
 import {getPossibleElementByClassArray, getPossibleElementByIdArray, getPossibleElementByNameArray} from "./utils.mjs"
 
@@ -25,6 +26,8 @@ const config = {
 }
 
 async function run(question) {
+  const markdown = new MarkdownIt();
+
   const container = document.createElement("div");
   container.className = "chat-gpt-container";
   container.innerHTML = '<p class="loading">Waiting for ChatGPT response...</p>';
@@ -46,8 +49,9 @@ async function run(question) {
   const port = Browser.runtime.connect();
   port.onMessage.addListener(function (msg) {
     if (msg.answer) {
-      container.innerHTML = '<p><span class="prefix">ChatGPT:</span><pre></pre></p>';
-      container.querySelector("pre").textContent = msg.answer;
+      container.innerHTML =
+        '<p class="prefix">ChatGPT:</p><div id="answer" class="markdown-body" dir="auto"></div>';
+      container.querySelector("#answer").innerHTML = markdown.render(msg.answer);
     } else if (msg.error === "UNAUTHORIZED") {
       container.innerHTML =
         '<p>Please login at <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> first</p>';

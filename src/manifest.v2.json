@@ -45,6 +45,7 @@
         "content-script/index.js"
       ],
       "css": [
+        "github-markdown.css",
         "styles.css"
       ]
     }
