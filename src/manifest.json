@@ -11,7 +11,7 @@
   },
   "host_permissions": ["https://*.openai.com/"],
   "background": {
-    "service_worker": "background/index.js"
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {

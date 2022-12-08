@@ -11,7 +11,7 @@
   },
   "permissions": ["webRequest", "https://*.openai.com/"],
   "background": {
-    "scripts": ["background/index.js"]
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
