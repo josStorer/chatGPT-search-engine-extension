@@ -14,6 +14,10 @@ This fork adds support for more search engines, including Google, Bing, Yahoo, D
  - compatibility improvements for baidu and kagi
  - continue button
 
+## Supported Search Engines
+
+Google, Bing, DuckDuckGo, Brave, Yahoo, Naver, Yandex, Kagi
+
 ## Installation
 
 ### Install to Chrome/Edge
