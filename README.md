@@ -11,7 +11,6 @@ This fork adds support for more search engines, including Google, Bing, Yahoo, D
 [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
 
 ## TODO
- - compatibility improvements for baidu and kagi
  - continue button
 
 ## Supported Search Engines
