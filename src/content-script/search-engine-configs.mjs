@@ -43,7 +43,7 @@ export const config = {
     appendContainerQuery: ['#rcnt'],
   },
   bing: {
-    inputQuery: ["textarea[name='q']"],
+    inputQuery: ["[name='q']"],
     sidebarContainerQuery: ['#b_context'],
     appendContainerQuery: [],
   },
