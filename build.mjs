@@ -1,11 +1,11 @@
 import archiver from 'archiver'
 import esbuild from 'esbuild'
-import fs, { promises as fsPromises } from 'fs'
-
+import fs from 'fs-extra'
+import { lessLoader } from 'esbuild-plugin-less'
 const outdir = 'build'
 
 async function deleteOldDir() {
-  await fsPromises.rm(outdir, { recursive: true, force: true })
+  await fs.rm(outdir, { recursive: true, force: true })
 }
 
 async function runEsbuild() {
@@ -13,6 +13,14 @@ async function runEsbuild() {
     entryPoints: ['src/content-script/index.mjs', 'src/background/index.mjs'],
     bundle: true,
     outdir: outdir,
+    minify: true,
+    loader: {
+      '.ttf': 'dataurl',
+      '.woff': 'dataurl',
+      '.woff2': 'dataurl',
+      '.less': 'css',
+    },
+    plugins: [lessLoader()],
   })
 }
 
@@ -27,10 +35,10 @@ async function zipFolder(dir) {
 }
 
 async function copyFiles(entryPoints, targetDir) {
-  await fsPromises.mkdir(targetDir)
+  await fs.mkdir(targetDir)
   await Promise.all(
     entryPoints.map(async (entryPoint) => {
-      await fsPromises.copyFile(entryPoint.src, `${targetDir}/${entryPoint.dst}`)
+      await fs.copy(entryPoint.src, `${targetDir}/${entryPoint.dst}`)
     }),
   )
 }
@@ -41,9 +49,8 @@ async function build() {
 
   const commonFiles = [
     { src: 'build/content-script/index.js', dst: 'content-script.js' },
+    { src: 'build/content-script/index.css', dst: 'content-script.css' },
     { src: 'build/background/index.js', dst: 'background.js' },
-    { src: 'src/github-markdown.css', dst: 'github-markdown.css' },
-    { src: 'src/styles.css', dst: 'styles.css' },
     { src: 'src/logo.png', dst: 'logo.png' },
   ]
 
