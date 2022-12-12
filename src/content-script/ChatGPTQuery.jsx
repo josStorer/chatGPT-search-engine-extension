@@ -1,24 +1,13 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
-import { createContext } from 'preact'
 import PropTypes from 'prop-types'
+import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
-import { getMarkdownRenderer } from './markdown.mjs'
-
-const Markdown = createContext()
 
 function TalkItem({ type, content }) {
   return (
-    <Markdown.Consumer>
-      {(markdown) => {
-        return (
-          <div
-            className={`${type}`}
-            dir="auto"
-            dangerouslySetInnerHTML={{ __html: markdown.render(content) }}
-          />
-        )
-      }}
-    </Markdown.Consumer>
+    <div className={`${type}`} dir="auto">
+      <MarkdownRender>{content}</MarkdownRender>
+    </div>
   )
 }
 TalkItem.propTypes = {
@@ -141,11 +130,9 @@ function ChatGPTQuery(props) {
         href={'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css'}
       />
       <div className="markdown-body gpt-inner">
-        <Markdown.Provider value={getMarkdownRenderer()}>
-          {talk.map((talk, idx) => (
-            <TalkItem content={talk.content} key={idx} type={talk.type} />
-          ))}
-        </Markdown.Provider>
+        {talk.map((talk, idx) => (
+          <TalkItem content={talk.content} key={idx} type={talk.type} />
+        ))}
       </div>
       <Interact
         enabled={isReady}
