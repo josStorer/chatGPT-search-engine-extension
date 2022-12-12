@@ -8,6 +8,11 @@
     "pretty": "prettier --write ./**/*.{js,mjs,jsx,json}",
     "stage": "git add -u"
   },
+  "pre-commit": [
+    "pretty",
+    "stage",
+    "lint"
+  ],
   "dependencies": {
     "@picocss/pico": "^1.5.6",
     "@primer/octicons-react": "^17.9.0",
