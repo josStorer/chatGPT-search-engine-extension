@@ -1,4 +1,4 @@
-import { run, getSearchInputValue } from './index.mjs'
+import { run, getSearchInputValue } from './index'
 
 const init = {
   baidu: () => {

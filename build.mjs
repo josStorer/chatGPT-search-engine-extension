@@ -10,10 +10,11 @@ async function deleteOldDir() {
 
 async function runEsbuild() {
   await esbuild.build({
-    entryPoints: ['src/content-script/index.mjs', 'src/background/index.mjs'],
-    bundle: true,
-    outdir: outdir,
-    minify: true,
+    entryPoints: [
+      'src/content-script/index.jsx',
+      'src/background/index.mjs',
+      'src/popup/index.jsx',
+    ],
     loader: {
       '.ttf': 'dataurl',
       '.woff': 'dataurl',
@@ -21,6 +22,16 @@ async function runEsbuild() {
       '.less': 'css',
     },
     plugins: [lessLoader()],
+    bundle: true,
+    outdir: outdir,
+    treeShaking: true,
+    minify: true,
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+    jsx: 'automatic',
   })
 }
 
@@ -51,6 +62,9 @@ async function build() {
     { src: 'build/content-script/index.js', dst: 'content-script.js' },
     { src: 'build/content-script/index.css', dst: 'content-script.css' },
     { src: 'build/background/index.js', dst: 'background.js' },
+    { src: 'build/popup/index.js', dst: 'popup.js' },
+    { src: 'build/popup/index.css', dst: 'popup.css' },
+    { src: 'src/popup/index.html', dst: 'popup.html' },
     { src: 'src/logo.png', dst: 'logo.png' },
   ]
 
