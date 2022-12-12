@@ -63,7 +63,7 @@ async function generateAnswers(port, question, session) {
     onMessage(message) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
-        port.postMessage({ answer: null })
+        port.postMessage({ answer: null, done: true })
         return
       }
       const data = JSON.parse(message)

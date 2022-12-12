@@ -106,12 +106,20 @@ function ChatGPTQuery(props) {
         UpdateAnswer('**ChatGPT:**\n' + msg.answer, false, 'answer')
         setIsReady(false)
         return
-      } else if (msg.answer == null) {
+      } else if (msg.done) {
         UpdateAnswer('<hr>', true, 'answer')
-      } else if (msg.error === 'UNAUTHORIZED') {
-        UpdateAnswer('UNAUTHORIZED', false, 'error')
-      } else {
-        UpdateAnswer('EXCEPTION', false, 'error')
+      } else if (msg.error) {
+        switch (msg.error) {
+          case 'UNAUTHORIZED':
+            UpdateAnswer('UNAUTHORIZED<br>Please login at https://chat.openai.com', false, 'error')
+            break
+          case 'EXCEPTION':
+            UpdateAnswer(msg.error, false, 'error')
+            break
+          default:
+            UpdateAnswer(msg.error, false, 'error')
+            break
+        }
       }
       setIsReady(true)
     }
