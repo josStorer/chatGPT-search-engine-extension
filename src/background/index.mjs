@@ -7,15 +7,30 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 
 const cache = new ExpiryMap(10 * 1000)
 
+/**
+ * Store the session state
+ * @class
+ */
 class Session extends Object {
+  /**
+   * @type {string|null}
+   */
+  conversationId = null
+
+  /**
+   * @type {string|null}
+   */
+  messageId = null
+
+  /**
+   * @type {string|null}
+   */
+  parentMessageId = null
+
   constructor() {
     super()
-    this.conversationId = null
-    this.messageId = null
-    this.parentMessageId = null
   }
 }
-
 /**
  * @returns {Promise<string>}
  */
@@ -36,6 +51,7 @@ async function getAccessToken() {
 /**
  * @param {Browser.Runtime.Port} port
  * @param {string} question
+ * @param {Session} session
  */
 async function generateAnswers(port, question, session) {
   const accessToken = await getAccessToken()
