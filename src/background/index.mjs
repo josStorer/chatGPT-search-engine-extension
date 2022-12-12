@@ -7,6 +7,15 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 
 const cache = new ExpiryMap(10 * 1000)
 
+class Session extends Object {
+  constructor() {
+    super()
+    this.conversationId = null
+    this.messageId = null
+    this.parentMessageId = null
+  }
+}
+
 /**
  * @returns {Promise<string>}
  */
@@ -77,12 +86,9 @@ async function generateAnswers(port, question, session) {
     },
   })
 }
+
 ;(function () {
-  let session = new Object({
-    conversationId: null,
-    messageId: null,
-    parentMessageId: null,
-  })
+  let session = new Session()
 
   Browser.runtime.onConnect.addListener((port) => {
     port.onMessage.addListener(

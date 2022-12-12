@@ -2,7 +2,7 @@ name: Pre-release
 on:
   push:
     branches:
-      - main
+      - interact
 jobs:
   build:
     runs-on: ubuntu-22.04

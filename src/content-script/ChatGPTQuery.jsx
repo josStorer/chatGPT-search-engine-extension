@@ -106,7 +106,8 @@ function ChatGPTQuery(props) {
         UpdateAnswer('**ChatGPT:**\n' + msg.answer, false, 'answer')
         setIsReady(false)
         return
-      } else if (msg.done) {
+      }
+      if (msg.done) {
         UpdateAnswer('<hr>', true, 'answer')
       } else if (msg.error) {
         switch (msg.error) {
