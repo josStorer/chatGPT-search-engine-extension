@@ -7,6 +7,18 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 
 const cache = new ExpiryMap(10 * 1000)
 
+class Session extends Object {
+  constructor() {
+    super()
+    this.conversationId = null
+    this.messageId = null
+    this.parentMessageId = null
+  }
+}
+
+/**
+ * @returns {Promise<string>}
+ */
 async function getAccessToken() {
   if (cache.get(KEY_ACCESS_TOKEN)) {
     return cache.get(KEY_ACCESS_TOKEN)
@@ -21,12 +33,18 @@ async function getAccessToken() {
   return resp.accessToken
 }
 
-async function generateAnswers(port, question) {
+/**
+ * @param {Browser.Runtime.Port} port
+ * @param {string} question
+ * @param {Session} session
+ */
+async function generateAnswers(port, question, session) {
   const accessToken = await getAccessToken()
-
   const controller = new AbortController()
   port.onDisconnect.addListener(() => {
+    console.debug('port disconnected')
     controller.abort()
+    session.conversationId = null
   })
 
   await fetchSSE('https://chat.openai.com/backend-api/conversation', {
@@ -38,9 +56,10 @@ async function generateAnswers(port, question) {
     },
     body: JSON.stringify({
       action: 'next',
+      conversation_id: session.conversationId,
       messages: [
         {
-          id: uuidv4(),
+          id: session.messageId,
           role: 'user',
           content: {
             content_type: 'text',
@@ -49,11 +68,12 @@ async function generateAnswers(port, question) {
         },
       ],
       model: 'text-davinci-002-render',
-      parent_message_id: uuidv4(),
+      parent_message_id: session.parentMessageId,
     }),
     onMessage(message) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
+        port.postMessage({ answer: null, done: true })
         return
       }
       const data = JSON.parse(message)
@@ -61,15 +81,23 @@ async function generateAnswers(port, question) {
       if (text) {
         port.postMessage({ answer: text })
       }
+
+      session.conversationId = data.conversation_id
+      session.parentMessageId = data.message.id
     },
   })
 }
 
+let session = new Session()
 Browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (msg) => {
     console.debug('received msg', msg)
+    session.messageId = uuidv4()
+    if (session.parentMessageId == null) {
+      session.parentMessageId = uuidv4()
+    }
     try {
-      await generateAnswers(port, msg.question)
+      await generateAnswers(port, msg.question, session)
     } catch (err) {
       console.error(err)
       port.postMessage({ error: err.message })

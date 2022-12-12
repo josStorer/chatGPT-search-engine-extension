@@ -2,8 +2,12 @@ import MarkdownIt from 'markdown-it'
 import MarkdownItTexmath from 'markdown-it-texmath'
 import Katex from 'katex'
 
+/**
+ * @returns {MarkdownIt}
+ */
 export function getMarkdownRenderer() {
   const markdown = new MarkdownIt({
+    html: true,
     linkify: true,
   })
 
