@@ -144,7 +144,11 @@ function ChatGPTQuery(props) {
           )
           setTalk([...talk, newQuestion, newAnswer])
           setIsReady(false)
-          port.postMessage({ question })
+          try {
+            port.postMessage({ question })
+          } catch (e) {
+            UpdateAnswer('Error: ' + e, false, 'error')
+          }
         }}
       />
     </>
