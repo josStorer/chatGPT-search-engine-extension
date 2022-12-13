@@ -12,9 +12,6 @@ And here perhaps merges PR faster than the original repo, see more in [Releases]
 
 [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
 
-## TODO
-- continue button
-
 ## Installation
 
 ### Install to Chrome/Edge
