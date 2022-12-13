@@ -4,7 +4,7 @@ A browser extension to display ChatGPT response alongside Search Engine results,
 
 Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave, Searx, Ecosia in total.
 
-Request more search engine support in #6
+Request more search engine support in [#6](https://github.com/josStorer/chat-gpt-search-engine-extension/issues/6)
 
 And here perhaps merges PR faster than the original repo
 
