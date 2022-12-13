@@ -1,24 +1,13 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
-import { createContext } from 'preact'
 import PropTypes from 'prop-types'
+import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
-import { getMarkdownRenderer } from './markdown.mjs'
-
-const Markdown = createContext()
 
 function TalkItem({ type, content }) {
   return (
-    <Markdown.Consumer>
-      {(markdown) => {
-        return (
-          <div
-            className={`${type}`}
-            dir="auto"
-            dangerouslySetInnerHTML={{ __html: markdown.render(content) }}
-          />
-        )
-      }}
-    </Markdown.Consumer>
+    <div className={`${type}`} dir="auto">
+      <MarkdownRender>{content}</MarkdownRender>
+    </div>
   )
 }
 TalkItem.propTypes = {
@@ -112,7 +101,14 @@ function ChatGPTQuery(props) {
       } else if (msg.error) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
-            UpdateAnswer('UNAUTHORIZED<br>Please login at https://chat.openai.com', false, 'error')
+            UpdateAnswer(
+              'UNAUTHORIZED<br>Please login at ' +
+                '<a href="https://chat.openai.com" target="_blank" rel="noreferrer">' +
+                'https://chat.openai.com' +
+                '</a> first',
+              false,
+              'error',
+            )
             break
           case 'EXCEPTION':
             UpdateAnswer(msg.error, false, 'error')
@@ -141,11 +137,9 @@ function ChatGPTQuery(props) {
         href={'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css'}
       />
       <div className="markdown-body gpt-inner">
-        <Markdown.Provider value={getMarkdownRenderer()}>
-          {talk.map((talk, idx) => (
-            <TalkItem content={talk.content} key={idx} type={talk.type} />
-          ))}
-        </Markdown.Provider>
+        {talk.map((talk, idx) => (
+          <TalkItem content={talk.content} key={idx} type={talk.type} />
+        ))}
       </div>
       <Interact
         enabled={isReady}
@@ -157,7 +151,11 @@ function ChatGPTQuery(props) {
           )
           setTalk([...talk, newQuestion, newAnswer])
           setIsReady(false)
-          port.postMessage({ question })
+          try {
+            port.postMessage({ question })
+          } catch (e) {
+            UpdateAnswer('Error: ' + e, false, 'error')
+          }
         }}
       />
     </>

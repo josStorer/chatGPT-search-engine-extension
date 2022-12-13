@@ -8,12 +8,9 @@ const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)
 
 class Session extends Object {
-  constructor() {
-    super()
-    this.conversationId = null
-    this.messageId = null
-    this.parentMessageId = null
-  }
+  conversationId = null
+  messageId = null
+  parentMessageId = null
 }
 
 /**
