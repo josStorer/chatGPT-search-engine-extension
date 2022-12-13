@@ -41,6 +41,7 @@
 }
 
 .chat-gpt-container .icon-and-text {
+  color: #b6b8ba;
   display: flex;
   align-items: center;
   gap: 6px;
