@@ -17,6 +17,7 @@ function TalkItem({ type, content }) {
     </div>
   )
 }
+
 TalkItem.propTypes = {
   type: PropTypes.oneOf(['question', 'answer', 'error']).isRequired,
   content: PropTypes.string.isRequired,
@@ -51,6 +52,7 @@ function Interact({ onSubmit, enabled }) {
     </form>
   )
 }
+
 Interact.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   enabled: PropTypes.bool,
@@ -69,6 +71,11 @@ class Talk extends Object {
 }
 
 function ChatGPTQuery(props) {
+  useEffect(() => {
+    session.question = props.question
+    port.postMessage({ session })
+  }, [props.question]) // usually only triggered once
+
   /**
    * @type {[Talk[], (talk: Talk[]) => void]}
    */
@@ -115,24 +122,18 @@ function ChatGPTQuery(props) {
               'error',
             )
             break
-          case 'EXCEPTION':
-            UpdateAnswer(msg.error, false, 'error')
-            break
           default:
-            UpdateAnswer(msg.error, false, 'error')
+            setTalk([...talk, new Talk('error', msg.error + '<hr>')])
             break
         }
       }
       setIsReady(true)
     }
     port.onMessage.addListener(listener)
-    session.question = props.question
-    port.postMessage({ session })
     return () => {
       port.onMessage.removeListener(listener)
-      port.disconnect()
     }
-  }, [props.question])
+  }, [talk])
 
   return (
     <>
