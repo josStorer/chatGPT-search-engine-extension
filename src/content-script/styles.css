@@ -19,9 +19,11 @@
     --theme-border-color: #3c4043;
   }
 }
+
 .chat-gpt-container {
   border-color: var(--theme-border-color);
 }
+
 .chat-gpt-container :is(.answer, .question, .error) {
   background-color: var(--theme-color);
 }
