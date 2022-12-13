@@ -72,8 +72,8 @@ async function generateAnswers(port, question, session) {
         port.postMessage({ answer: text })
       }
 
-      session.conversationId = data.conversation_id
-      session.parentMessageId = data.message.id
+      if (data.conversation_id) session.conversationId = data.conversation_id
+      if (data.message?.id) session.parentMessageId = data.message.id
     },
   })
 }

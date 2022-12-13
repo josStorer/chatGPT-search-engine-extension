@@ -40,7 +40,11 @@ function Interact({ onSubmit, enabled }) {
         disabled={!enabled}
         className="interact-input"
         type="text"
-        placeholder="Type your question here"
+        placeholder={
+          enabled
+            ? 'Type your question here'
+            : 'Wait for the answer to finish and then continue here'
+        }
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
@@ -77,21 +81,13 @@ function ChatGPTQuery(props) {
    * @param {boolean} appended
    * @param {'question'|'answer'|'error'} type
    */
-  function UpdateAnswer(value, appended, type) {
+  const UpdateAnswer = (value, appended, type) => {
     setTalk((old) => {
       const copy = [...old]
-      const revCopy = [...copy].reverse() // reverse to get the last answer
-      let index = revCopy.findIndex((value) => {
-        return value.type == 'answer'
-      })
-      index = old.length - index - 1 // reverse back
-      if (index < old.length) {
-        const newValue = old[index].content + value
-        copy[index] = new Talk(type, appended ? newValue : value)
-        return copy
-      } else {
-        return old
-      }
+      const index = copy.findLastIndex((v) => v.type === 'answer')
+      if (index === -1) return copy
+      copy[index] = new Talk(type, appended ? copy[index].content + value : value)
+      return copy
     })
   }
 
@@ -100,7 +96,6 @@ function ChatGPTQuery(props) {
     const listener = (msg) => {
       if (msg.answer) {
         UpdateAnswer('**ChatGPT:**\n' + msg.answer, false, 'answer')
-        setIsReady(false)
         return
       }
       if (msg.done) {
