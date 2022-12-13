@@ -4,14 +4,7 @@ import Browser from 'webextension-polyfill'
 import { fetchSSE } from './fetch-sse.mjs'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
-
 const cache = new ExpiryMap(10 * 1000)
-
-class Session extends Object {
-  conversationId = null
-  messageId = null
-  parentMessageId = null
-}
 
 /**
  * @returns {Promise<string>}
@@ -70,7 +63,7 @@ async function generateAnswers(port, question, session) {
     onMessage(message) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
-        port.postMessage({ answer: null, done: true })
+        port.postMessage({ answer: null, done: true, session: session })
         return
       }
       const data = JSON.parse(message)
@@ -85,16 +78,16 @@ async function generateAnswers(port, question, session) {
   })
 }
 
-let session = new Session()
 Browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (msg) => {
     console.debug('received msg', msg)
+    const session = msg.session
     session.messageId = uuidv4()
     if (session.parentMessageId == null) {
       session.parentMessageId = uuidv4()
     }
     try {
-      await generateAnswers(port, msg.question, session)
+      await generateAnswers(port, session.question, session)
     } catch (err) {
       console.error(err)
       port.postMessage({ error: err.message })

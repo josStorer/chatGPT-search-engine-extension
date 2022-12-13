@@ -3,6 +3,13 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 
+let session = {
+  question: null,
+  conversationId: null,
+  messageId: null,
+  parentMessageId: null,
+}
+
 function TalkItem({ type, content }) {
   return (
     <div className={`${type}`} dir="auto">
@@ -98,6 +105,9 @@ function ChatGPTQuery(props) {
       }
       if (msg.done) {
         UpdateAnswer('<hr>', true, 'answer')
+        if (msg.session) {
+          session = msg.session
+        }
       } else if (msg.error) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
@@ -121,9 +131,8 @@ function ChatGPTQuery(props) {
       setIsReady(true)
     }
     port.onMessage.addListener(listener)
-    port.postMessage({
-      question: props.question,
-    })
+    session.question = props.question
+    port.postMessage({ session })
     return () => {
       port.onMessage.removeListener(listener)
       port.disconnect()
@@ -132,10 +141,6 @@ function ChatGPTQuery(props) {
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href={'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css'}
-      />
       <div className="markdown-body gpt-inner">
         {talk.map((talk, idx) => (
           <TalkItem content={talk.content} key={idx} type={talk.type} />
@@ -151,8 +156,10 @@ function ChatGPTQuery(props) {
           )
           setTalk([...talk, newQuestion, newAnswer])
           setIsReady(false)
+
+          session.question = question
           try {
-            port.postMessage({ question })
+            port.postMessage({ session })
           } catch (e) {
             UpdateAnswer('Error: ' + e, false, 'error')
           }
