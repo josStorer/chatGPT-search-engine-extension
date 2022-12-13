@@ -2,15 +2,30 @@
 
 A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox
 
-This fork adds support for more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave, Searx, Ecosia in total.
+Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave, Searx, Ecosia in total.
 
-And here perhaps merges PR faster than the original repo, see more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases)
+And here perhaps merges PR faster than the original repo
 
-[Preview](./screenshot/README.md)
+See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases) and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
 
-[Download](https://github.com/josStorer/chat-gpt-search-engine-extension/releases)
+### Diff with upstream:
+- Support StartPage, Baidu, Searx, Ecosia
+- Katex: https://github.com/wong2/chat-gpt-google-extension/pull/75
+- Linkify in ReactMarkdown
+- Interactive mode: https://github.com/wong2/chat-gpt-google-extension/pull/103, now support generating separate sessions for each page
+- Fix answer being overwritten due to "network error"
 
-[Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
+### My contributions:
+- [Branches](https://github.com/josStorer/chat-gpt-search-engine-extension/branches)
+- [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
+- #### Other
+  - Merge and improve some PRs
+  - Fix answer being overwritten due to "network error"
+  - Linkify in ReactMarkdown
+  - Generate separate sessions for each page
+
+[Preview](./screenshot/README.md):
+![Preview-Img](https://user-images.githubusercontent.com/13366013/207279210-e07657c8-c3f0-4436-a5f7-2fda6cc61dd8.png)
 
 ## Installation
 
