@@ -55,4 +55,4 @@ See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-exten
 
 ## Credit
 
-This project is inspired by [ZohaibAhmed/ChatGPT-Google](https://github.com/ZohaibAhmed/ChatGPT-Google)
+This project is forked from [wong2/chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) and detached since 14 December of 2022
