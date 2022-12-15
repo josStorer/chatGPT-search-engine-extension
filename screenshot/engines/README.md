@@ -1,3 +1,5 @@
+The images below are for preview purposes only and this project actually supports style adaptation now
+
 ![bing](bing.png)
 ![duckduckgo](duckduckgo.png)
 ![google](google.png)
