@@ -14,12 +14,27 @@ export function MarkdownRender(props) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkMath, remarkGfm]}
-      rehypePlugins={[rehypeKatex, rehypeRaw, rehypeHighlight]}
+      rehypePlugins={[
+        rehypeKatex,
+        rehypeRaw,
+        [
+          rehypeHighlight,
+          {
+            detect: true,
+            ignoreMissing: true,
+          },
+        ],
+      ]}
       components={{
         a: (props) => (
           <a href={props.href} {...linkProperties}>
             {props.children}
           </a>
+        ),
+        code: (props) => (
+          <code style={'padding:0'} className={props.className}>
+            {props.children}
+          </code>
         ),
       }}
       {...props}

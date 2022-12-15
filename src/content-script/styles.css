@@ -1,3 +1,6 @@
+@import 'highlight.js/styles/github.css' (prefers-color-scheme: light);
+@import 'highlight.js/styles/github-dark.css' (prefers-color-scheme: dark);
+
 .chat-gpt-container {
   margin-bottom: 30px;
   border-radius: 8px;
@@ -9,7 +12,8 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    border-color: #dadce0;
+    --theme-color: #eaecf0;
+    --theme-border-color: #aeafb2;
   }
 }
 
@@ -29,7 +33,7 @@
 }
 
 .chat-gpt-container .error {
-  color: #f44336;
+  color: #ec4336;
 }
 
 .chat-gpt-container p {
@@ -43,7 +47,7 @@
 }
 
 .chat-gpt-container .icon-and-text {
-  color: #b6b8ba;
+  color: #8f9094;
   display: flex;
   align-items: center;
   gap: 6px;
