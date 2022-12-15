@@ -37,9 +37,12 @@
 }
 
 .chat-gpt-container :is(.answer, .question, .error) code {
-  padding: 0;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.chat-gpt-container :is(.answer, .question, .error) code.hljs {
+  padding: 0;
 }
 
 .chat-gpt-container .error {
