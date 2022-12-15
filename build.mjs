@@ -97,7 +97,14 @@ async function runWebpack(callback) {
           ],
         },
         {
-          test: /\.(jpe?g|png|ttf|eot|svg|woff2?)$/,
+          test: /\.(woff|ttf)$/,
+          type: 'asset/resource',
+          generator: {
+            emit: false,
+          },
+        },
+        {
+          test: /\.woff2$/,
           type: 'asset/inline',
         },
       ],

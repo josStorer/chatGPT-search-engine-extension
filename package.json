@@ -1,6 +1,5 @@
 {
   "name": "chat-gpt-search-engine-extension",
-  "author": "wong2",
   "scripts": {
     "build": "node build.mjs",
     "lint": "eslint --ext .js,.mjs,.jsx .",

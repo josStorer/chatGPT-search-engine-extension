@@ -32,7 +32,7 @@ export function MarkdownRender(props) {
           <a href={props.href} {...linkProperties}>
             {props.children}
           </a>
-        )
+        ),
       }}
       {...props}
     >
