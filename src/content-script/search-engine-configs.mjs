@@ -1,4 +1,4 @@
-import { run, getSearchInputValue } from './index'
+import { run, getSearchInputValue } from './index.jsx'
 
 const init = {
   baidu: () => {
