@@ -21,6 +21,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
   separate sessions for each page
 - Fix answer being overwritten due to "network error"
 - Code highlight
+- Switch to webpack
 
 ### Preview:
 
@@ -67,6 +68,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
     - Linkify in ReactMarkdown
     - Generate separate sessions for each page
     - Code highlight
+    - Switch to webpack
 
 ## Credit
 
