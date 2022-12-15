@@ -2,32 +2,46 @@
 
 A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox
 
-Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave, Searx, Ecosia in total.
+Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave,
+Searx, Ecosia in total.
 
 Request more search engine support in [#6](https://github.com/josStorer/chat-gpt-search-engine-extension/issues/6)
 
 And here perhaps merges PR faster than the original repo
 
-See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases) and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
+See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases)
+and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
 
 ### Diff with upstream:
+
 - Support StartPage, Baidu, Searx, Ecosia
-- Katex: https://github.com/wong2/chat-gpt-google-extension/pull/75
+- Katex: [wong2#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
 - Linkify in ReactMarkdown
-- Interactive mode: https://github.com/wong2/chat-gpt-google-extension/pull/103, now support generating separate sessions for each page
+- Interactive mode: [wong2#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
+  separate sessions for each page
 - Fix answer being overwritten due to "network error"
+- Code highlight
 
 ### My contributions:
+
 - [Branches](https://github.com/josStorer/chat-gpt-search-engine-extension/branches)
 - [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
 - #### Other
-  - Merge and improve some PRs
-  - Fix answer being overwritten due to "network error"
-  - Linkify in ReactMarkdown
-  - Generate separate sessions for each page
+    - Merge and improve some PRs
+    - Fix answer being overwritten due to "network error"
+    - Linkify in ReactMarkdown
+    - Generate separate sessions for each page
+    - Code highlight
 
-[Preview](./screenshot/README.md):
-![Preview-Img](https://user-images.githubusercontent.com/13366013/207279210-e07657c8-c3f0-4436-a5f7-2fda6cc61dd8.png)
+Preview:
+
+- [SearchEngines](screenshot/engines/README.md)
+- Code highlight and dark mode
+  ![code-highlight](screenshot/code-highlight.png)
+- LaTeX
+  ![latex](screenshot/latex.png)
+- Interactive mode
+  ![interactive-mode](screenshot/interactive-mode.png)
 
 ## Installation
 
@@ -55,4 +69,5 @@ See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-exten
 
 ## Credit
 
-This project is forked from [wong2/chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) and detached since 14 December of 2022
+This project is forked from [wong2/chat-gpt-google-extension](https://github.com/wong2/chat-gpt-google-extension) and
+detached since 14 December of 2022
