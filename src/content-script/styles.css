@@ -1,15 +1,6 @@
 @import 'highlight.js/styles/github.css' (prefers-color-scheme: light);
 @import 'highlight.js/styles/github-dark.css' (prefers-color-scheme: dark);
 
-.chat-gpt-container {
-  margin-bottom: 30px;
-  border-radius: 8px;
-  border: 1px solid;
-  flex-basis: 0;
-  flex-grow: 1;
-  overflow: hidden;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     --theme-color: #eaecf0;
@@ -25,11 +16,30 @@
 }
 
 .chat-gpt-container {
+  margin-bottom: 30px;
+  border-radius: 8px;
+  border: 1px solid;
+  flex-basis: 0;
+  flex-grow: 1;
+  overflow: hidden;
   border-color: var(--theme-border-color);
 }
 
 .chat-gpt-container :is(.answer, .question, .error) {
   background-color: var(--theme-color);
+  font-size: 15px;
+  line-height: 1.6;
+  border-radius: 8px;
+}
+
+.chat-gpt-container :is(.answer, .question, .error) pre {
+  margin-top: 10px;
+}
+
+.chat-gpt-container :is(.answer, .question, .error) code {
+  padding: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .chat-gpt-container .error {
@@ -75,21 +85,6 @@
 .chat-gpt-container.sidebar-free {
   margin-left: 60px;
   height: fit-content;
-}
-
-.chat-gpt-container :is(.answer, .question, .error) {
-  font-size: 15px;
-  line-height: 1.6;
-  border-radius: 8px;
-}
-
-.chat-gpt-container :is(.answer, .question, .error) pre {
-  margin-top: 10px;
-}
-
-.chat-gpt-container :is(.answer, .question, .error) code {
-  white-space: pre-wrap;
-  word-break: break-word;
 }
 
 .interact-container {

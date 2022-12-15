@@ -1,3 +1,5 @@
+import 'github-markdown-css'
+import 'katex/dist/katex.min.css'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import rehypeHighlight from 'rehype-highlight'
@@ -30,12 +32,7 @@ export function MarkdownRender(props) {
           <a href={props.href} {...linkProperties}>
             {props.children}
           </a>
-        ),
-        code: (props) => (
-          <code style={'padding:0'} className={props.className}>
-            {props.children}
-          </code>
-        ),
+        )
       }}
       {...props}
     >

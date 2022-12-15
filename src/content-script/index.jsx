@@ -1,7 +1,4 @@
 import './styles.css'
-import './katex.less'
-import 'github-markdown-css'
-
 import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config } from './search-engine-configs.mjs'
