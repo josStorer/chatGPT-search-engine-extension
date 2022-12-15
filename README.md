@@ -22,18 +22,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 - Fix answer being overwritten due to "network error"
 - Code highlight
 
-### My contributions:
-
-- [Branches](https://github.com/josStorer/chat-gpt-search-engine-extension/branches)
-- [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
-- #### Other
-    - Merge and improve some PRs
-    - Fix answer being overwritten due to "network error"
-    - Linkify in ReactMarkdown
-    - Generate separate sessions for each page
-    - Code highlight
-
-Preview:
+### Preview:
 
 - [SearchEngines](screenshot/engines/README.md)
 - Code highlight and dark mode
@@ -66,6 +55,18 @@ Preview:
 2. Install dependencies with `npm install`
 3. `npm run build`
 4. Load `build/chromium/` or `build/firefox/` directory to your browser
+
+
+## My contributions:
+
+- [Branches](https://github.com/josStorer/chat-gpt-search-engine-extension/branches)
+- [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
+- ### Other
+    - Merge and improve some PRs
+    - Fix answer being overwritten due to "network error"
+    - Linkify in ReactMarkdown
+    - Generate separate sessions for each page
+    - Code highlight
 
 ## Credit
 
