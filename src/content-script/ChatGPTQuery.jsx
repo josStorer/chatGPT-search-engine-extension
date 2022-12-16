@@ -137,7 +137,7 @@ function ChatGPTQuery(props) {
 
   return (
     <>
-      <div className="gpt-inner ">
+      <div className="gpt-inner">
         <div className="markdown-body">
           {talk.map((talk, idx) => (
             <TalkItem content={talk.content} key={idx} type={talk.type} />

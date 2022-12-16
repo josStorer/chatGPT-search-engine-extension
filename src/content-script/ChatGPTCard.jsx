@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import ChatGPTQuery from './ChatGPTQuery'
 import { endsWithQuestionMark } from './utils.mjs'
 import { initUserConfig, getDefaultConfig } from '../config'
+import Browser from 'webextension-polyfill'
 
 export const UserConfig = createContext(getDefaultConfig())
 
@@ -13,12 +14,16 @@ function ChatGPTCard(props) {
   const [config, setConfig] = useState(getDefaultConfig())
   useEffect(() => {
     initUserConfig().then(setConfig)
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'gpt_extension_config') {
-        setConfig(JSON.parse(e.newValue))
-        console.log(e.newValue)
+    const listener = (changes) => {
+      if (changes.gpt_extension_config) {
+        setConfig(changes.gpt_extension_config.newValue)
+        console.log(changes.gpt_extension_config)
       }
-    })
+    }
+    Browser.storage.local.onChanged.addListener(listener)
+    return () => {
+      Browser.storage.local.onChanged.removeListener(listener)
+    }
   }, [])
 
   return (
