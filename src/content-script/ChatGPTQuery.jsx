@@ -114,10 +114,7 @@ function ChatGPTQuery(props) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
             UpdateAnswer(
-              'UNAUTHORIZED<br>Please login at ' +
-                '<a href="https://chat.openai.com" target="_blank" rel="noreferrer">' +
-                'https://chat.openai.com' +
-                '</a> first',
+              'UNAUTHORIZED<br>Please login at https://chat.openai.com first',
               false,
               'error',
             )
@@ -136,8 +133,8 @@ function ChatGPTQuery(props) {
   }, [talk])
 
   return (
-    <>
-      <div className="markdown-body gpt-inner">
+    <div className="gpt-inner">
+      <div className="markdown-body">
         {talk.map((talk, idx) => (
           <TalkItem content={talk.content} key={idx} type={talk.type} />
         ))}
@@ -157,11 +154,11 @@ function ChatGPTQuery(props) {
           try {
             port.postMessage({ session })
           } catch (e) {
-            UpdateAnswer('Error: ' + e, false, 'error')
+            UpdateAnswer(e, false, 'error')
           }
         }}
       />
-    </>
+    </div>
   )
 }
 

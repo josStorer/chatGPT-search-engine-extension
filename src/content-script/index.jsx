@@ -1,9 +1,8 @@
-import './styles.css'
+import './styles.scss'
 import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config } from './search-engine-configs.mjs'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
-import { getUserConfig } from '../config'
 
 export async function run(question, siteConfig) {
   const container = document.createElement('div')
@@ -20,11 +19,7 @@ export async function run(question, siteConfig) {
     }
   }
 
-  const userConfig = await getUserConfig()
-  render(
-    <ChatGPTCard question={question} triggerMode={userConfig.triggerMode || 'always'} />,
-    container,
-  )
+  render(<ChatGPTCard question={question} />, container)
 }
 
 export function getSearchInputValue(siteConfig) {

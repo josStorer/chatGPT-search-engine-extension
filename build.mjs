@@ -73,6 +73,21 @@ async function runWebpack(callback) {
           ],
         },
         {
+          test: /\.s[ac]ss$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+        },
+        {
           test: /\.less$/,
           use: [
             MiniCssExtractPlugin.loader,

@@ -1,0 +1,133 @@
+[data-theme='auto'] {
+  @import 'github-markdown-css/github-markdown.css';
+  @media screen and (prefers-color-scheme: dark) {
+    @import 'highlight.js/scss/github-dark.scss';
+    --font-color: #c9d1d9;
+    --theme-color: #202124;
+    --theme-border-color: #3c4043;
+  }
+  @media screen and (prefers-color-scheme: light) {
+    @import 'highlight.js/scss/github.scss';
+    --font-color: #24292f;
+    --theme-color: #ffffff;
+    --theme-border-color: #aeafb2;
+  }
+}
+
+[data-theme='dark'] {
+  @import 'highlight.js/scss/github-dark.scss';
+  @import 'github-markdown-css/github-markdown-dark.css';
+
+  --font-color: #c9d1d9;
+  --theme-color: #202124;
+  --theme-border-color: #3c4043;
+}
+
+[data-theme='light'] {
+  @import 'highlight.js/scss/github.scss';
+  @import 'github-markdown-css/github-markdown-light.css';
+
+  --font-color: #24292f;
+  --theme-color: #ffffff;
+  --theme-border-color: #aeafb2;
+}
+
+.chat-gpt-container {
+  width: 100%;
+  flex-basis: 0;
+  flex-grow: 1;
+  margin-bottom: 20px;
+
+  .gpt-inner {
+    border-radius: 8px;
+    border: 1px solid;
+    overflow: hidden;
+    border-color: var(--theme-border-color);
+    background-color: var(--theme-color);
+    margin: 0;
+  }
+
+  .sidebar-free {
+    margin-left: 60px;
+  }
+
+  .markdown-body {
+    padding: 15px;
+    background-color: var(--theme-color);
+  }
+
+  .icon-and-text {
+    color: #8f9094;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 6px;
+  }
+
+  .manual-btn {
+    cursor: pointer;
+  }
+
+  .gpt-loading {
+    color: #b6b8ba;
+    animation: gpt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  :is(.answer, .question, .error) {
+    font-size: 15px;
+    line-height: 1.6;
+    border-radius: 8px;
+
+    pre {
+      margin-top: 10px;
+    }
+
+    code {
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      .hljs {
+        padding: 0;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .error {
+    color: #ec4336;
+  }
+
+  .interact-container {
+    position: relative;
+    font-size: 15px;
+
+    .interact-input {
+      box-sizing: border-box;
+      padding: 0 15px;
+      height: 35px;
+      border: 0;
+      border-top: 1px solid var(--theme-border-color);
+      width: 100%;
+      background-color: var(--theme-color);
+      color: var(--font-color);
+
+      &:disabled {
+        background-color: var(--theme-border-color);
+      }
+    }
+  }
+}
+
+@keyframes gpt-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}

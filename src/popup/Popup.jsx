@@ -1,29 +1,37 @@
 import '@picocss/pico'
-import { useCallback, useEffect, useState } from 'preact/hooks'
-import { getUserConfig, updateUserConfig, TRIGGER_MODES } from '../config'
+import { useEffect, useState } from 'preact/hooks'
+import { setUserConfig, initUserConfig, TriggerMode, ThemeMode } from '../config'
 import './styles.css'
 
 function Popup() {
+  /**
+   * @type {[TriggerMode, (mode: TriggerMode) => void]}
+   */
   const [triggerMode, setTriggerMode] = useState()
-
+  const [themeMode, setThemeMode] = useState()
   useEffect(() => {
-    getUserConfig().then((config) => {
-      setTriggerMode(config.triggerMode || 'always')
+    initUserConfig().then(({ triggerMode, themeMode }) => {
+      setTriggerMode(triggerMode)
+      setThemeMode(themeMode)
     })
   }, [])
 
-  const onTriggerModeChange = useCallback((e) => {
-    const mode = e.target.value
-    setTriggerMode(mode)
-    updateUserConfig({ triggerMode: mode })
-  }, [])
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeMode
+  }, [themeMode])
 
   return (
     <div className="container">
       <form>
-        <fieldset onChange={onTriggerModeChange}>
+        <fieldset
+          onChange={(e) => {
+            const mode = e.target.value
+            setTriggerMode(mode)
+            setUserConfig({ triggerMode: mode, themeMode: themeMode })
+          }}
+        >
           <legend>Trigger Mode</legend>
-          {Object.entries(TRIGGER_MODES).map(([value, label]) => {
+          {Object.entries(TriggerMode).map(([value, label]) => {
             return (
               <label htmlFor={value} key={value}>
                 <input
@@ -38,6 +46,25 @@ function Popup() {
             )
           })}
         </fieldset>
+        <label>
+          <legend>Theme Mode</legend>
+          <select
+            required
+            onChange={(e) => {
+              const mode = e.target.value
+              setThemeMode(mode)
+              setUserConfig({ triggerMode: triggerMode, themeMode: mode })
+            }}
+          >
+            {Object.entries(ThemeMode).map(([value, label]) => {
+              return (
+                <option value={value} key={value} selected={value === themeMode}>
+                  {label}
+                </option>
+              )
+            })}
+          </select>
+        </label>
       </form>
     </div>
   )

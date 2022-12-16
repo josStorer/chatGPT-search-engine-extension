@@ -10,7 +10,13 @@
     "sourceType": "module"
   },
   "rules": {
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/no-children-prop": [
+      "on",
+      {
+        "allowFunctions": true
+      }
+    ]
   },
   "ignorePatterns": ["build/**"]
 }
