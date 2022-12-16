@@ -32,6 +32,10 @@
   --theme-border-color: #aeafb2;
 }
 
+.sidebar-free {
+  margin-left: 60px;
+}
+
 .chat-gpt-container {
   width: 100%;
   flex-basis: 0;
@@ -45,10 +49,6 @@
     border-color: var(--theme-border-color);
     background-color: var(--theme-color);
     margin: 0;
-  }
-
-  .sidebar-free {
-    margin-left: 60px;
   }
 
   .markdown-body {
