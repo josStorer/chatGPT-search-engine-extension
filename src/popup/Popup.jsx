@@ -47,7 +47,7 @@ function Popup() {
           })}
         </fieldset>
         <label>
-          Theme Mode
+          <legend>Theme Mode</legend>
           <select
             required
             onChange={(e) => {
