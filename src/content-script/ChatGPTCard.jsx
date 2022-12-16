@@ -22,7 +22,7 @@ function ChatGPTCard(props) {
   }, [])
 
   return (
-    <UserConfig.Provider value={config}>
+    <div data-theme={config.themeMode}>
       {(() => {
         switch (config.triggerMode) {
           case 'always':
@@ -48,7 +48,7 @@ function ChatGPTCard(props) {
             )
         }
       })()}
-    </UserConfig.Provider>
+    </div>
   )
 }
 

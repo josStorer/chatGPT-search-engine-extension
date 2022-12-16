@@ -136,38 +136,34 @@ function ChatGPTQuery(props) {
   }, [talk])
 
   return (
-    <UserConfig.Consumer>
-      {(config) => (
-        <>
-          <div className="gpt-inner" data-theme={config.themeMode}>
-            <div className="markdown-body">
-              {talk.map((talk, idx) => (
-                <TalkItem content={talk.content} key={idx} type={talk.type} />
-              ))}
-            </div>
-            <Interact
-              enabled={isReady}
-              onSubmit={(question) => {
-                const newQuestion = new Talk('question', '**You:**\n' + question)
-                const newAnswer = new Talk(
-                  'answer',
-                  '<p class="gpt-loading">Waiting for ChatGPT response...</p>',
-                )
-                setTalk([...talk, newQuestion, newAnswer])
-                setIsReady(false)
+    <>
+      <div className="gpt-inner ">
+        <div className="markdown-body">
+          {talk.map((talk, idx) => (
+            <TalkItem content={talk.content} key={idx} type={talk.type} />
+          ))}
+        </div>
+        <Interact
+          enabled={isReady}
+          onSubmit={(question) => {
+            const newQuestion = new Talk('question', '**You:**\n' + question)
+            const newAnswer = new Talk(
+              'answer',
+              '<p class="gpt-loading">Waiting for ChatGPT response...</p>',
+            )
+            setTalk([...talk, newQuestion, newAnswer])
+            setIsReady(false)
 
-                session.question = question
-                try {
-                  port.postMessage({ session })
-                } catch (e) {
-                  UpdateAnswer('Error: ' + e, false, 'error')
-                }
-              }}
-            />
-          </div>
-        </>
-      )}
-    </UserConfig.Consumer>
+            session.question = question
+            try {
+              port.postMessage({ session })
+            } catch (e) {
+              UpdateAnswer('Error: ' + e, false, 'error')
+            }
+          }}
+        />
+      </div>
+    </>
   )
 }
 
