@@ -14,7 +14,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 
 ### Diff with upstream:
 
-- Support StartPage, Baidu, Searx, Ecosia
+- Support StartPage, Baidu, Ecosia, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
 - Katex: [wong2#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
 - Linkify in ReactMarkdown
 - Interactive mode: [wong2#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
