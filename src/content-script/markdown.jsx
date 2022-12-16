@@ -1,4 +1,4 @@
-import 'github-markdown-css'
+// import 'github-markdown-css'
 import 'katex/dist/katex.min.css'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'

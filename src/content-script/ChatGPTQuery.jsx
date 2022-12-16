@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'preact/hooks'
 import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
-
+import { UserConfig } from './ChatGPTCard.jsx'
 let session = {
   question: null,
   conversationId: null,
@@ -136,32 +136,38 @@ function ChatGPTQuery(props) {
   }, [talk])
 
   return (
-    <>
-      <div className="markdown-body gpt-inner">
-        {talk.map((talk, idx) => (
-          <TalkItem content={talk.content} key={idx} type={talk.type} />
-        ))}
-      </div>
-      <Interact
-        enabled={isReady}
-        onSubmit={(question) => {
-          const newQuestion = new Talk('question', '**You:**\n' + question)
-          const newAnswer = new Talk(
-            'answer',
-            '<p class="gpt-loading">Waiting for ChatGPT response...</p>',
-          )
-          setTalk([...talk, newQuestion, newAnswer])
-          setIsReady(false)
+    <UserConfig.Consumer>
+      {(config) => (
+        <>
+          <div className="gpt-inner" data-theme={config.themeMode}>
+            <div className="markdown-body">
+              {talk.map((talk, idx) => (
+                <TalkItem content={talk.content} key={idx} type={talk.type} />
+              ))}
+            </div>
+            <Interact
+              enabled={isReady}
+              onSubmit={(question) => {
+                const newQuestion = new Talk('question', '**You:**\n' + question)
+                const newAnswer = new Talk(
+                  'answer',
+                  '<p class="gpt-loading">Waiting for ChatGPT response...</p>',
+                )
+                setTalk([...talk, newQuestion, newAnswer])
+                setIsReady(false)
 
-          session.question = question
-          try {
-            port.postMessage({ session })
-          } catch (e) {
-            UpdateAnswer('Error: ' + e, false, 'error')
-          }
-        }}
-      />
-    </>
+                session.question = question
+                try {
+                  port.postMessage({ session })
+                } catch (e) {
+                  UpdateAnswer('Error: ' + e, false, 'error')
+                }
+              }}
+            />
+          </div>
+        </>
+      )}
+    </UserConfig.Consumer>
   )
 }
 

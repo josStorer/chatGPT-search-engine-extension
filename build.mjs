@@ -1,115 +1,38 @@
 import archiver from 'archiver'
-import fs from 'fs-extra'
-import path from 'path'
-import webpack from 'webpack'
-import ProgressBarPlugin from 'progress-bar-webpack-plugin'
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import TerserPlugin from 'terser-webpack-plugin'
+import { sassPlugin } from 'esbuild-sass-plugin'
+import esbuild from 'esbuild'
+import fs, { promises as fsPromises } from 'fs'
 
 const outdir = 'build'
 
-const __dirname = path.resolve()
-
 async function deleteOldDir() {
-  await fs.rm(outdir, { recursive: true, force: true })
+  await fsPromises.rm(outdir, { recursive: true, force: true })
 }
 
-async function runWebpack(callback) {
-  webpack({
-    entry: {
-      'content-script': './src/content-script/index.jsx',
-      background: './src/background/index.mjs',
-      popup: './src/popup/index.jsx',
-    },
-    output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, outdir),
-    },
-    mode: 'production',
-    optimization: {
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            output: { ascii_only: true },
-          },
-        }),
-        new CssMinimizerPlugin(),
-      ],
-    },
-    plugins: [
-      new ProgressBarPlugin({
-        format: '  build [:bar] :percent (:elapsed seconds)',
-        clear: false,
-      }),
-      new MiniCssExtractPlugin({
-        filename: '[name].css',
-      }),
+async function runEsbuild() {
+  await esbuild.build({
+    entryPoints: [
+      'src/content-script/index.jsx',
+      'src/background/index.mjs',
+      'src/popup/index.jsx',
     ],
-    resolve: {
-      extensions: ['.jsx', '.mjs', '.js'],
+    bundle: true,
+    outdir: outdir,
+    treeShaking: true,
+    minify: false,
+    define: {
+      'process.env.NODE_ENV': '"production"',
     },
-    module: {
-      rules: [
-        {
-          test: /\.m?jsx?$/,
-          exclude: /(node_modules)/,
-          use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env'],
-                plugins: [
-                  [
-                    '@babel/plugin-transform-react-jsx',
-                    {
-                      runtime: 'automatic',
-                      importSource: 'preact',
-                    },
-                  ],
-                ],
-              },
-            },
-          ],
-        },
-        {
-          test: /\.less$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-              },
-            },
-            {
-              loader: 'less-loader',
-            },
-          ],
-        },
-        {
-          test: /\.css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader',
-            },
-          ],
-        },
-        {
-          test: /\.(woff|ttf)$/,
-          type: 'asset/resource',
-          generator: {
-            emit: false,
-          },
-        },
-        {
-          test: /\.woff2$/,
-          type: 'asset/inline',
-        },
-      ],
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+    jsx: 'automatic',
+    loader: {
+      '.ttf': 'dataurl',
+      '.woff': 'dataurl',
+      '.woff2': 'dataurl',
     },
-  }).run(callback)
+    plugins: [sassPlugin()],
+  })
 }
 
 async function zipFolder(dir) {
@@ -123,48 +46,43 @@ async function zipFolder(dir) {
 }
 
 async function copyFiles(entryPoints, targetDir) {
-  await fs.mkdir(targetDir)
+  await fsPromises.mkdir(targetDir)
   await Promise.all(
     entryPoints.map(async (entryPoint) => {
-      await fs.copy(entryPoint.src, `${targetDir}/${entryPoint.dst}`)
+      await fsPromises.copyFile(entryPoint.src, `${targetDir}/${entryPoint.dst}`)
     }),
   )
 }
 
 async function build() {
   await deleteOldDir()
-  await runWebpack(async (err, stats) => {
-    if (err || stats.hasErrors()) {
-      console.error(err || stats.toString())
-      return
-    }
+  await runEsbuild()
 
-    const commonFiles = [
-      { src: 'build/content-script.js', dst: 'content-script.js' },
-      { src: 'build/content-script.css', dst: 'content-script.css' },
-      { src: 'build/background.js', dst: 'background.js' },
-      { src: 'build/popup.js', dst: 'popup.js' },
-      { src: 'build/popup.css', dst: 'popup.css' },
-      { src: 'src/popup/index.html', dst: 'popup.html' },
-      { src: 'src/logo.png', dst: 'logo.png' },
-    ]
+  const commonFiles = [
+    { src: 'build/content-script/index.js', dst: 'content-script.js' },
+    { src: 'build/content-script/index.css', dst: 'content-script.css' },
+    { src: 'build/background/index.js', dst: 'background.js' },
+    { src: 'build/popup/index.js', dst: 'popup.js' },
+    { src: 'build/popup/index.css', dst: 'popup.css' },
+    { src: 'src/popup/index.html', dst: 'popup.html' },
+    { src: 'src/logo.png', dst: 'logo.png' },
+  ]
 
-    // chromium
-    await copyFiles(
-      [...commonFiles, { src: 'src/manifest.json', dst: 'manifest.json' }],
-      `./${outdir}/chromium`,
-    )
+  // chromium
+  await copyFiles(
+    [...commonFiles, { src: 'src/manifest.json', dst: 'manifest.json' }],
+    `./${outdir}/chromium`,
+  )
 
-    await zipFolder(`./${outdir}/chromium`)
+  await zipFolder(`./${outdir}/chromium`)
 
-    // firefox
-    await copyFiles(
-      [...commonFiles, { src: 'src/manifest.v2.json', dst: 'manifest.json' }],
-      `./${outdir}/firefox`,
-    )
+  // firefox
+  await copyFiles(
+    [...commonFiles, { src: 'src/manifest.v2.json', dst: 'manifest.json' }],
+    `./${outdir}/firefox`,
+  )
 
-    await zipFolder(`./${outdir}/firefox`)
-  })
+  await zipFolder(`./${outdir}/firefox`)
 }
 
 build()
