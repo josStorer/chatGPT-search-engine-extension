@@ -100,7 +100,7 @@
       width: 100%;
       background-color: var(--theme-color);
       color: var(--font-color);
-      :disabled {
+      &:disabled {
         background-color: var(--theme-border-color);
       }
     }
