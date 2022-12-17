@@ -24,7 +24,6 @@ export const ThemeMode = {
  */
 export async function getUserConfig() {
   const { gpt_extension_config: options } = await Browser.storage.local.get('gpt_extension_config')
-  console.log('options', options)
   return options
 }
 
@@ -33,7 +32,7 @@ export async function getUserConfig() {
  * @param {UserConfig} value
  */
 export async function setUserConfig(value) {
-  Browser.storage.local.set({ gpt_extension_config: value })
+  await Browser.storage.local.set({ gpt_extension_config: value })
 }
 
 /**
@@ -42,8 +41,8 @@ export async function setUserConfig(value) {
  */
 export function getDefaultConfig() {
   return {
-    triggerMode: TriggerMode.always,
-    themeMode: ThemeMode.auto,
+    triggerMode: 'always',
+    themeMode: 'auto',
   }
 }
 
@@ -56,7 +55,7 @@ export async function initUserConfig() {
 
   if (!options) {
     options = getDefaultConfig()
-    Browser.storage.local.set({ gpt_extension_config: options })
+    await Browser.storage.local.set({ gpt_extension_config: options })
   }
   return options
 }

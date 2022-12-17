@@ -14,7 +14,6 @@ function ChatGPTCard(props) {
     const listener = (changes) => {
       if (changes.gpt_extension_config) {
         setConfig(changes.gpt_extension_config.newValue)
-        console.log(changes.gpt_extension_config)
       }
     }
     Browser.storage.local.onChanged.addListener(listener)
