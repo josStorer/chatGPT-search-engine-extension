@@ -28,6 +28,8 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 - [SearchEngines](screenshot/engines/README.md)
 - Code highlight and dark mode
   ![code-highlight](screenshot/code-highlight.png)
+- Theme switcher
+  ![theme-switcher](https://user-images.githubusercontent.com/91773459/208104324-5e594f2e-f06e-48fe-95cb-6bc25974fa02.png)
 - LaTeX
   ![latex](screenshot/latex.png)
 - Interactive mode
