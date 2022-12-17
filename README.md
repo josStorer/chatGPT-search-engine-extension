@@ -20,7 +20,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 - Interactive mode: [wong2#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
   separate sessions for each page
 - Fix answer being overwritten due to "network error"
-- Code highlight
+- Theme switcher: https://github.com/josStorer/chatGPT-search-engine-extension/pull/9
 - Switch to webpack
 
 ### Preview:
