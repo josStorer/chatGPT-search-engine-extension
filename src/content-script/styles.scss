@@ -94,6 +94,28 @@
     p {
       margin: 0;
     }
+
+    .gpt-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+
+      p {
+        font-weight: bold;
+      }
+
+      .gpt-feedback {
+        display: flex;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .gpt-feedback-selected {
+        color: #f08080;
+      }
+    }
   }
 
   .error {

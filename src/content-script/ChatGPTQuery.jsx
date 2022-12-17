@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'preact/hooks'
 import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
+import ChatGPTFeedback from './ChatGPTFeedback'
 
 let session = {
   question: null,
@@ -10,9 +11,20 @@ let session = {
   parentMessageId: null,
 }
 
-function TalkItem({ type, content }) {
+function TalkItem({ type, content, session }) {
   return (
     <div className={`${type}`} dir="auto">
+      {type === 'answer' && (
+        <div className="gpt-header">
+          <p>ChatGPT:</p>
+          {session && (
+            <ChatGPTFeedback
+              messageId={session.messageId}
+              conversationId={session.conversationId}
+            />
+          )}
+        </div>
+      )}
       <MarkdownRender>{content}</MarkdownRender>
     </div>
   )
@@ -67,6 +79,7 @@ class Talk extends Object {
     super()
     this.type = type
     this.content = content
+    this.session = null
   }
 }
 
@@ -87,13 +100,15 @@ function ChatGPTQuery(props) {
    * @param {string} value
    * @param {boolean} appended
    * @param {'question'|'answer'|'error'} type
+   * @param {boolean} done
    */
-  const UpdateAnswer = (value, appended, type) => {
+  const UpdateAnswer = (value, appended, type, done = false) => {
     setTalk((old) => {
       const copy = [...old]
       const index = copy.findLastIndex((v) => v.type === 'answer')
       if (index === -1) return copy
       copy[index] = new Talk(type, appended ? copy[index].content + value : value)
+      if (done) copy[index].session = { ...session }
       return copy
     })
   }
@@ -102,14 +117,12 @@ function ChatGPTQuery(props) {
   useEffect(() => {
     const listener = (msg) => {
       if (msg.answer) {
-        UpdateAnswer('**ChatGPT:**\n' + msg.answer, false, 'answer')
+        UpdateAnswer(msg.answer, false, 'answer')
         return
       }
       if (msg.done) {
-        UpdateAnswer('<hr>', true, 'answer')
-        if (msg.session) {
-          session = msg.session
-        }
+        session = msg.session
+        UpdateAnswer('<hr>', true, 'answer', true)
       } else if (msg.error) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
@@ -136,7 +149,7 @@ function ChatGPTQuery(props) {
     <div className="gpt-inner">
       <div className="markdown-body">
         {talk.map((talk, idx) => (
-          <TalkItem content={talk.content} key={idx} type={talk.type} />
+          <TalkItem content={talk.content} key={idx} type={talk.type} session={talk.session} />
         ))}
       </div>
       <Interact
