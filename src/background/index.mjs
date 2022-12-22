@@ -71,7 +71,6 @@ async function generateAnswers(port, question, session) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
         port.postMessage({ answer: null, done: true, session: session })
-        deleteConversation()
         return
       }
       const data = JSON.parse(message)
