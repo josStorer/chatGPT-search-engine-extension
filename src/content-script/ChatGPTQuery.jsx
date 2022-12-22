@@ -13,7 +13,7 @@ let session = {
 
 function TalkItem({ type, content, session }) {
   return (
-    <div className={`${type}`} dir="auto">
+    <div className={type} dir="auto">
       {type === 'answer' && (
         <div className="gpt-header">
           <p>ChatGPT:</p>
@@ -33,6 +33,7 @@ function TalkItem({ type, content, session }) {
 TalkItem.propTypes = {
   type: PropTypes.oneOf(['question', 'answer', 'error']).isRequired,
   content: PropTypes.string.isRequired,
+  session: PropTypes.object.isRequired,
 }
 
 function Interact({ onSubmit, enabled }) {
