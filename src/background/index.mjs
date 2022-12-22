@@ -1,7 +1,7 @@
 import ExpiryMap from 'expiry-map'
 import { v4 as uuidv4 } from 'uuid'
 import Browser from 'webextension-polyfill'
-import { sendMessageFeedback } from './chatgpt.mjs'
+import { sendMessageFeedback, setConversationProperty } from './chatgpt.mjs'
 import { fetchSSE } from './fetch-sse.mjs'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
