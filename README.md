@@ -5,12 +5,12 @@ A browser extension to display ChatGPT response alongside Search Engine results,
 Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave,
 Searx, Ecosia in total.
 
-Request more search engine support in [#6](https://github.com/josStorer/chat-gpt-search-engine-extension/issues/6)
+Request more search engine support in [#6](https://github.com/josStorer/chatGPT-search-engine-extension/issues/6)
 
 And here perhaps merges PR faster than the original repo
 
-See more in [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases)
-and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-extension/actions)
+See more in [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases)
+and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/pre-release-build.yml)
 
 ### Diff with upstream:
 
@@ -39,7 +39,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 
 ### Install to Chrome/Edge
 
-1. Download `chromium.zip` from [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases).
+1. Download `chromium.zip` from [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases).
 2. Unzip the file.
 3. In Chrome/Edge go to the extensions page (`chrome://extensions` or `edge://extensions`).
 4. Enable Developer Mode.
@@ -47,7 +47,7 @@ and [Pre-release build](https://github.com/josStorer/chat-gpt-search-engine-exte
 
 ### Install to Firefox
 
-1. Download `firefox.zip` from [Releases](https://github.com/josStorer/chat-gpt-search-engine-extension/releases).
+1. Download `firefox.zip` from [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases).
 2. Unzip the file.
 3. Go to `about:debugging`, click "This Firefox" on the sidebar.
 4. Click "Load Temporary Add-on" button, then select any file in the unzipped folder.
