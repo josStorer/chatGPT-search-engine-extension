@@ -2,6 +2,7 @@ import '@picocss/pico'
 import { useEffect, useState } from 'preact/hooks'
 import { setUserConfig, initUserConfig, TriggerMode, ThemeMode } from '../config'
 import './styles.css'
+import { MarkGithubIcon } from '@primer/octicons-react'
 
 function Popup() {
   /**
@@ -66,6 +67,14 @@ function Popup() {
           </select>
         </label>
       </form>
+      <a
+        href="https://github.com/josStorer/chatGPT-search-engine-extension"
+        target="_blank"
+        rel="noreferrer"
+        className="github-link"
+      >
+        <MarkGithubIcon />
+      </a>
     </div>
   )
 }

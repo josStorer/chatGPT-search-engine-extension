@@ -31,10 +31,16 @@ async function getAccessToken() {
  */
 async function generateAnswers(port, question, session) {
   const accessToken = await getAccessToken()
+
+  const deleteConversation = () => {
+    setConversationProperty(accessToken, session.conversationId, { is_visible: false })
+  }
+
   const controller = new AbortController()
   port.onDisconnect.addListener(() => {
     console.debug('port disconnected')
     controller.abort()
+    deleteConversation()
     session.conversationId = null
   })
 
@@ -65,6 +71,7 @@ async function generateAnswers(port, question, session) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
         port.postMessage({ answer: null, done: true, session: session })
+        deleteConversation()
         return
       }
       const data = JSON.parse(message)
