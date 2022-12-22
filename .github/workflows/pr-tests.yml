@@ -1,7 +1,6 @@
 name: pr-tests
 
 on:
-  push:
   pull_request:
     types:
       - "opened"
