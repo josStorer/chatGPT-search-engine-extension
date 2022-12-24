@@ -82,6 +82,10 @@
       margin-top: 10px;
     }
 
+    & > p {
+      margin-bottom: 10px;
+    }
+
     code {
       white-space: pre-wrap;
       word-break: break-word;
@@ -114,6 +118,10 @@
 
       .gpt-feedback-selected {
         color: #f08080;
+      }
+
+      .gpt-collapse-icon {
+        cursor: pointer;
       }
     }
   }
