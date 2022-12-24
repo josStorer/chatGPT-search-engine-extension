@@ -41,7 +41,6 @@ async function generateAnswers(port, question, session) {
     console.debug('port disconnected')
     controller.abort()
     deleteConversation()
-    session.conversationId = null
   })
 
   await fetchSSE('https://chat.openai.com/backend-api/conversation', {
@@ -74,13 +73,13 @@ async function generateAnswers(port, question, session) {
         return
       }
       const data = JSON.parse(message)
-      const text = data.message?.content?.parts?.[0]
-      if (text) {
-        port.postMessage({ answer: text })
-      }
-
       if (data.conversation_id) session.conversationId = data.conversation_id
       if (data.message?.id) session.parentMessageId = data.message.id
+
+      const text = data.message?.content?.parts?.[0]
+      if (text) {
+        port.postMessage({ answer: text, done: false, session: session })
+      }
     },
   })
 }

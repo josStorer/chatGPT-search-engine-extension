@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
+import { ChevronDownIcon, XCircleIcon } from '@primer/octicons-react'
 
 let session = {
   question: null,
@@ -12,20 +13,33 @@ let session = {
 }
 
 function TalkItem({ type, content, session }) {
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
     <div className={type} dir="auto">
       {type === 'answer' && (
         <div className="gpt-header">
           <p>ChatGPT:</p>
-          {session && (
-            <ChatGPTFeedback
-              messageId={session.messageId}
-              conversationId={session.conversationId}
-            />
-          )}
+          <div style="display: flex; gap: 15px;">
+            {session && !collapsed && (
+              <ChatGPTFeedback
+                messageId={session.messageId}
+                conversationId={session.conversationId}
+              />
+            )}
+            {!collapsed ? (
+              <span className="gpt-collapse-icon" onClick={() => setCollapsed(true)}>
+                <XCircleIcon size={14} />
+              </span>
+            ) : (
+              <span className="gpt-collapse-icon" onClick={() => setCollapsed(false)}>
+                <ChevronDownIcon size={14} />
+              </span>
+            )}
+          </div>
         </div>
       )}
-      <MarkdownRender>{content}</MarkdownRender>
+      {!collapsed && <MarkdownRender>{content}</MarkdownRender>}
     </div>
   )
 }
@@ -100,15 +114,15 @@ function ChatGPTQuery(props) {
   /**
    * @param {string} value
    * @param {boolean} appended
-   * @param {'question'|'answer'|'error'} type
+   * @param {'question'|'answer'|'error'} newType
    * @param {boolean} done
    */
-  const UpdateAnswer = (value, appended, type, done = false) => {
+  const UpdateAnswer = (value, appended, newType, done = false) => {
     setTalk((old) => {
       const copy = [...old]
       const index = copy.findLastIndex((v) => v.type === 'answer')
       if (index === -1) return copy
-      copy[index] = new Talk(type, appended ? copy[index].content + value : value)
+      copy[index] = new Talk(newType, appended ? copy[index].content + value : value)
       if (done) copy[index].session = { ...session }
       return copy
     })
@@ -119,12 +133,15 @@ function ChatGPTQuery(props) {
     const listener = (msg) => {
       if (msg.answer) {
         UpdateAnswer(msg.answer, false, 'answer')
-        return
+      }
+      if (msg.session) {
+        session = msg.session
       }
       if (msg.done) {
-        session = msg.session
         UpdateAnswer('<hr>', true, 'answer', true)
-      } else if (msg.error) {
+        setIsReady(true)
+      }
+      if (msg.error) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
             UpdateAnswer(
@@ -137,8 +154,8 @@ function ChatGPTQuery(props) {
             setTalk([...talk, new Talk('error', msg.error + '<hr>')])
             break
         }
+        setIsReady(true)
       }
-      setIsReady(true)
     }
     port.onMessage.addListener(listener)
     return () => {
