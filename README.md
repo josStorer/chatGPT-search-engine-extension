@@ -20,20 +20,17 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 - Interactive mode: [wong2#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
   separate sessions for each page
 - Fix answer being overwritten due to "network error"
-- Theme switcher: https://github.com/josStorer/chatGPT-search-engine-extension/pull/9
+- Theme switcher: [#9](https://github.com/josStorer/chatGPT-search-engine-extension/pull/9)
+- Collapse answers
 - Switch to webpack
 
 ### Preview:
 
 - [SearchEngines](screenshot/engines/README.md)
-- Code highlight and dark mode
+- Code highlight, interactive mode, dark mode, collapse answers, theme switcher
   ![code-highlight](screenshot/code-highlight.png)
-- Theme switcher
-  ![theme-switcher](https://user-images.githubusercontent.com/91773459/208104324-5e594f2e-f06e-48fe-95cb-6bc25974fa02.png)
 - LaTeX
   ![latex](screenshot/latex.png)
-- Interactive mode
-  ![interactive-mode](screenshot/interactive-mode.png)
 
 ## Installation
 
@@ -70,6 +67,7 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
     - Linkify in ReactMarkdown
     - Generate separate sessions for each page
     - Code highlight
+    - Collapse answers
     - Switch to webpack
 
 ## Credit
