@@ -9,7 +9,7 @@
   @media screen and (prefers-color-scheme: light) {
     @import 'highlight.js/scss/github.scss';
     --font-color: #24292f;
-    --theme-color: #ffffff;
+    --theme-color: #eaecf0;
     --theme-border-color: #aeafb2;
   }
 }
@@ -28,7 +28,7 @@
   @import 'github-markdown-css/github-markdown-light.css';
 
   --font-color: #24292f;
-  --theme-color: #ffffff;
+  --theme-color: #eaecf0;
   --theme-border-color: #aeafb2;
 }
 
