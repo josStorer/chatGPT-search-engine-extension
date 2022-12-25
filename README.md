@@ -23,6 +23,8 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 - Theme switcher: [#9](https://github.com/josStorer/chatGPT-search-engine-extension/pull/9)
 - Collapse answers
 - Switch to webpack
+- Javascript
+- Popup Setting Window (Upstream has switched to a standalone options page)
 
 ### Preview:
 
