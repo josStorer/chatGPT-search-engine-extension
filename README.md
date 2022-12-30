@@ -31,6 +31,8 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 
 - [SearchEngines](screenshot/engines/README.md)
 - Code highlight, interactive mode, dark mode, collapse answers, theme switcher
+
+  (Click on the extension icon to open the setting window)
   ![code-highlight](screenshot/code-highlight.png)
 - LaTeX
   ![latex](screenshot/latex.png)
