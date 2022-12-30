@@ -22,9 +22,10 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 - Fix answer being overwritten due to "network error"
 - Theme switcher: [#9](https://github.com/josStorer/chatGPT-search-engine-extension/pull/9)
 - Collapse answers
+- Copy answers
+- Popup Setting Window (Upstream has switched to a standalone options page)
 - Switch to webpack
 - Javascript
-- Popup Setting Window (Upstream has switched to a standalone options page)
 
 ### Preview:
 
@@ -70,6 +71,7 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
     - Generate separate sessions for each page
     - Code highlight
     - Collapse answers
+    - Copy answers
     - Switch to webpack
 
 ## Credit
