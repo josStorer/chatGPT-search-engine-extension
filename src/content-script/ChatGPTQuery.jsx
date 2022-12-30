@@ -28,7 +28,7 @@ function TalkItem({ type, content, session }) {
         <div className="gpt-header">
           <p>ChatGPT:</p>
           <div style="display: flex; gap: 15px;">
-            {session && !collapsed && (
+            {session && (
               <ChatGPTFeedback
                 messageId={session.messageId}
                 conversationId={session.conversationId}
