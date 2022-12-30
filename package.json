@@ -19,6 +19,7 @@
     "expiry-map": "^2.0.0",
     "github-markdown-css": "^5.1.0",
     "katex": "^0.16.4",
+    "lodash-es": "^4.17.21",
     "preact": "^10.11.3",
     "prop-types": "^15.8.1",
     "punycode": "^2.1.1",
