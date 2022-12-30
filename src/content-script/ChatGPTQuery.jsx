@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { ChevronDownIcon, XCircleIcon } from '@primer/octicons-react'
+import { ChevronDownIcon, CopyIcon, XCircleIcon } from '@primer/octicons-react'
+import { motion } from 'framer-motion'
 
 let session = {
   question: null,
@@ -12,8 +13,14 @@ let session = {
   parentMessageId: null,
 }
 
+const copyAnimation = {
+  normal: { scale: 1 },
+  copied: { scale: 1.2, y: [0, -1.5, 3, 0] },
+}
+
 function TalkItem({ type, content, session }) {
   const [collapsed, setCollapsed] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   return (
     <div className={type} dir="auto">
@@ -27,12 +34,29 @@ function TalkItem({ type, content, session }) {
                 conversationId={session.conversationId}
               />
             )}
+            <motion.span
+              className="gpt-util-icon"
+              animate={copied ? 'copied' : 'normal'}
+              variants={copyAnimation}
+              onClick={() => {
+                navigator.clipboard
+                  .writeText(content)
+                  .then(() => setCopied(true))
+                  .then(() =>
+                    setTimeout(() => {
+                      setCopied(false)
+                    }, 400),
+                  )
+              }}
+            >
+              <CopyIcon size={14} />
+            </motion.span>
             {!collapsed ? (
-              <span className="gpt-collapse-icon" onClick={() => setCollapsed(true)}>
+              <span className="gpt-util-icon" onClick={() => setCollapsed(true)}>
                 <XCircleIcon size={14} />
               </span>
             ) : (
-              <span className="gpt-collapse-icon" onClick={() => setCollapsed(false)}>
+              <span className="gpt-util-icon" onClick={() => setCollapsed(false)}>
                 <ChevronDownIcon size={14} />
               </span>
             )}
@@ -138,7 +162,7 @@ function ChatGPTQuery(props) {
         session = msg.session
       }
       if (msg.done) {
-        UpdateAnswer('<hr>', true, 'answer', true)
+        UpdateAnswer('\n<hr>', true, 'answer', true)
         setIsReady(true)
       }
       if (msg.error) {
@@ -151,7 +175,7 @@ function ChatGPTQuery(props) {
             )
             break
           default:
-            setTalk([...talk, new Talk('error', msg.error + '<hr>')])
+            setTalk([...talk, new Talk('error', msg.error + '\n<hr>')])
             break
         }
         setIsReady(true)

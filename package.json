@@ -17,6 +17,7 @@
     "@primer/octicons-react": "^17.9.0",
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
+    "framer-motion": "^6.5.1",
     "github-markdown-css": "^5.1.0",
     "katex": "^0.16.4",
     "lodash-es": "^4.17.21",
