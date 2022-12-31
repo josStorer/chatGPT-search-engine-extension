@@ -10,10 +10,13 @@ function Popup() {
    */
   const [triggerMode, setTriggerMode] = useState()
   const [themeMode, setThemeMode] = useState()
+  const [insertAtTop, setInsertAtTop] = useState()
+
   useEffect(() => {
-    initUserConfig().then(({ triggerMode, themeMode }) => {
+    initUserConfig().then(({ triggerMode, themeMode, insertAtTop }) => {
       setTriggerMode(triggerMode)
       setThemeMode(themeMode)
+      setInsertAtTop(insertAtTop)
     })
   }, [])
 
@@ -28,7 +31,7 @@ function Popup() {
           onChange={(e) => {
             const mode = e.target.value
             setTriggerMode(mode)
-            setUserConfig({ triggerMode: mode, themeMode: themeMode })
+            setUserConfig({ triggerMode: mode, themeMode: themeMode, insertAtTop: insertAtTop })
           }}
         >
           <legend>Trigger Mode</legend>
@@ -54,7 +57,7 @@ function Popup() {
             onChange={(e) => {
               const mode = e.target.value
               setThemeMode(mode)
-              setUserConfig({ triggerMode: triggerMode, themeMode: mode })
+              setUserConfig({ triggerMode: triggerMode, themeMode: mode, insertAtTop: insertAtTop })
             }}
           >
             {Object.entries(ThemeMode).map(([value, label]) => {
@@ -65,6 +68,23 @@ function Popup() {
               )
             })}
           </select>
+        </label>
+        <hr />
+        <label>
+          <input
+            type="checkbox"
+            checked={insertAtTop}
+            onChange={(e) => {
+              const checked = e.target.checked
+              setInsertAtTop(checked)
+              setUserConfig({
+                triggerMode: triggerMode,
+                themeMode: themeMode,
+                insertAtTop: checked,
+              })
+            }}
+          />
+          Insert chatGPT at the top of search results
         </label>
       </form>
       <a

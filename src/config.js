@@ -16,6 +16,7 @@ export const ThemeMode = {
  * @typedef {Object} UserConfig
  * @property {keyof TriggerMode} triggerMode
  * @property {keyof ThemeMode} themeMode
+ * @property {boolean} insertAtTop
  */
 
 /**
@@ -43,6 +44,7 @@ export function getDefaultConfig() {
   return {
     triggerMode: 'always',
     themeMode: 'auto',
+    insertAtTop: false,
   }
 }
 

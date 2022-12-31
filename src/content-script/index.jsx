@@ -3,19 +3,28 @@ import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config } from './search-engine-configs.mjs'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
+import { initUserConfig } from '../config'
 
 export async function run(question, siteConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
 
-  const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
-  if (siderbarContainer) {
-    siderbarContainer.prepend(container)
+  const config = await initUserConfig()
+  if (config.insertAtTop) {
+    const resultsContainerQuery = getPossibleElementByQuerySelector(
+      siteConfig.resultsContainerQuery,
+    )
+    if (resultsContainerQuery) resultsContainerQuery.prepend(container)
   } else {
-    container.classList.add('sidebar-free')
-    const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
-    if (appendContainer) {
-      appendContainer.appendChild(container)
+    const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
+    if (siderbarContainer) {
+      siderbarContainer.prepend(container)
+    } else {
+      container.classList.add('sidebar-free')
+      const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
+      if (appendContainer) {
+        appendContainer.appendChild(container)
+      }
     }
   }
 
