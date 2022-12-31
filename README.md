@@ -24,6 +24,7 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 - Collapse answers
 - Copy answers
 - Popup Setting Window (Upstream has switched to a standalone options page)
+- Allow `Insert chatGPT at the top of search results` in Setting Window
 - Switch to webpack
 - Javascript
 
@@ -74,6 +75,7 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
     - Code highlight
     - Collapse answers
     - Copy answers
+    - Allow insert chatGPT at the top of search results
     - Switch to webpack
 
 ## Credit
