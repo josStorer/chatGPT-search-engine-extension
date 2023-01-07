@@ -7,17 +7,18 @@ Searx, Ecosia in total.
 
 Request more search engine support in [#6](https://github.com/josStorer/chatGPT-search-engine-extension/issues/6)
 
-And here perhaps merges PR faster than the original repo
-
 See more in [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases)
 and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/pre-release-build.yml)
 
 ### Diff with upstream:
 
+<details>
+<summary>Details:</summary>
+
 - Support StartPage, Ecosia, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
-- Katex: [wong2#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
+- Katex: [upstream#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
 - Linkify in ReactMarkdown
-- Interactive mode: [wong2#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
+- Interactive mode: [upstream#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
   separate sessions for each page
 - Fix answer being overwritten due to "network error"
 - Theme switcher: [#9](https://github.com/josStorer/chatGPT-search-engine-extension/pull/9)
@@ -28,10 +29,29 @@ and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-exten
 - Switch to webpack
 - Javascript
 
+</details>
+
+### Upstream supports, but not here
+
+<details>
+<summary>Details:</summary>
+
+(I don't think these contents are very valuable, but I could be wrong, so if you think of some suitable application scenario or related need, please create an issue)
+
+1. Upstream supports setting the desired language, and will force the relevant words to be inserted at the end after you enter the question
+   
+   - but I think, users always expect to get the language corresponding to their question, when you want to get a different language, you should take the initiative to specify when searching, which is also consistent with the habits of using search engines, and this fork supports interactive mode, you can also continue to tell chatGPT what you want. Once you set up forced insertion, it will change the actual content of the user's question, for example, when you configure French and search in English, chatGPT will always reply to you in French, when you expect a reply in English, you will have to open the settings page, make changes, then refresh and ask the question again, which I think is a very bad process
+   
+2. The upstream extension popup window has an embedded chatGPT page (iframe)
+
+   - but you have to open the chatGPT website and log in to use it, so I think, in that case, why not use it directly on the official website? In addition, interactive  mode is already supported here, and each page can be used as a separate session, so this feature is less necessary
+
+</details>
+
 ### Preview:
 
 - [SearchEngines](screenshot/engines/README.md)
-- Code highlight, interactive mode, dark mode, collapse answers, theme switcher
+- Code highlight, interactive mode, dark mode, copy/collapse answers, theme switcher and more
 
   (Click on the extension icon to open the setting window)
   ![code-highlight](screenshot/code-highlight.png)
