@@ -3,7 +3,7 @@ import { run, getSearchInputValue } from './index.jsx'
 const init = {
   baidu: () => {
     const targetNode = document.getElementById('wrapper_wrapper')
-    const callback = (records) => {
+    const observer = new MutationObserver((records) => {
       if (
         records.some(
           (record) =>
@@ -16,8 +16,7 @@ const init = {
           run(searchValue, config.baidu)
         }
       }
-    }
-    const observer = new MutationObserver(callback)
+    })
     observer.observe(targetNode, { childList: true })
   },
 }
