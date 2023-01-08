@@ -5,7 +5,9 @@
     "lint": "eslint --ext .js,.mjs,.jsx .",
     "lint:fix": "eslint --ext .js,.mjs,.jsx . --fix",
     "pretty": "prettier --write ./**/*.{js,mjs,jsx,json}",
-    "stage": "git add -u"
+    "stage": "run-script-os",
+    "stage:default": "git add $(git diff --name-only --cached --diff-filter=d)",
+    "stage:win32": "powershell git add $(git diff --name-only --cached --diff-filter=d)"
   },
   "pre-commit": [
     "pretty",
@@ -49,6 +51,7 @@
     "pre-commit": "^1.2.2",
     "prettier": "^2.8.0",
     "progress-bar-webpack-plugin": "^2.1.0",
+    "run-script-os": "^1.1.6",
     "sass": "^1.56.2",
     "sass-loader": "^13.2.0",
     "terser-webpack-plugin": "^5.3.6",
