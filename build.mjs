@@ -58,7 +58,12 @@ async function runWebpack(callback) {
             {
               loader: 'babel-loader',
               options: {
-                presets: ['@babel/preset-env'],
+                presets: [
+                  '@babel/preset-env',
+                  {
+                    plugins: ['@babel/plugin-transform-runtime'],
+                  },
+                ],
                 plugins: [
                   [
                     '@babel/plugin-transform-react-jsx',
@@ -153,6 +158,7 @@ async function build() {
       console.error(err || stats.toString())
       return
     }
+    // console.log(stats.toString())
 
     const commonFiles = [
       { src: 'build/content-script.js', dst: 'content-script.js' },
