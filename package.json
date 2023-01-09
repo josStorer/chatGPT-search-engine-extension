@@ -41,6 +41,7 @@
     "@babel/plugin-transform-react-jsx": "^7.19.0",
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
+    "@types/archiver": "^5.3.1",
     "@types/fs-extra": "^11.0.0",
     "@types/webextension-polyfill": "^0.9.2",
     "archiver": "^5.3.1",
