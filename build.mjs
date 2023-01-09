@@ -10,13 +10,15 @@ import TerserPlugin from 'terser-webpack-plugin'
 const outdir = 'build'
 
 const __dirname = path.resolve()
+const mode = process.argv[2].substring(2) === 'production' ? 'production' : 'development' // eslint-disable-line
+const isProduction = mode === 'production'
 
 async function deleteOldDir() {
   await fs.rm(outdir, { recursive: true, force: true })
 }
 
 async function runWebpack(callback) {
-  webpack({
+  const compiler = webpack({
     entry: {
       'content-script': './src/content-script/index.jsx',
       background: './src/background/index.mjs',
@@ -26,7 +28,8 @@ async function runWebpack(callback) {
       filename: '[name].js',
       path: path.resolve(__dirname, outdir),
     },
-    mode: 'production',
+    mode: mode,
+    devtool: false,
     optimization: {
       minimizer: [
         new TerserPlugin({
@@ -129,7 +132,9 @@ async function runWebpack(callback) {
         },
       ],
     },
-  }).run(callback)
+  })
+  if (isProduction) compiler.run(callback)
+  else compiler.watch({}, callback)
 }
 
 async function zipFolder(dir) {
@@ -143,7 +148,7 @@ async function zipFolder(dir) {
 }
 
 async function copyFiles(entryPoints, targetDir) {
-  await fs.mkdir(targetDir)
+  if (!fs.existsSync(targetDir)) await fs.mkdir(targetDir)
   await Promise.all(
     entryPoints.map(async (entryPoint) => {
       await fs.copy(entryPoint.src, `${targetDir}/${entryPoint.dst}`)
@@ -176,7 +181,7 @@ async function build() {
       `./${outdir}/chromium`,
     )
 
-    await zipFolder(`./${outdir}/chromium`)
+    if (isProduction) await zipFolder(`./${outdir}/chromium`)
 
     // firefox
     await copyFiles(
@@ -184,7 +189,7 @@ async function build() {
       `./${outdir}/firefox`,
     )
 
-    await zipFolder(`./${outdir}/firefox`)
+    if (isProduction) await zipFolder(`./${outdir}/firefox`)
   })
 }
 
