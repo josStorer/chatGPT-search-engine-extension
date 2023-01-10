@@ -54,6 +54,24 @@
   .markdown-body {
     padding: 15px;
     background-color: var(--theme-color);
+
+    ul,ol {
+      padding-left: 1.5em;
+    }
+
+    ol {
+      list-style: none;
+      counter-reset: item;
+
+      li {
+        counter-increment: item;
+
+        &:before{
+          content: counter(item) ". ";
+          margin-left: -0.75em;
+        }
+      }
+    }
   }
 
   .icon-and-text {
@@ -89,6 +107,7 @@
     code {
       white-space: pre-wrap;
       word-break: break-word;
+      border-radius: 8px;
 
       .hljs {
         padding: 0;
