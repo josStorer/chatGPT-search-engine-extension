@@ -72,7 +72,13 @@ async function generateAnswers(port, question, session) {
         port.postMessage({ answer: null, done: true, session: session })
         return
       }
-      const data = JSON.parse(message)
+      let data
+      try {
+        data = JSON.parse(message)
+      } catch (error) {
+        console.debug('json error', error)
+        return
+      }
       if (data.conversation_id) session.conversationId = data.conversation_id
       if (data.message?.id) session.parentMessageId = data.message.id
 
@@ -81,6 +87,10 @@ async function generateAnswers(port, question, session) {
         port.postMessage({ answer: text, done: false, session: session })
       }
     },
+    onStart() {
+      // sendModerations(accessToken, question, session.conversationId, session.messageId)
+    },
+    onEnd() {},
   })
 }
 
