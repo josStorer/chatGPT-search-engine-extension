@@ -55,7 +55,8 @@
     padding: 15px;
     background-color: var(--theme-color);
 
-    ul,ol {
+    ul,
+    ol {
       padding-left: 1.5em;
     }
 
@@ -66,8 +67,8 @@
       li {
         counter-increment: item;
 
-        &:before{
-          content: counter(item) ". ";
+        &:before {
+          content: counter(item) '. ';
           margin-left: -0.75em;
         }
       }
