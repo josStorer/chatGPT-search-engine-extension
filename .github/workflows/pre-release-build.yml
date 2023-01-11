@@ -1,10 +1,15 @@
 name: pre-release
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+      - "!src/**/*.json"
+      - "build.mjs"
     tags-ignore:
-      - "*"
+      - "v*"
 
 jobs:
   build_and_release:
@@ -15,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install
+      - run: npm ci
       - run: npm run build
 
       - uses: josStorer/get-current-time@v2.0.2
