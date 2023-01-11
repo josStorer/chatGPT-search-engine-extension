@@ -10,10 +10,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Update manifest.json version
+        uses: jossef/action-set-json-field@v2.1
+        with:
+          file: src/manifest.json
+          field: version
+          value: $GITHUB_REF_NAME
+
+      - name: Update manifest.v2.json version
+        uses: jossef/action-set-json-field@v2.1
+        with:
+          file: src/manifest.v2.json
+          field: version
+          value: $GITHUB_REF_NAME
+
+      - name: Push files
+        run: |
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
+            git commit -am "update manifest.json"
+            git push
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install
+      - run: npm ci
       - run: npm run build
 
       - uses: marvinpinto/action-automatic-releases@v1.2.1
