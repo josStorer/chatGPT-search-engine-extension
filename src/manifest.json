@@ -1,7 +1,7 @@
 {
   "name": "ChatGPT for Search Engine",
   "description": "Display ChatGPT response alongside Search Engine results",
-  "version": "1.20.0",
+  "version": "1.20.1",
   "manifest_version": 3,
   "icons": {
     "16": "logo.png",
@@ -9,8 +9,12 @@
     "48": "logo.png",
     "128": "logo.png"
   },
-  "host_permissions": ["https://*.openai.com/"],
-  "permissions": ["storage"],
+  "host_permissions": [
+    "https://*.openai.com/"
+  ],
+  "permissions": [
+    "storage"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -19,7 +23,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": [
+        "https://*/*"
+      ],
       "include_globs": [
         "https://*.google.*/*",
         "https://kagi.*/*",
@@ -35,8 +41,12 @@
         "https://*.startpage.*/*",
         "https://*.baidu.*"
       ],
-      "js": ["content-script.js"],
-      "css": ["content-script.css"]
+      "js": [
+        "content-script.js"
+      ],
+      "css": [
+        "content-script.css"
+      ]
     }
   ]
 }
