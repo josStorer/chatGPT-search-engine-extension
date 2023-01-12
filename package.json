@@ -8,7 +8,8 @@
     "pretty": "prettier --write ./**/*.{js,mjs,jsx,json,css,scss}",
     "stage": "run-script-os",
     "stage:default": "git add $(git diff --name-only --cached --diff-filter=d)",
-    "stage:win32": "powershell git add $(git diff --name-only --cached --diff-filter=d)"
+    "stage:win32": "powershell git add $(git diff --name-only --cached --diff-filter=d)",
+    "verify": "node .github/workflows/scripts/verify-search-engine-configs.mjs"
   },
   "pre-commit": [
     "pretty",
@@ -43,6 +44,7 @@
     "@babel/preset-env": "^7.20.2",
     "@types/archiver": "^5.3.1",
     "@types/fs-extra": "^11.0.0",
+    "@types/jsdom": "^20.0.1",
     "@types/webextension-polyfill": "^0.9.2",
     "archiver": "^5.3.1",
     "babel-loader": "^9.1.0",
@@ -51,6 +53,7 @@
     "eslint": "^8.29.0",
     "eslint-plugin-react": "^7.31.11",
     "fs-extra": "^11.1.0",
+    "jsdom": "^21.0.0",
     "less-loader": "^11.1.0",
     "mini-css-extract-plugin": "^2.7.2",
     "pre-commit": "^1.2.2",
