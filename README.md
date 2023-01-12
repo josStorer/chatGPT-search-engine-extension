@@ -1,5 +1,8 @@
 # ChatGPT for Search Engine
 
+[![Verify search engine configs](https://github.com/josStorer/chatGPT-search-engine-extension/workflows/verify-configs/badge.svg)](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/verify-configs.yml)
+[![GitHub release](https://img.shields.io/github/release/josStorer/chatGPT-search-engine-extension.svg)](https://github.com/josStorer/chatGPT-search-engine-extension/releases/latest)
+
 [Installation](#installation)
 
 A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox and
