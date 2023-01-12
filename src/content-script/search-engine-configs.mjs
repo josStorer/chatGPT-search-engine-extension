@@ -1,7 +1,5 @@
-import { run, getSearchInputValue } from './index.jsx'
-
 const init = {
-  baidu: () => {
+  baidu: (getSearchInputValue, run) => {
     const targetNode = document.getElementById('wrapper_wrapper')
     const observer = new MutationObserver((records) => {
       if (
@@ -65,7 +63,7 @@ export const config = {
     inputQuery: ["input[name='query']"],
     sidebarContainerQuery: ['.layout-web__sidebar.layout-web__sidebar--web'],
     appendContainerQuery: ['.layout-web__body.layout-web__body--desktop'],
-    resultsContainerQuery: ['.w-gl'],
+    resultsContainerQuery: ['.mainline-results'],
   },
   baidu: {
     inputQuery: ["input[name='wd']"],

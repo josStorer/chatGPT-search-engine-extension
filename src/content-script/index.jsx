@@ -5,7 +5,7 @@ import { config } from './search-engine-configs.mjs'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
 import { initUserConfig } from '../config'
 
-export async function run(question, siteConfig) {
+async function run(question, siteConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
 
@@ -31,7 +31,7 @@ export async function run(question, siteConfig) {
   render(<ChatGPTCard question={question} />, container)
 }
 
-export function getSearchInputValue(siteConfig) {
+function getSearchInputValue(siteConfig) {
   const searchInput = getPossibleElementByQuerySelector(siteConfig.inputQuery)
   if (searchInput && searchInput.value) {
     // only run on first page
@@ -46,7 +46,7 @@ const siteRegex = new RegExp(Object.keys(config).join('|'))
 const siteName = location.hostname.match(siteRegex)[0]
 const siteAction = config[siteName].action
 if (siteAction && siteAction.init) {
-  siteAction.init()
+  siteAction.init(getSearchInputValue, run)
 }
 const searchValue = getSearchInputValue(config[siteName])
 if (searchValue) {
