@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom'
 import { config } from '../../../src/content-script/search-engine-configs.mjs'
+import fetch, { Headers } from 'node-fetch'
 
 let headers = new Headers({
   'User-Agent':
