@@ -1,5 +1,7 @@
 # ChatGPT for Search Engine
 
+[Installation](#installation)
+
 A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox and
 Android.
 
