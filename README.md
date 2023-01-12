@@ -13,7 +13,7 @@ Request more search engine support in [#6](https://github.com/josStorer/chatGPT-
 See more in [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases)
 and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/pre-release-build.yml)
 
-### Notice
+### Notice:
 
 This repository exists only to support some features that are not supported or denied
 in [upstream](https://github.com/wong2/chat-gpt-google-extension), and for ethical reasons, I have not uploaded it to
@@ -41,7 +41,7 @@ any app store. It isn't related to any extensions of the same name that may exis
 
 </details>
 
-### Upstream supports, but not here
+### Upstream supports, but not here:
 
 <details>
 <summary>Details:</summary>
