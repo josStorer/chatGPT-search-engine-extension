@@ -34,7 +34,9 @@ function ChatGPTCard(props) {
     }
   }, [config])
 
-  const updatePostion = () => {
+  const updatePosition = () => {
+    if (!render) return
+
     const container = props.container
     const siteConfig = props.siteConfig
     container.classList.remove('sidebar-free')
@@ -76,7 +78,7 @@ function ChatGPTCard(props) {
     }
   }
 
-  useEffect(() => updatePostion(), [config])
+  useEffect(() => updatePosition(), [config])
 
   return (
     render && (

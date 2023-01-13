@@ -1,5 +1,5 @@
 const init = {
-  baidu: (hostname, getSearchInputValue, run) => {
+  baidu: (hostname, userConfig, getSearchInputValue, mountComponent) => {
     try {
       const targetNode = document.getElementById('wrapper_wrapper')
       const observer = new MutationObserver((records) => {
@@ -12,7 +12,7 @@ const init = {
         ) {
           const searchValue = getSearchInputValue(config.baidu.inputQuery)
           if (searchValue) {
-            run(searchValue, config.baidu)
+            mountComponent(config.baidu, userConfig)
           }
         }
       })

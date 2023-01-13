@@ -45,7 +45,7 @@ async function run() {
     if (siteName in siteConfig) {
       const siteAction = siteConfig[siteName].action
       if (siteAction && siteAction.init) {
-        siteAction.init(location.hostname, getSearchInputValue, render)
+        siteAction.init(location.hostname, userConfig, getSearchInputValue, mountComponent)
       }
     }
     mountComponent(siteConfig[siteName], userConfig)
