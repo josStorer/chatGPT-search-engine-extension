@@ -28,14 +28,16 @@ any app store. It isn't related to any extensions of the same name that may exis
 <summary>Details:</summary>
 
 - Support StartPage, Ecosia, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
+- Android support
+- Custom mount point (e.g. for some unsupported engines)
+- Preview your setting (e.g. theme, mount point) in realtime
 - Katex: [upstream#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
 - Linkify in ReactMarkdown
 - Interactive mode: [upstream#103](https://github.com/wong2/chat-gpt-google-extension/pull/103), now support generating
   separate sessions for each page
-- Fix answer being overwritten due to "network error"
+- Fix answer being overwritten due to "network error" or other errors
 - Theme switcher: [#9](https://github.com/josStorer/chatGPT-search-engine-extension/pull/9)
 - Collapse answers
-- Copy answers
 - Popup Setting Window (Upstream has switched to a standalone options page)
 - Allow `Insert chatGPT at the top of search results` in Setting Window
 - Switch to webpack
@@ -119,18 +121,22 @@ scenario or related need, please create an issue)
 
 ## My contributions:
 
-- [Branches](https://github.com/josStorer/chat-gpt-search-engine-extension/branches)
 - [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
 - ### Other
     - Merge and improve some PRs
-    - Fix answer being overwritten due to "network error"
+    - Support for most search engines
+    - Android support
+    - Custom mount point
+    - Preview your setting in realtime
+    - Fix answer being overwritten due to "network error" or other errors
     - Linkify in ReactMarkdown
     - Generate separate sessions for each page
     - Code highlight
     - Collapse answers
     - Copy answers
     - Allow insert chatGPT at the top of search results
-    - Switch to webpack
+    - Automated build workflow (with esbuild/webpack)
+    - Verify search engine configs automatically
     - See more in [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases)
 
 ## Credit
