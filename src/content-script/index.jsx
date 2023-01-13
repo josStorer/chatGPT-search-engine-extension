@@ -3,34 +3,24 @@ import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config } from './search-engine-configs.mjs'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
-import { initUserConfig } from '../config'
 
+/**
+ * @param {string} question
+ * @param {SiteConfig} siteConfig
+ */
 async function run(question, siteConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
-
-  const config = await initUserConfig()
-  if (config.insertAtTop) {
-    const resultsContainerQuery = getPossibleElementByQuerySelector(
-      siteConfig.resultsContainerQuery,
-    )
-    if (resultsContainerQuery) resultsContainerQuery.prepend(container)
-  } else {
-    const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
-    if (siderbarContainer) {
-      siderbarContainer.prepend(container)
-    } else {
-      container.classList.add('sidebar-free')
-      const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
-      if (appendContainer) {
-        appendContainer.appendChild(container)
-      }
-    }
-  }
-
-  render(<ChatGPTCard question={question} />, container)
+  render(
+    <ChatGPTCard question={question} siteConfig={siteConfig} container={container} />,
+    container,
+  )
 }
 
+/**
+ * @param {SiteConfig} siteConfig
+ * @returns {string}
+ */
 function getSearchInputValue(siteConfig) {
   const searchInput = getPossibleElementByQuerySelector(siteConfig.inputQuery)
   if (searchInput && searchInput.value) {

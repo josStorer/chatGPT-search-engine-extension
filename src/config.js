@@ -1,3 +1,4 @@
+import { defaults } from 'lodash-es'
 import Browser from 'webextension-polyfill'
 
 export const TriggerMode = {
@@ -12,11 +13,18 @@ export const ThemeMode = {
   auto: 'Auto',
 }
 
+export const defaultConfig = {
+  /** @type {keyof TriggerMode}*/
+  triggerMode: 'always',
+  /** @type {keyof ThemeMode}*/
+  themeMode: 'auto',
+  insertAtTop: false,
+  appendQuery: '',
+  prependQuery: '',
+}
+
 /**
- * @typedef {Object} UserConfig
- * @property {keyof TriggerMode} triggerMode
- * @property {keyof ThemeMode} themeMode
- * @property {boolean} insertAtTop
+ * @typedef {typeof defaultConfig} UserConfig
  */
 
 /**
@@ -24,40 +32,14 @@ export const ThemeMode = {
  * @returns {Promise<UserConfig>}
  */
 export async function getUserConfig() {
-  const { gpt_extension_config: options } = await Browser.storage.local.get('gpt_extension_config')
-  return options
+  const options = await Browser.storage.local.get(Object.keys(defaultConfig))
+  return defaults(options, defaultConfig)
 }
 
 /**
  * set user config to local storage
- * @param {UserConfig} value
+ * @param {Partial<UserConfig>} value
  */
 export async function setUserConfig(value) {
-  await Browser.storage.local.set({ gpt_extension_config: value })
-}
-
-/**
- * get default config
- * @returns {UserConfig}
- */
-export function getDefaultConfig() {
-  return {
-    triggerMode: 'always',
-    themeMode: 'auto',
-    insertAtTop: false,
-  }
-}
-
-/**
- * if user config is not set, set default config and return it
- * @returns {Promise<UserConfig>}
- */
-export async function initUserConfig() {
-  let options = await getUserConfig()
-
-  if (!options) {
-    options = getDefaultConfig()
-    await Browser.storage.local.set({ gpt_extension_config: options })
-  }
-  return options
+  await Browser.storage.local.set(value)
 }

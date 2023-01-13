@@ -2,28 +2,77 @@ import { LightBulbIcon, SearchIcon } from '@primer/octicons-react'
 import { useState, useEffect } from 'preact/hooks'
 import PropTypes from 'prop-types'
 import ChatGPTQuery from './ChatGPTQuery'
-import { endsWithQuestionMark } from './utils.mjs'
-import { initUserConfig, getDefaultConfig } from '../config'
+import { getPossibleElementByQuerySelector, endsWithQuestionMark } from './utils.mjs'
+import { defaultConfig, getUserConfig } from '../config'
 import Browser from 'webextension-polyfill'
 
 function ChatGPTCard(props) {
   const [triggered, setTriggered] = useState(false)
-  const [config, setConfig] = useState(getDefaultConfig())
+  const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
+
   useEffect(() => {
-    initUserConfig()
+    getUserConfig()
       .then(setConfig)
       .then(() => setRender(true))
+  }, [])
+
+  useEffect(() => {
     const listener = (changes) => {
-      if (changes.gpt_extension_config) {
-        setConfig(changes.gpt_extension_config.newValue)
+      const changedItems = Object.keys(changes)
+      let newConfig = {}
+      for (const key of changedItems) {
+        newConfig[key] = changes[key].newValue
       }
+      setConfig({ ...config, ...newConfig })
     }
     Browser.storage.local.onChanged.addListener(listener)
     return () => {
       Browser.storage.local.onChanged.removeListener(listener)
     }
-  }, [])
+  }, [config])
+
+  const updatePostion = () => {
+    const container = props.container
+    const siteConfig = props.siteConfig
+    container.classList.remove('sidebar-free')
+
+    if (config.appendQuery) {
+      const appendContainer = getPossibleElementByQuerySelector([config.appendQuery])
+      if (appendContainer) {
+        appendContainer.appendChild(container)
+        return
+      }
+    }
+
+    if (config.prependQuery) {
+      const prependContainer = getPossibleElementByQuerySelector([config.prependQuery])
+      if (prependContainer) {
+        prependContainer.prepend(container)
+        return
+      }
+    }
+
+    if (config.insertAtTop) {
+      const resultsContainerQuery = getPossibleElementByQuerySelector(
+        siteConfig.resultsContainerQuery,
+      )
+      if (resultsContainerQuery) resultsContainerQuery.prepend(container)
+    } else {
+      const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
+      if (siderbarContainer) {
+        siderbarContainer.prepend(container)
+      } else {
+        container.classList.add('sidebar-free')
+        const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
+        if (appendContainer) {
+          appendContainer.appendChild(container)
+        }
+      }
+    }
+  }
+
+  useEffect(() => updatePostion(), [config])
 
   return (
     render && (
@@ -63,6 +112,8 @@ function ChatGPTCard(props) {
 
 ChatGPTCard.propTypes = {
   question: PropTypes.string.isRequired,
+  siteConfig: PropTypes.object.isRequired,
+  container: PropTypes.object.isRequired,
 }
 
 export default ChatGPTCard

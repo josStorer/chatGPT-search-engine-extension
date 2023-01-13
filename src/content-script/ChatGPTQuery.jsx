@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
@@ -221,4 +222,4 @@ ChatGPTQuery.propTypes = {
   question: PropTypes.string.isRequired,
 }
 
-export default ChatGPTQuery
+export default memo(ChatGPTQuery)
