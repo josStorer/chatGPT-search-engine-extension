@@ -1,14 +1,19 @@
 import './styles.scss'
 import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
-import { config } from './search-engine-configs.mjs'
+import { config as siteConfig } from './search-engine-configs.mjs'
 import { getPossibleElementByQuerySelector } from './utils.mjs'
+import { getUserConfig } from '../config'
 
 /**
- * @param {string} question
  * @param {SiteConfig} siteConfig
+ * @param {UserConfig} userConfig
  */
-async function run(question, siteConfig) {
+async function mountComponent(siteConfig, userConfig) {
+  let question
+  if (userConfig.inputQuery) question = getSearchInputValue([userConfig.inputQuery])
+  if (!question && siteConfig) question = getSearchInputValue(siteConfig.inputQuery)
+
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
   render(
@@ -18,27 +23,33 @@ async function run(question, siteConfig) {
 }
 
 /**
- * @param {SiteConfig} siteConfig
+ * @param {string[]} inputQuery
  * @returns {string}
  */
-function getSearchInputValue(siteConfig) {
-  const searchInput = getPossibleElementByQuerySelector(siteConfig.inputQuery)
+function getSearchInputValue(inputQuery) {
+  const searchInput = getPossibleElementByQuerySelector(inputQuery)
   if (searchInput && searchInput.value) {
-    // only run on first page
-    const startParam = new URL(location.href).searchParams.get('start') || '0'
-    if (startParam === '0') {
-      return searchInput.value
-    }
+    return searchInput.value
   }
 }
 
-const siteRegex = new RegExp(Object.keys(config).join('|'))
-const siteName = location.hostname.match(siteRegex)[0]
-const siteAction = config[siteName].action
-if (siteAction && siteAction.init) {
-  siteAction.init(location.hostname, getSearchInputValue, run)
+async function run() {
+  const userConfig = await getUserConfig()
+  let siteRegex
+  if (userConfig.userSiteRegexOnly) siteRegex = userConfig.siteRegex
+  else siteRegex = new RegExp(userConfig.siteRegex + '|' + Object.keys(siteConfig).join('|'))
+
+  const matches = location.hostname.match(siteRegex)
+  if (matches) {
+    const siteName = matches[0]
+    if (siteName in siteConfig) {
+      const siteAction = siteConfig[siteName].action
+      if (siteAction && siteAction.init) {
+        siteAction.init(location.hostname, getSearchInputValue, render)
+      }
+    }
+    mountComponent(siteConfig[siteName], userConfig)
+  }
 }
-const searchValue = getSearchInputValue(config[siteName])
-if (searchValue) {
-  run(searchValue, config[siteName])
-}
+
+run()

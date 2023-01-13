@@ -19,6 +19,9 @@ export const defaultConfig = {
   /** @type {keyof ThemeMode}*/
   themeMode: 'auto',
   insertAtTop: false,
+  siteRegex: 'match nothing',
+  userSiteRegexOnly: false,
+  inputQuery: '',
   appendQuery: '',
   prependQuery: '',
 }

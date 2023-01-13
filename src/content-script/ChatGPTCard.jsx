@@ -11,6 +11,8 @@ function ChatGPTCard(props) {
   const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
 
+  const question = props.question
+
   useEffect(() => {
     getUserConfig()
       .then(setConfig)
@@ -53,6 +55,8 @@ function ChatGPTCard(props) {
       }
     }
 
+    if (!siteConfig) return
+
     if (config.insertAtTop) {
       const resultsContainerQuery = getPossibleElementByQuerySelector(
         siteConfig.resultsContainerQuery,
@@ -78,32 +82,40 @@ function ChatGPTCard(props) {
     render && (
       <div data-theme={config.themeMode}>
         {(() => {
-          switch (config.triggerMode) {
-            case 'always':
-              return <ChatGPTQuery question={props.question} />
-            case 'manually':
-              if (triggered) {
-                return <ChatGPTQuery question={props.question} />
-              }
-              return (
-                <p
-                  className="gpt-inner manual-btn icon-and-text"
-                  onClick={() => setTriggered(true)}
-                >
-                  <SearchIcon size="small" /> Ask ChatGPT for this query
-                </p>
-              )
-            case 'questionMark':
-              if (endsWithQuestionMark(props.question.trim())) {
-                return <ChatGPTQuery question={props.question} />
-              }
-              return (
-                <p className="gpt-inner icon-and-text">
-                  <LightBulbIcon size="small" /> Trigger ChatGPT by appending a question mark after
-                  your query
-                </p>
-              )
-          }
+          if (question)
+            switch (config.triggerMode) {
+              case 'always':
+                return <ChatGPTQuery question={question} />
+              case 'manually':
+                if (triggered) {
+                  return <ChatGPTQuery question={question} />
+                }
+                return (
+                  <p
+                    className="gpt-inner manual-btn icon-and-text"
+                    onClick={() => setTriggered(true)}
+                  >
+                    <SearchIcon size="small" /> Ask ChatGPT for this query
+                  </p>
+                )
+              case 'questionMark':
+                if (endsWithQuestionMark(question.trim())) {
+                  return <ChatGPTQuery question={question} />
+                }
+                return (
+                  <p className="gpt-inner icon-and-text">
+                    <LightBulbIcon size="small" /> Trigger ChatGPT by appending a question mark
+                    after your query
+                  </p>
+                )
+            }
+          else
+            return (
+              <p className="gpt-inner icon-and-text">
+                <LightBulbIcon size="small" /> No input found, set your input query in the extension
+                popup window
+              </p>
+            )
         })()}
       </div>
     )

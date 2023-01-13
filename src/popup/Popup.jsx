@@ -8,6 +8,9 @@ function Popup() {
   const [triggerMode, setTriggerMode] = useState()
   const [themeMode, setThemeMode] = useState()
   const [insertAtTop, setInsertAtTop] = useState()
+  const [siteRegex, setSiteRegex] = useState()
+  const [userSiteRegexOnly, setUserSiteRegexOnly] = useState()
+  const [inputQuery, setInputQuery] = useState()
   const [appendQuery, setAppendQuery] = useState()
   const [prependQuery, setPrependQuery] = useState()
 
@@ -16,6 +19,9 @@ function Popup() {
       setTriggerMode(config.triggerMode)
       setThemeMode(config.themeMode)
       setInsertAtTop(config.insertAtTop)
+      setSiteRegex(config.siteRegex)
+      setUserSiteRegexOnly(config.userSiteRegexOnly)
+      setInputQuery(config.inputQuery)
       setAppendQuery(config.appendQuery)
       setPrependQuery(config.prependQuery)
     })
@@ -85,6 +91,42 @@ function Popup() {
         <br />
         <details>
           <summary>Advanced</summary>
+          <label>
+            Site Regex:
+            <input
+              type="text"
+              value={siteRegex}
+              onChange={(e) => {
+                const regex = e.target.value
+                setSiteRegex(regex)
+                setUserConfig({ siteRegex: regex })
+              }}
+            />
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={userSiteRegexOnly}
+              onChange={(e) => {
+                const checked = e.target.checked
+                setUserSiteRegexOnly(checked)
+                setUserConfig({ userSiteRegexOnly: checked })
+              }}
+            />
+            Only use Site Regex
+          </label>
+          <label>
+            Input Query:
+            <input
+              type="text"
+              value={inputQuery}
+              onChange={(e) => {
+                const query = e.target.value
+                setInputQuery(query)
+                setUserConfig({ inputQuery: query })
+              }}
+            />
+          </label>
           <label>
             Append Query:
             <input
