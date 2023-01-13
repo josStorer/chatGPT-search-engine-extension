@@ -112,6 +112,13 @@ scenario or related need, please create an issue)
 5. Click the browser option button, scroll down and click on the extension icon to open the setting window.
 6. Enable `Insert chatGPT at the top of search results`.
 
+## Enable for single website
+
+1. Click on the extension icon to open the popup setting window.
+2. Click `Advanced`.
+3. Input the website name (of the hostname) in `Site Regex`, e.g. google
+4. Enable `Only use Site Regex`
+
 ## Build from source
 
 1. Clone the repo
