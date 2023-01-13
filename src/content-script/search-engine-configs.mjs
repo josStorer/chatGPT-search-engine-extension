@@ -1,21 +1,25 @@
 const init = {
-  baidu: (getSearchInputValue, run) => {
-    const targetNode = document.getElementById('wrapper_wrapper')
-    const observer = new MutationObserver((records) => {
-      if (
-        records.some(
-          (record) =>
-            record.type === 'childList' &&
-            [...record.addedNodes].some((node) => node.id === 'container'),
-        )
-      ) {
-        const searchValue = getSearchInputValue(config.baidu)
-        if (searchValue) {
-          run(searchValue, config.baidu)
+  baidu: (hostname, getSearchInputValue, run) => {
+    try {
+      const targetNode = document.getElementById('wrapper_wrapper')
+      const observer = new MutationObserver((records) => {
+        if (
+          records.some(
+            (record) =>
+              record.type === 'childList' &&
+              [...record.addedNodes].some((node) => node.id === 'container'),
+          )
+        ) {
+          const searchValue = getSearchInputValue(config.baidu)
+          if (searchValue) {
+            run(searchValue, config.baidu)
+          }
         }
-      }
-    })
-    observer.observe(targetNode, { childList: true })
+      })
+      observer.observe(targetNode, { childList: true })
+    } catch (e) {
+      /* empty */
+    }
   },
 }
 
@@ -51,7 +55,12 @@ export const config = {
     inputQuery: ["input[name='p']"],
     sidebarContainerQuery: ['#right', '.Contents__inner.Contents__inner--sub'],
     appendContainerQuery: ['#cols', '#contents__wrap'],
-    resultsContainerQuery: ['.searchCenterMiddle', '.Contents__inner.Contents__inner--main'],
+    resultsContainerQuery: [
+      '.searchCenterMiddle',
+      '.Contents__inner.Contents__inner--main',
+      '#main-algo',
+      '#contents',
+    ],
   },
   duckduckgo: {
     inputQuery: ["input[name='q']"],
@@ -66,10 +75,10 @@ export const config = {
     resultsContainerQuery: ['.mainline-results'],
   },
   baidu: {
-    inputQuery: ["input[name='wd']"],
+    inputQuery: ["input[id='kw']"],
     sidebarContainerQuery: ['#content_right'],
     appendContainerQuery: ['#container'],
-    resultsContainerQuery: ['#content_left'],
+    resultsContainerQuery: ['#content_left', '#results'],
     action: {
       init: init.baidu,
     },
@@ -78,7 +87,7 @@ export const config = {
     inputQuery: ["input[name='q']"],
     sidebarContainerQuery: ['.right-content-box._0_right_sidebar'],
     appendContainerQuery: ['#_0_app_content'],
-    resultsContainerQuery: ['#main'],
+    resultsContainerQuery: ['#app', '#main'],
   },
   yandex: {
     inputQuery: ["input[name='text']"],
@@ -90,7 +99,7 @@ export const config = {
     inputQuery: ["input[name='query']"],
     sidebarContainerQuery: ['#sub_pack'],
     appendContainerQuery: ['#content'],
-    resultsContainerQuery: ['.lst_total'],
+    resultsContainerQuery: ['#ct', '#main_pack'],
   },
   brave: {
     inputQuery: ["input[name='q']"],
@@ -102,7 +111,7 @@ export const config = {
     inputQuery: ["input[name='q']"],
     sidebarContainerQuery: ['#sidebar_results', '#sidebar'],
     appendContainerQuery: [],
-    resultsContainerQuery: ['#urls', '#main_results'],
+    resultsContainerQuery: ['#results', '#urls', '#main_results'],
   },
   ecosia: {
     inputQuery: ["input[name='q']"],

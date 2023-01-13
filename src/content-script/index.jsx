@@ -46,7 +46,7 @@ const siteRegex = new RegExp(Object.keys(config).join('|'))
 const siteName = location.hostname.match(siteRegex)[0]
 const siteAction = config[siteName].action
 if (siteAction && siteAction.init) {
-  siteAction.init(getSearchInputValue, run)
+  siteAction.init(location.hostname, getSearchInputValue, run)
 }
 const searchValue = getSearchInputValue(config[siteName])
 if (searchValue) {

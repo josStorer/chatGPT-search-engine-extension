@@ -16,14 +16,14 @@ const urls = {
   bing: ['https://www.bing.com/search?q=hello', 'https://cn.bing.com/search?q=hello'],
   yahoo: ['https://search.yahoo.com/search?p=hello', 'https://search.yahoo.co.jp/search?p=hello'],
   duckduckgo: ['https://duckduckgo.com/s?q=hello'],
-  startpage: [], // need redirect and post
+  startpage: [], // need redirect and post https://www.startpage.com/do/search?query=hello
   baidu: ['https://www.baidu.com/s?wd=hello'],
-  kagi: [], // need login
-  yandex: [], // need cookie
+  kagi: [], // need login https://kagi.com/search?q=hello
+  yandex: [], // need cookie https://yandex.com/search/?text=hello
   naver: ['https://search.naver.com/search.naver?query=hello'],
   brave: ['https://search.brave.com/search?q=hello'],
   searx: ['https://searx.tiekoetter.com/search?q=hello'],
-  ecosia: [], // unknown verify method
+  ecosia: [], // unknown verify method https://www.ecosia.org/search?q=hello
 }
 
 const queryNames = [
