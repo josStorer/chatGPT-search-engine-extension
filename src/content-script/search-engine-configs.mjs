@@ -56,9 +56,9 @@ export const config = {
     sidebarContainerQuery: ['#right', '.Contents__inner.Contents__inner--sub'],
     appendContainerQuery: ['#cols', '#contents__wrap'],
     resultsContainerQuery: [
+      '#main-algo',
       '.searchCenterMiddle',
       '.Contents__inner.Contents__inner--main',
-      '#main-algo',
       '#contents',
     ],
   },
@@ -87,7 +87,7 @@ export const config = {
     inputQuery: ["input[name='q']"],
     sidebarContainerQuery: ['.right-content-box._0_right_sidebar'],
     appendContainerQuery: ['#_0_app_content'],
-    resultsContainerQuery: ['#app', '#main'],
+    resultsContainerQuery: ['#main', '#app'],
   },
   yandex: {
     inputQuery: ["input[name='text']"],
@@ -99,7 +99,7 @@ export const config = {
     inputQuery: ["input[name='query']"],
     sidebarContainerQuery: ['#sub_pack'],
     appendContainerQuery: ['#content'],
-    resultsContainerQuery: ['#ct', '#main_pack'],
+    resultsContainerQuery: ['#main_pack', '#ct'],
   },
   brave: {
     inputQuery: ["input[name='q']"],
@@ -111,7 +111,7 @@ export const config = {
     inputQuery: ["input[name='q']"],
     sidebarContainerQuery: ['#sidebar_results', '#sidebar'],
     appendContainerQuery: [],
-    resultsContainerQuery: ['#results', '#urls', '#main_results'],
+    resultsContainerQuery: ['#urls', '#main_results', '#results'],
   },
   ecosia: {
     inputQuery: ["input[name='q']"],
