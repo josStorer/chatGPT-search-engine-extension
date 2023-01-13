@@ -16,13 +16,13 @@ Request more search engine support in [#6](https://github.com/josStorer/chatGPT-
 See more in [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases)
 and [Pre-release build](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/pre-release-build.yml)
 
-## Notice:
+## Notice
 
 This repository exists only to support some features that are not supported or denied
 in [upstream](https://github.com/wong2/chat-gpt-google-extension), and for ethical reasons, I have not uploaded it to
 any app store. It isn't related to any extensions of the same name that may exist in some app store
 
-## Diff with upstream:
+## Diff with upstream
 
 <details>
 <summary>Details:</summary>
@@ -46,7 +46,7 @@ any app store. It isn't related to any extensions of the same name that may exis
 
 </details>
 
-## Upstream supports, but not here:
+## Upstream supports, but not here
 
 <details>
 <summary>Details:</summary>
@@ -73,7 +73,7 @@ scenario or related need, please create an issue)
 
 </details>
 
-## Preview:
+## Preview
 
 - [SearchEngines](screenshot/engines/README.md)
 - Code highlight, interactive mode, dark mode, copy/collapse answers, theme switcher and more
@@ -126,7 +126,7 @@ scenario or related need, please create an issue)
 3. `npm run build`
 4. Load `build/chromium/` or `build/firefox/` directory to your browser
 
-## My contributions:
+## My contributions
 
 - [Pull Requests](https://github.com/wong2/chat-gpt-google-extension/pulls?q=is%3Apr+author%3AjosStorer+)
 - ### Other
