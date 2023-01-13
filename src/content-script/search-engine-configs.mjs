@@ -10,7 +10,7 @@ const init = {
               [...record.addedNodes].some((node) => node.id === 'container'),
           )
         ) {
-          const searchValue = getSearchInputValue(config.baidu)
+          const searchValue = getSearchInputValue(config.baidu.inputQuery)
           if (searchValue) {
             run(searchValue, config.baidu)
           }
