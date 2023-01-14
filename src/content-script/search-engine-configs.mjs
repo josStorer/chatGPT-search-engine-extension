@@ -119,4 +119,10 @@ export const config = {
     appendContainerQuery: ['#main'],
     resultsContainerQuery: ['.mainline'],
   },
+  neeva: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['.result-group-layout__stickyContainer-iDIO8'],
+    appendContainerQuery: ['.search-index__searchHeaderContainer-2JD6q'],
+    resultsContainerQuery: ['.result-group-layout__component-1jzTe', '#search'],
+  },
 }

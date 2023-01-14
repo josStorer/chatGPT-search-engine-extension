@@ -9,7 +9,7 @@ A browser extension to display ChatGPT response alongside Search Engine results,
 Android.
 
 Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave,
-Searx, Ecosia in total.
+Searx, Ecosia, Neeva in total.
 
 Request more search engine support in [#6](https://github.com/josStorer/chatGPT-search-engine-extension/issues/6)
 
@@ -27,7 +27,7 @@ any app store. It isn't related to any extensions of the same name that may exis
 <details>
 <summary>Details:</summary>
 
-- Support StartPage, Ecosia, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
+- Support StartPage, Ecosia, Neeva, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
 - Android support
 - Custom mount point (e.g. for some unsupported engines)
 - Preview your setting (e.g. theme, mount point) in realtime
