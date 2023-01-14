@@ -37,7 +37,10 @@ async function run() {
   const userConfig = await getUserConfig()
   let siteRegex
   if (userConfig.userSiteRegexOnly) siteRegex = userConfig.siteRegex
-  else siteRegex = new RegExp(userConfig.siteRegex + '|' + Object.keys(siteConfig).join('|'))
+  else
+    siteRegex = new RegExp(
+      (userConfig.siteRegex && userConfig.siteRegex + '|') + Object.keys(siteConfig).join('|'),
+    )
 
   const matches = location.hostname.match(siteRegex)
   if (matches) {

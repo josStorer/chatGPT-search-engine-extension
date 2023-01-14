@@ -69,10 +69,15 @@ function ChatGPTCard(props) {
       if (siderbarContainer) {
         siderbarContainer.prepend(container)
       } else {
-        container.classList.add('sidebar-free')
         const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
         if (appendContainer) {
+          container.classList.add('sidebar-free')
           appendContainer.appendChild(container)
+        } else {
+          const resultsContainerQuery = getPossibleElementByQuerySelector(
+            siteConfig.resultsContainerQuery,
+          )
+          if (resultsContainerQuery) resultsContainerQuery.prepend(container)
         }
       }
     }
