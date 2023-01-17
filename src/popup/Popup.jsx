@@ -92,7 +92,7 @@ function Popup() {
         <details>
           <summary>Advanced</summary>
           <label>
-            Site Regex:
+            Custom Site Regex:
             <input
               type="text"
               value={siteRegex}
@@ -113,8 +113,9 @@ function Popup() {
                 setUserConfig({ userSiteRegexOnly: checked })
               }}
             />
-            Only use Site Regex
+            Only use Custom Site Regex for website matching, ignore built-in rules
           </label>
+          <br />
           <label>
             Input Query:
             <input

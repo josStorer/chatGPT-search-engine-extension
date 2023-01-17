@@ -65,9 +65,9 @@ function ChatGPTCard(props) {
       )
       if (resultsContainerQuery) resultsContainerQuery.prepend(container)
     } else {
-      const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
-      if (siderbarContainer) {
-        siderbarContainer.prepend(container)
+      const sidebarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
+      if (sidebarContainer) {
+        sidebarContainer.prepend(container)
       } else {
         const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
         if (appendContainer) {
