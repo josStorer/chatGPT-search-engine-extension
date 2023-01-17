@@ -2,8 +2,8 @@ import './styles.scss'
 import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config as siteConfig } from './search-engine-configs.mjs'
-import { getPossibleElementByQuerySelector } from './utils.mjs'
-import { getUserConfig } from '../config'
+import { getPossibleElementByQuerySelector, isSafari } from './utils.mjs'
+import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
 
 /**
  * @param {SiteConfig} siteConfig
@@ -33,7 +33,28 @@ function getSearchInputValue(inputQuery) {
   }
 }
 
+async function prepareForSafari() {
+  await clearOldAccessToken()
+
+  if (location.hostname !== 'chat.openai.com' || location.pathname !== '/api/auth/session') return
+
+  const response = document.querySelector('pre').textContent
+
+  let data
+  try {
+    data = JSON.parse(response)
+  } catch (error) {
+    console.error('json error', error)
+    return
+  }
+  if (data.accessToken) {
+    await setAccessToken(data.accessToken)
+  }
+}
+
 async function run() {
+  if (isSafari()) await prepareForSafari()
+
   const userConfig = await getUserConfig()
   let siteRegex
   if (userConfig.userSiteRegexOnly) siteRegex = userConfig.siteRegex

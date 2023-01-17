@@ -21,3 +21,7 @@ export function endsWithQuestionMark(question) {
     question.endsWith('⸮') // Arabic
   )
 }
+
+export function isSafari() {
+  return navigator.vendor === 'Apple Computer, Inc.'
+}

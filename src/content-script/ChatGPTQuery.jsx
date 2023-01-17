@@ -6,6 +6,7 @@ import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
 import { ChevronDownIcon, CopyIcon, XCircleIcon } from '@primer/octicons-react'
 import { motion } from 'framer-motion'
+import { isSafari } from './utils.mjs'
 
 let session = {
   question: null,
@@ -170,7 +171,18 @@ function ChatGPTQuery(props) {
         switch (msg.error) {
           case 'UNAUTHORIZED':
             UpdateAnswer(
-              'UNAUTHORIZED<br>Please login at https://chat.openai.com first',
+              `UNAUTHORIZED<br>Please login at https://chat.openai.com first${
+                isSafari() ? '<br>Then open https://chat.openai.com/api/auth/session' : ''
+              }<br>And refresh this page or type you question again`,
+              false,
+              'error',
+            )
+            break
+          case 'CLOUDFLARE':
+            UpdateAnswer(
+              `OpenAI Security Check Required<br>Please open ${
+                isSafari() ? 'https://chat.openai.com/api/auth/session' : 'https://chat.openai.com'
+              }`,
               false,
               'error',
             )

@@ -24,6 +24,8 @@ export const defaultConfig = {
   inputQuery: '',
   appendQuery: '',
   prependQuery: '',
+  accessToken: '',
+  tokenSavedOn: 0,
 }
 
 /**
@@ -45,4 +47,16 @@ export async function getUserConfig() {
  */
 export async function setUserConfig(value) {
   await Browser.storage.local.set(value)
+}
+
+export async function setAccessToken(accessToken) {
+  await setUserConfig({ accessToken, tokenSavedOn: Date.now() })
+}
+
+const TOKEN_DURATION = 30 * 24 * 3600 * 1000
+export async function clearOldAccessToken() {
+  const duration = Date.now() - (await getUserConfig()).tokenSavedOn
+  if (duration > TOKEN_DURATION) {
+    await setAccessToken('')
+  }
 }

@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid'
 import Browser from 'webextension-polyfill'
 import { sendMessageFeedback, setConversationProperty } from './chatgpt.mjs'
 import { fetchSSE } from './fetch-sse.mjs'
+import { isSafari } from '../content-script/utils.mjs'
+import { getUserConfig } from '../config.js'
+import { isEmpty } from 'lodash-es'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)
@@ -14,14 +17,25 @@ async function getAccessToken() {
   if (cache.get(KEY_ACCESS_TOKEN)) {
     return cache.get(KEY_ACCESS_TOKEN)
   }
-  const resp = await fetch('https://chat.openai.com/api/auth/session')
-    .then((r) => r.json())
-    .catch(() => ({}))
-  if (!resp.accessToken) {
-    throw new Error('UNAUTHORIZED')
+  if (isSafari()) {
+    const userConfig = await getUserConfig()
+    if (userConfig.accessToken) {
+      cache.set(KEY_ACCESS_TOKEN, userConfig.accessToken)
+    } else {
+      throw new Error('UNAUTHORIZED')
+    }
+  } else {
+    const resp = await fetch('https://chat.openai.com/api/auth/session')
+    if (resp.status === 403) {
+      throw new Error('CLOUDFLARE')
+    }
+    const data = await resp.json().catch(() => ({}))
+    if (!data.accessToken) {
+      throw new Error('UNAUTHORIZED')
+    }
+    cache.set(KEY_ACCESS_TOKEN, data.accessToken)
   }
-  cache.set(KEY_ACCESS_TOKEN, resp.accessToken)
-  return resp.accessToken
+  return cache.get(KEY_ACCESS_TOKEN)
 }
 
 /**
@@ -87,10 +101,17 @@ async function generateAnswers(port, question, session) {
         port.postMessage({ answer: text, done: false, session: session })
       }
     },
-    onStart() {
+    async onStart() {
       // sendModerations(accessToken, question, session.conversationId, session.messageId)
     },
-    onEnd() {},
+    async onEnd() {},
+    async onError(resp) {
+      if (resp.status === 403) {
+        throw new Error('CLOUDFLARE')
+      }
+      const error = await resp.json().catch(() => ({}))
+      throw new Error(!isEmpty(error) ? JSON.stringify(error) : `${resp.status} ${resp.statusText}`)
+    },
   })
 }
 
