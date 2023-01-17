@@ -5,10 +5,10 @@
 
 [Installation](#installation)
 
-A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox and
+A browser extension to display ChatGPT response alongside Search Engine results, supports Chrome/Edge/Firefox/Safari(macOS) and
 Android.
 
-Support more search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave,
+Support most search engines, including Google, Bing, Yahoo, DuckDuckGo, StartPage, Baidu, Kagi, Yandex, Naver, Brave,
 Searx, Ecosia, Neeva in total.
 
 Request more search engine support in [#6](https://github.com/josStorer/chatGPT-search-engine-extension/issues/6)
@@ -29,6 +29,7 @@ any app store. It isn't related to any extensions of the same name that may exis
 
 - Support StartPage, Ecosia, Neeva, Searx(searx.tiekoetter.com, searx.fmac.xyz, searx.be and more)
 - Android support
+- Safari(macOS) support
 - Custom mount point (e.g. for some unsupported engines)
 - Preview your setting (e.g. theme, mount point) in realtime
 - Katex: [upstream#75](https://github.com/wong2/chat-gpt-google-extension/pull/75)
@@ -112,12 +113,23 @@ scenario or related need, please create an issue)
 5. Click the browser option button, scroll down and click on the extension icon to open the setting window.
 6. Enable `Insert chatGPT at the top of search results`.
 
+### Install to Safari(macOS)
+
+1. Download `safari.dmg` from [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases).
+2. Double-click `safari.dmg` to open it and drag the extension’s icon to your Applications folder
+3. Run this extension in your Applications folder
+4. Click `Quit and Open Safari Settings...`
+5. Click `Advanced` in Safari Settings and then turn on `Show Develop menu in menu bar`
+6. Click `Develop` in Safari menu bar and then turn on `Allow Unsigned Extensions`
+7. You will see this extension in Extensions of Safari Settings, turn on it
+8. Click `Always Allow on Every Website`
+
 ## Enable for single website
 
 1. Click on the extension icon to open the popup setting window.
 2. Click `Advanced`.
-3. Input the website name (of the hostname) in `Site Regex`, e.g. google
-4. Enable `Only use Site Regex`
+3. Input the website name (of the hostname) in `Custom Site Regex`, e.g. google
+4. Enable `Only use Custom Site Regex...`
 
 ## Build from source
 
@@ -133,6 +145,7 @@ scenario or related need, please create an issue)
     - Merge and improve some PRs
     - Support for most search engines
     - Android support
+    - Safari(macOS) support
     - Custom mount point
     - Preview your setting in realtime
     - Fix answer being overwritten due to "network error" or other errors
