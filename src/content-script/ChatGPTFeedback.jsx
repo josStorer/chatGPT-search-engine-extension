@@ -39,7 +39,7 @@ const ChatGPTFeedback = (props) => {
   }, [props, action])
 
   return (
-    <div className="gpt-feedback">
+    <div title="Feedback" className="gpt-feedback">
       <span
         onClick={clickThumbsUp}
         className={action === 'thumbsUp' ? 'gpt-feedback-selected' : undefined}

@@ -9,7 +9,7 @@ import remarkGfm from 'remark-gfm'
 export function MarkdownRender(props) {
   const linkProperties = {
     target: '_blank',
-    style: 'color: #8ab4f8',
+    style: 'color: #8ab4f8;',
     rel: 'nofollow noopener noreferrer',
   }
   return (

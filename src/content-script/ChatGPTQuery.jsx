@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { ChevronDownIcon, CopyIcon, XCircleIcon } from '@primer/octicons-react'
+import { ChevronDownIcon, CopyIcon, XCircleIcon, LinkExternalIcon } from '@primer/octicons-react'
 import { motion } from 'framer-motion'
 import { isSafari } from './utils.mjs'
 
@@ -20,7 +20,7 @@ const copyAnimation = {
   copied: { scale: 1.2, y: [0, -1.5, 3, 0] },
 }
 
-function TalkItem({ type, content, session }) {
+function TalkItem({ type, content, session, done }) {
   const [collapsed, setCollapsed] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -30,35 +30,49 @@ function TalkItem({ type, content, session }) {
         <div className="gpt-header">
           <p>ChatGPT:</p>
           <div style="display: flex; gap: 15px;">
-            {session && (
+            {done && (
               <ChatGPTFeedback
                 messageId={session.messageId}
                 conversationId={session.conversationId}
               />
             )}
-            <motion.span
-              className="gpt-util-icon"
-              animate={copied ? 'copied' : 'normal'}
-              variants={copyAnimation}
-              onClick={() => {
-                navigator.clipboard
-                  .writeText(content)
-                  .then(() => setCopied(true))
-                  .then(() =>
-                    setTimeout(() => {
-                      setCopied(false)
-                    }, 400),
-                  )
-              }}
-            >
-              <CopyIcon size={14} />
-            </motion.span>
+            {session && session.conversationId && (
+              <a
+                title="Continue on official website"
+                href={'https://chat.openai.com/chat/' + session.conversationId}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                style="color: inherit;"
+              >
+                <LinkExternalIcon size={14} />
+              </a>
+            )}
+            {session && (
+              <motion.span
+                title="Copy"
+                className="gpt-util-icon"
+                animate={copied ? 'copied' : 'normal'}
+                variants={copyAnimation}
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(content)
+                    .then(() => setCopied(true))
+                    .then(() =>
+                      setTimeout(() => {
+                        setCopied(false)
+                      }, 400),
+                    )
+                }}
+              >
+                <CopyIcon size={14} />
+              </motion.span>
+            )}
             {!collapsed ? (
-              <span className="gpt-util-icon" onClick={() => setCollapsed(true)}>
+              <span title="Collapse" className="gpt-util-icon" onClick={() => setCollapsed(true)}>
                 <XCircleIcon size={14} />
               </span>
             ) : (
-              <span className="gpt-util-icon" onClick={() => setCollapsed(false)}>
+              <span title="Expand" className="gpt-util-icon" onClick={() => setCollapsed(false)}>
                 <ChevronDownIcon size={14} />
               </span>
             )}
@@ -74,6 +88,7 @@ TalkItem.propTypes = {
   type: PropTypes.oneOf(['question', 'answer', 'error']).isRequired,
   content: PropTypes.string.isRequired,
   session: PropTypes.object.isRequired,
+  done: PropTypes.bool.isRequired,
 }
 
 function Interact({ onSubmit, enabled }) {
@@ -121,6 +136,7 @@ class Talk extends Object {
     this.type = type
     this.content = content
     this.session = null
+    this.done = false
   }
 }
 
@@ -149,7 +165,8 @@ function ChatGPTQuery(props) {
       const index = copy.findLastIndex((v) => v.type === 'answer')
       if (index === -1) return copy
       copy[index] = new Talk(newType, appended ? copy[index].content + value : value)
-      if (done) copy[index].session = { ...session }
+      copy[index].session = { ...session }
+      copy[index].done = done
       return copy
     })
   }
@@ -204,7 +221,13 @@ function ChatGPTQuery(props) {
     <div className="gpt-inner">
       <div className="markdown-body">
         {talk.map((talk, idx) => (
-          <TalkItem content={talk.content} key={idx} type={talk.type} session={talk.session} />
+          <TalkItem
+            content={talk.content}
+            key={idx}
+            type={talk.type}
+            session={talk.session}
+            done={talk.done}
+          />
         ))}
       </div>
       <Interact
