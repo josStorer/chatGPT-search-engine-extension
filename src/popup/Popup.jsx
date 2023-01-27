@@ -3,6 +3,7 @@ import { useEffect, useState } from 'preact/hooks'
 import { setUserConfig, getUserConfig, TriggerMode, ThemeMode } from '../config'
 import './styles.css'
 import { MarkGithubIcon } from '@primer/octicons-react'
+import Browser from 'webextension-polyfill'
 
 function Popup() {
   const [triggerMode, setTriggerMode] = useState()
@@ -14,6 +15,9 @@ function Popup() {
   const [appendQuery, setAppendQuery] = useState()
   const [prependQuery, setPrependQuery] = useState()
 
+  const [currentVersion, setCurrentVersion] = useState()
+  const [latestVersion, setLatestVersion] = useState()
+
   useEffect(() => {
     getUserConfig().then((config) => {
       setTriggerMode(config.triggerMode)
@@ -24,6 +28,15 @@ function Popup() {
       setInputQuery(config.inputQuery)
       setAppendQuery(config.appendQuery)
       setPrependQuery(config.prependQuery)
+
+      setCurrentVersion(Browser.runtime.getManifest().version.replace('v', ''))
+      fetch(
+        'https://api.github.com/repos/josstorer/chatgpt-search-engine-extension/releases/latest',
+      ).then((response) =>
+        response.json().then((data) => {
+          setLatestVersion(data.tag_name.replace('v', ''))
+        }),
+      )
     })
   }, [])
 
@@ -154,10 +167,31 @@ function Popup() {
           </label>
         </details>
       </form>
+      <>
+        Current Version: {currentVersion}{' '}
+        {currentVersion === latestVersion ? (
+          '(Latest)'
+        ) : (
+          <>
+            (Latest:{' '}
+            <a
+              href={
+                'https://github.com/josStorer/chatGPT-search-engine-extension/releases/tag/v' +
+                latestVersion
+              }
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >
+              {latestVersion}
+            </a>
+            )
+          </>
+        )}
+      </>
       <a
         href="https://github.com/josStorer/chatGPT-search-engine-extension"
         target="_blank"
-        rel="noreferrer"
+        rel="nofollow noopener noreferrer"
         className="github-link"
       >
         <MarkGithubIcon />
