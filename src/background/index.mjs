@@ -77,7 +77,7 @@ async function generateAnswers(port, question, session) {
           },
         },
       ],
-      model: 'text-davinci-002-render',
+      model: 'text-davinci-002-render-next',
       parent_message_id: session.parentMessageId,
     }),
     onMessage(message) {
