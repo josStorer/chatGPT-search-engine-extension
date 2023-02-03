@@ -51,10 +51,10 @@ export async function generateAnswersWithOpenAiApi(port, question, session, apiK
       max_tokens: 1000,
     }),
     onMessage(message) {
-      console.debug('conversation history', message)
+      console.debug('sse message', message)
       if (message === '[DONE]') {
         conversationHistory[session.conversationId] += text
-        console.debug('sse message', conversationHistory)
+        console.debug('conversation history', conversationHistory)
         port.postMessage({ answer: null, done: true, session: session })
         return
       }
