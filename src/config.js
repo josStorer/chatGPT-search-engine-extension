@@ -1,6 +1,22 @@
 import { defaults } from 'lodash-es'
 import Browser from 'webextension-polyfill'
 
+/**
+ * @typedef {object} Model
+ * @property {string} value
+ * @property {string} desc
+ */
+/**
+ * @type {Object.<string,Model>}
+ */
+export const Models = {
+  normal: { value: 'text-davinci-002-render', desc: 'Normal (chatGPT)' },
+  davinci: { value: 'text-davinci-003', desc: 'Use API Key (Davinci, high price, high quality)' },
+  curie: { value: 'text-curie-001', desc: 'Use API Key (Curie, medium price, medium quality)' },
+  babbage: { value: 'text-babbage-001', desc: 'Use API Key (Babbagem, low price, low quality)' },
+  ada: { value: 'text-ada-001', desc: 'Use API Key (Ada, lowest price, lowest quality)' },
+}
+
 export const TriggerMode = {
   always: 'Always',
   questionMark: 'When query ends with question mark (?)',
@@ -13,11 +29,17 @@ export const ThemeMode = {
   auto: 'Auto',
 }
 
+/**
+ * @typedef {typeof defaultConfig} UserConfig
+ */
 export const defaultConfig = {
   /** @type {keyof TriggerMode}*/
   triggerMode: 'always',
   /** @type {keyof ThemeMode}*/
   themeMode: 'auto',
+  /** @type {keyof Models}*/
+  modelName: 'normal',
+  apiKey: '',
   insertAtTop: false,
   siteRegex: 'match nothing',
   userSiteRegexOnly: false,
@@ -28,9 +50,9 @@ export const defaultConfig = {
   tokenSavedOn: 0,
 }
 
-/**
- * @typedef {typeof defaultConfig} UserConfig
- */
+export function isUsingApiKey(config) {
+  return config.modelName !== 'normal'
+}
 
 /**
  * get user config from local storage

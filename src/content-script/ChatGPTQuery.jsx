@@ -8,11 +8,23 @@ import { ChevronDownIcon, CopyIcon, XCircleIcon, LinkExternalIcon } from '@prime
 import { motion } from 'framer-motion'
 import { isSafari } from './utils.mjs'
 
+/**
+ * @typedef {object} Session
+ * @property {string|null} question
+ * @property {string|null} conversationId
+ * @property {string|null} messageId
+ * @property {string|null} parentMessageId
+ * @property {bool|null} useApiKey
+ */
+/**
+ * @type {Session}
+ */
 let session = {
   question: null,
   conversationId: null,
   messageId: null,
   parentMessageId: null,
+  useApiKey: null,
 }
 
 const copyAnimation = {
@@ -28,15 +40,15 @@ function TalkItem({ type, content, session, done }) {
     <div className={type} dir="auto">
       {type === 'answer' && (
         <div className="gpt-header">
-          <p>ChatGPT:</p>
+          <p>{session ? (session.useApiKey ? 'AI:' : 'ChatGPT:') : 'AI:'}</p>
           <div style="display: flex; gap: 15px;">
-            {done && (
+            {done && !session.useApiKey && (
               <ChatGPTFeedback
                 messageId={session.messageId}
                 conversationId={session.conversationId}
               />
             )}
-            {session && session.conversationId && (
+            {session && session.conversationId && !session.useApiKey && (
               <a
                 title="Continue on official website"
                 href={'https://chat.openai.com/chat/' + session.conversationId}
@@ -199,7 +211,7 @@ function ChatGPTQuery(props) {
             UpdateAnswer(
               `OpenAI Security Check Required<br>Please open ${
                 isSafari() ? 'https://chat.openai.com/api/auth/session' : 'https://chat.openai.com'
-              }`,
+              }<br>And refresh this page or type you question again`,
               false,
               'error',
             )
