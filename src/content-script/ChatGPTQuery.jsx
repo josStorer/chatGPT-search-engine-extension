@@ -165,6 +165,8 @@ function ChatGPTQuery(props) {
     new Talk('answer', '<p class="gpt-loading">Waiting for response...</p>'),
   ])
   const [isReady, setIsReady] = useState(false)
+  const [port, setPort] = useState(() => Browser.runtime.connect())
+
   /**
    * @param {string} value
    * @param {boolean} appended
@@ -183,7 +185,15 @@ function ChatGPTQuery(props) {
     })
   }
 
-  const port = useMemo(() => Browser.runtime.connect(), [])
+  useEffect(() => {
+    const listener = () => {
+      setPort(Browser.runtime.connect())
+    }
+    port.onDisconnect.addListener(listener)
+    return () => {
+      port.onDisconnect.removeListener(listener)
+    }
+  }, [port])
   useEffect(() => {
     const listener = (msg) => {
       if (msg.answer) {
@@ -246,10 +256,7 @@ function ChatGPTQuery(props) {
         enabled={isReady}
         onSubmit={(question) => {
           const newQuestion = new Talk('question', '**You:**\n' + question)
-          const newAnswer = new Talk(
-            'answer',
-            '<p class="gpt-loading">Waiting for response...</p>',
-          )
+          const newAnswer = new Talk('answer', '<p class="gpt-loading">Waiting for response...</p>')
           setTalk([...talk, newQuestion, newAnswer])
           setIsReady(false)
 
