@@ -1,7 +1,7 @@
 {
   "name": "ChatGPT for Search Engine",
   "description": "Display ChatGPT response alongside Search Engine results",
-  "version": "1.22.3",
+  "version": "1.23.0",
   "manifest_version": 2,
   "icons": {
     "16": "logo.png",
