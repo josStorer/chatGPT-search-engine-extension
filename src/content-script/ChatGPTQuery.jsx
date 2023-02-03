@@ -40,7 +40,7 @@ function TalkItem({ type, content, session, done }) {
     <div className={type} dir="auto">
       {type === 'answer' && (
         <div className="gpt-header">
-          <p>{session ? (session.useApiKey ? 'AI:' : 'ChatGPT:') : 'AI:'}</p>
+          <p>{session ? (session.useApiKey ? 'AI:' : 'ChatGPT:') : 'Loading...'}</p>
           <div style="display: flex; gap: 15px;">
             {done && !session.useApiKey && (
               <ChatGPTFeedback
@@ -162,7 +162,7 @@ function ChatGPTQuery(props) {
    * @type {[Talk[], (talk: Talk[]) => void]}
    */
   const [talk, setTalk] = useState([
-    new Talk('answer', '<p class="gpt-loading">Waiting for ChatGPT response...</p>'),
+    new Talk('answer', '<p class="gpt-loading">Waiting for response...</p>'),
   ])
   const [isReady, setIsReady] = useState(false)
   /**
@@ -248,7 +248,7 @@ function ChatGPTQuery(props) {
           const newQuestion = new Talk('question', '**You:**\n' + question)
           const newAnswer = new Talk(
             'answer',
-            '<p class="gpt-loading">Waiting for ChatGPT response...</p>',
+            '<p class="gpt-loading">Waiting for response...</p>',
           )
           setTalk([...talk, newQuestion, newAnswer])
           setIsReady(false)
