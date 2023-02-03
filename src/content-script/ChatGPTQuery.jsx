@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
@@ -11,9 +11,10 @@ import { isSafari } from './utils.mjs'
 /**
  * @typedef {object} Session
  * @property {string|null} question
- * @property {string|null} conversationId
- * @property {string|null} messageId
- * @property {string|null} parentMessageId
+ * @property {string|null} conversationId - chatGPT mode
+ * @property {string|null} messageId - chatGPT mode
+ * @property {string|null} parentMessageId - chatGPT mode
+ * @property {string|null} conversationContent - API key mode
  * @property {bool|null} useApiKey
  */
 /**
@@ -24,6 +25,7 @@ let session = {
   conversationId: null,
   messageId: null,
   parentMessageId: null,
+  conversationContent: null,
   useApiKey: null,
 }
 

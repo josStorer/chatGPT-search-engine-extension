@@ -2,8 +2,6 @@ import { Models } from '../config.js'
 import { fetchSSE } from './fetch-sse.mjs'
 import { isEmpty } from 'lodash-es'
 
-let conversationHistory = {}
-
 /**
  * @param {Browser.Runtime.Port} port
  * @param {string} question
@@ -12,29 +10,22 @@ let conversationHistory = {}
  * @param {string} modelName
  */
 export async function generateAnswersWithOpenAiApi(port, question, session, apiKey, modelName) {
-  const deleteConversation = () => {
-    delete conversationHistory[session.conversationId]
-  }
-
   const controller = new AbortController()
   port.onDisconnect.addListener(() => {
     console.debug('port disconnected')
     controller.abort()
-    deleteConversation()
   })
 
-  if (!conversationHistory.hasOwnProperty(session.conversationId)) {
-    conversationHistory[session.conversationId] =
+  if (!session.conversationContent) {
+    session.conversationContent =
       `The following is a conversation with an AI assistant. ` +
       `The assistant is helpful, creative, clever, and very friendly.\n\n` +
       `Human: Hello, who are you?\n` +
       `AI: I am an AI created by OpenAI. How can I help you today?\n` +
       `Human: ${question}\n`
   } else {
-    conversationHistory[session.conversationId] += `\nHuman: ${question}\n`
+    session.conversationContent += `\nHuman: ${question}\n`
   }
-
-  const prompt = conversationHistory[session.conversationId]
 
   let text = ''
   await fetchSSE('https://api.openai.com/v1/completions', {
@@ -45,7 +36,7 @@ export async function generateAnswersWithOpenAiApi(port, question, session, apiK
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      prompt: prompt,
+      prompt: session.conversationContent,
       model: Models[modelName].value,
       stream: true,
       max_tokens: 1000,
@@ -53,8 +44,8 @@ export async function generateAnswersWithOpenAiApi(port, question, session, apiK
     onMessage(message) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
-        conversationHistory[session.conversationId] += text
-        console.debug('conversation history', conversationHistory)
+        session.conversationContent += text
+        console.debug('conversation history', { content: session.conversationContent })
         port.postMessage({ answer: null, done: true, session: session })
         return
       }
@@ -66,7 +57,7 @@ export async function generateAnswersWithOpenAiApi(port, question, session, apiK
         return
       }
       text += data.choices[0].text
-      port.postMessage({ answer: text.replace(/^A?I?:? ?/, ''), done: false, session: session })
+      port.postMessage({ answer: text.replace(/^A?I?:? ?/, ''), done: false, session: null })
     },
     async onStart() {},
     async onEnd() {},

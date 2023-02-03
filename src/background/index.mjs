@@ -44,9 +44,6 @@ Browser.runtime.onConnect.addListener((port) => {
     const session = msg.session
     if (session.useApiKey == null) {
       session.useApiKey = isUsingApiKey(config)
-      if (session.useApiKey) {
-        session.conversationId = uuidv4()
-      }
     }
 
     try {
