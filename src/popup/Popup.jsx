@@ -1,34 +1,31 @@
 import '@picocss/pico'
 import { useEffect, useState } from 'preact/hooks'
-import { setUserConfig, getUserConfig, TriggerMode, ThemeMode } from '../config'
+import {
+  setUserConfig,
+  getUserConfig,
+  TriggerMode,
+  ThemeMode,
+  defaultConfig,
+  Models,
+  isUsingApiKey,
+} from '../config'
 import './styles.css'
 import { MarkGithubIcon } from '@primer/octicons-react'
 import Browser from 'webextension-polyfill'
 
 function Popup() {
-  const [triggerMode, setTriggerMode] = useState()
-  const [themeMode, setThemeMode] = useState()
-  const [insertAtTop, setInsertAtTop] = useState()
-  const [siteRegex, setSiteRegex] = useState()
-  const [userSiteRegexOnly, setUserSiteRegexOnly] = useState()
-  const [inputQuery, setInputQuery] = useState()
-  const [appendQuery, setAppendQuery] = useState()
-  const [prependQuery, setPrependQuery] = useState()
+  const [config, setConfig] = useState(defaultConfig)
+  const [currentVersion, setCurrentVersion] = useState('')
+  const [latestVersion, setLatestVersion] = useState('')
 
-  const [currentVersion, setCurrentVersion] = useState()
-  const [latestVersion, setLatestVersion] = useState()
+  const updateConfig = (value) => {
+    setConfig({ ...config, ...value })
+    setUserConfig(value)
+  }
 
   useEffect(() => {
     getUserConfig().then((config) => {
-      setTriggerMode(config.triggerMode)
-      setThemeMode(config.themeMode)
-      setInsertAtTop(config.insertAtTop)
-      setSiteRegex(config.siteRegex)
-      setUserSiteRegexOnly(config.userSiteRegexOnly)
-      setInputQuery(config.inputQuery)
-      setAppendQuery(config.appendQuery)
-      setPrependQuery(config.prependQuery)
-
+      setConfig(config)
       setCurrentVersion(Browser.runtime.getManifest().version.replace('v', ''))
       fetch(
         'https://api.github.com/repos/josstorer/chatgpt-search-engine-extension/releases/latest',
@@ -41,62 +38,98 @@ function Popup() {
   }, [])
 
   useEffect(() => {
-    document.documentElement.dataset.theme = themeMode
-  }, [themeMode])
+    document.documentElement.dataset.theme = config.themeMode
+  }, [config.themeMode])
 
   return (
     <div className="container">
       <form>
-        <fieldset
-          onChange={(e) => {
-            const mode = e.target.value
-            setTriggerMode(mode)
-            setUserConfig({ triggerMode: mode })
-          }}
-        >
-          <legend>Trigger Mode</legend>
-          {Object.entries(TriggerMode).map(([value, label]) => {
-            return (
-              <label htmlFor={value} key={value}>
-                <input
-                  type="radio"
-                  id={value}
-                  name="triggerMode"
-                  value={value}
-                  checked={triggerMode === value}
-                />
-                {label}
-              </label>
-            )
-          })}
-        </fieldset>
         <label>
-          <legend>Theme Mode</legend>
+          <legend>Trigger Mode</legend>
           <select
             required
             onChange={(e) => {
               const mode = e.target.value
-              setThemeMode(mode)
-              setUserConfig({ themeMode: mode })
+              updateConfig({ triggerMode: mode })
             }}
           >
-            {Object.entries(ThemeMode).map(([value, label]) => {
+            {Object.entries(TriggerMode).map(([key, desc]) => {
               return (
-                <option value={value} key={value} selected={value === themeMode}>
-                  {label}
+                <option value={key} key={key} selected={key === config.triggerMode}>
+                  {desc}
                 </option>
               )
             })}
           </select>
         </label>
         <label>
+          <legend>Theme Mode</legend>
+          <select
+            required
+            onChange={(e) => {
+              const mode = e.target.value
+              updateConfig({ themeMode: mode })
+            }}
+          >
+            {Object.entries(ThemeMode).map(([key, desc]) => {
+              return (
+                <option value={key} key={key} selected={key === config.themeMode}>
+                  {desc}
+                </option>
+              )
+            })}
+          </select>
+        </label>
+        <label>
+          <legend>API Mode</legend>
+          <span style="display: flex; gap: 15px;">
+            <select
+              style={isUsingApiKey(config) ? 'width: 50%;' : undefined}
+              required
+              onChange={(e) => {
+                const modelName = e.target.value
+                updateConfig({ modelName: modelName })
+              }}
+            >
+              {Object.entries(Models).map(([key, model]) => {
+                return (
+                  <option value={key} key={key} selected={key === config.modelName}>
+                    {model.desc}
+                  </option>
+                )
+              })}
+            </select>
+            {isUsingApiKey(config) && (
+              <span style="width: 50%; display: flex; gap: 5px;">
+                <input
+                  type="password"
+                  value={config.apiKey}
+                  placeholder="API Key"
+                  onChange={(e) => {
+                    const apiKey = e.target.value
+                    updateConfig({ apiKey: apiKey })
+                  }}
+                />
+                {config.apiKey.length === 0 && (
+                  <a
+                    href="https://platform.openai.com/account/api-keys"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                  >
+                    <button type="button">Get</button>
+                  </a>
+                )}
+              </span>
+            )}
+          </span>
+        </label>
+        <label>
           <input
             type="checkbox"
-            checked={insertAtTop}
+            checked={config.insertAtTop}
             onChange={(e) => {
               const checked = e.target.checked
-              setInsertAtTop(checked)
-              setUserConfig({ insertAtTop: checked })
+              updateConfig({ insertAtTop: checked })
             }}
           />
           Insert chatGPT at the top of search results
@@ -108,22 +141,20 @@ function Popup() {
             Custom Site Regex:
             <input
               type="text"
-              value={siteRegex}
+              value={config.siteRegex}
               onChange={(e) => {
                 const regex = e.target.value
-                setSiteRegex(regex)
-                setUserConfig({ siteRegex: regex })
+                updateConfig({ siteRegex: regex })
               }}
             />
           </label>
           <label>
             <input
               type="checkbox"
-              checked={userSiteRegexOnly}
+              checked={config.userSiteRegexOnly}
               onChange={(e) => {
                 const checked = e.target.checked
-                setUserSiteRegexOnly(checked)
-                setUserConfig({ userSiteRegexOnly: checked })
+                updateConfig({ userSiteRegexOnly: checked })
               }}
             />
             Only use Custom Site Regex for website matching, ignore built-in rules
@@ -133,11 +164,10 @@ function Popup() {
             Input Query:
             <input
               type="text"
-              value={inputQuery}
+              value={config.inputQuery}
               onChange={(e) => {
                 const query = e.target.value
-                setInputQuery(query)
-                setUserConfig({ inputQuery: query })
+                updateConfig({ inputQuery: query })
               }}
             />
           </label>
@@ -145,11 +175,10 @@ function Popup() {
             Append Query:
             <input
               type="text"
-              value={appendQuery}
+              value={config.appendQuery}
               onChange={(e) => {
                 const query = e.target.value
-                setAppendQuery(query)
-                setUserConfig({ appendQuery: query })
+                updateConfig({ appendQuery: query })
               }}
             />
           </label>
@@ -157,11 +186,10 @@ function Popup() {
             Prepend Query:
             <input
               type="text"
-              value={prependQuery}
+              value={config.prependQuery}
               onChange={(e) => {
                 const query = e.target.value
-                setPrependQuery(query)
-                setUserConfig({ prependQuery: query })
+                updateConfig({ prependQuery: query })
               }}
             />
           </label>
