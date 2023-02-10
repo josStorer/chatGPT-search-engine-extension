@@ -105,7 +105,7 @@ scenario or related need, please create an issue)
 
 ### Install to Android
 
-1. Install [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser).
+1. Install [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser) or other mobile browsers that support installing extensions from local files.
 2. Download `chromium.zip` from [Releases](https://github.com/josStorer/chatGPT-search-engine-extension/releases) on
    your phone.
 3. Go to `Extensions` and enable developer mode.
