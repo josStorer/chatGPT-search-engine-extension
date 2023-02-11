@@ -33,6 +33,11 @@ export async function sendModerations(token, question, conversationId, messageId
   })
 }
 
+export async function getModels(token) {
+  const response = JSON.parse((await request(token, 'GET', '/models')).responseText)
+  return response.models
+}
+
 /**
  * @param {Runtime.Port} port
  * @param {string} question
@@ -50,6 +55,8 @@ export async function generateAnswersWithChatGptApi(port, question, session, acc
     controller.abort()
     deleteConversation()
   })
+
+  const models = await getModels(accessToken).catch(() => ({}))
 
   await fetchSSE('https://chat.openai.com/backend-api/conversation', {
     method: 'POST',
@@ -71,7 +78,7 @@ export async function generateAnswersWithChatGptApi(port, question, session, acc
           },
         },
       ],
-      model: Models.normal.value,
+      model: models ? models[0].slug : Models.normal.value,
       parent_message_id: session.parentMessageId,
     }),
     onMessage(message) {
