@@ -56,7 +56,7 @@ export async function generateAnswersWithChatGptApi(port, question, session, acc
     deleteConversation()
   })
 
-  const models = await getModels(accessToken).catch(() => ({}))
+  const models = await getModels(accessToken).catch(() => {})
 
   await fetchSSE('https://chat.openai.com/backend-api/conversation', {
     method: 'POST',
