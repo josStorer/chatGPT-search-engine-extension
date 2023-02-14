@@ -11,7 +11,6 @@ import Browser from 'webextension-polyfill'
  */
 export const Models = {
   normal: { value: 'text-davinci-002-render', desc: 'Normal (chatGPT)' },
-  leaked: { value: 'text-chat-davinci-002-20221122', desc: 'Leaked Model (chatGPT)' },
   davinci: { value: 'text-davinci-003', desc: 'Use API Key (Davinci, high price, high quality)' },
   curie: { value: 'text-curie-001', desc: 'Use API Key (Curie, medium price, medium quality)' },
   babbage: { value: 'text-babbage-001', desc: 'Use API Key (Babbagem, low price, low quality)' },
