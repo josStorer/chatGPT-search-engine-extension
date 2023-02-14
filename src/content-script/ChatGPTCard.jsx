@@ -1,5 +1,5 @@
 import { LightBulbIcon, SearchIcon } from '@primer/octicons-react'
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ChatGPTQuery from './ChatGPTQuery'
 import { getPossibleElementByQuerySelector, endsWithQuestionMark } from './utils.mjs'

@@ -1,5 +1,4 @@
-import { memo } from 'react'
-import { useEffect, useState } from 'preact/hooks'
+import { memo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
