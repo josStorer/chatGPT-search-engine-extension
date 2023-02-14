@@ -4,6 +4,7 @@
     "build": "node build.mjs --production",
     "build:safari": "bash ./safari/build.sh",
     "dev": "node build.mjs --development",
+    "analyze": "node build.mjs --analyze",
     "lint": "eslint --ext .js,.mjs,.jsx .",
     "lint:fix": "eslint --ext .js,.mjs,.jsx . --fix",
     "pretty": "prettier --write ./**/*.{js,mjs,jsx,json,css,scss}",
@@ -65,6 +66,7 @@
     "sass-loader": "^13.2.0",
     "terser-webpack-plugin": "^5.3.6",
     "webextension-polyfill": "^0.10.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.75.0",
+    "webpack-bundle-analyzer": "^4.8.0"
   }
 }

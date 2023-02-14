@@ -6,12 +6,13 @@ import ProgressBarPlugin from 'progress-bar-webpack-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 const outdir = 'build'
 
 const __dirname = path.resolve()
-const mode = process.argv[2].substring(2) === 'production' ? 'production' : 'development' // eslint-disable-line
-const isProduction = mode === 'production'
+const isProduction = process.argv[2] !== '--development' // --production and --analyze are both production
+const isAnalyzing = process.argv[2] === '--analyze'
 
 async function deleteOldDir() {
   await fs.rm(outdir, { recursive: true, force: true })
@@ -28,7 +29,7 @@ async function runWebpack(callback) {
       filename: '[name].js',
       path: path.resolve(__dirname, outdir),
     },
-    mode: mode,
+    mode: isProduction ? 'production' : 'development',
     devtool: false,
     optimization: {
       minimizer: [
@@ -39,6 +40,7 @@ async function runWebpack(callback) {
         }),
         new CssMinimizerPlugin(),
       ],
+      concatenateModules: !isAnalyzing,
     },
     plugins: [
       new ProgressBarPlugin({
@@ -47,6 +49,9 @@ async function runWebpack(callback) {
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
+      }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: isAnalyzing ? 'static' : 'disable',
       }),
     ],
     resolve: {
