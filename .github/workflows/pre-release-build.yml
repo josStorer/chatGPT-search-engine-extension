@@ -26,17 +26,27 @@ jobs:
       - uses: josStorer/get-current-time@v2
         id: current-time
         with:
-          format: YY_MMDD_HH_mm
+          format: YYYY_MMDD_HHmm
 
       - uses: actions/upload-artifact@v3
         with:
-          name: Chromium_ChatGPT_Extension_Build_${{ steps.current-time.outputs.formattedTime }}
+          name: Chromium_Build_${{ steps.current-time.outputs.formattedTime }}
           path: build/chromium/*
 
       - uses: actions/upload-artifact@v3
         with:
-          name: Firefox_ChatGPT_Extension_Build_${{ steps.current-time.outputs.formattedTime }}
+          name: Firefox_Build_${{ steps.current-time.outputs.formattedTime }}
           path: build/firefox/*
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Chromium_Build_WithoutKatex_${{ steps.current-time.outputs.formattedTime }}
+          path: build/chromium-without-katex/*
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Firefox_Build_WithoutKatex_${{ steps.current-time.outputs.formattedTime }}
+          path: build/firefox-without-katex/*
 
       - uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
@@ -47,3 +57,5 @@ jobs:
           files: |
             build/chromium.zip
             build/firefox.zip
+            build/chromium-without-katex.zip
+            build/firefox-without-katex.zip

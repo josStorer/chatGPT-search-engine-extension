@@ -18,7 +18,7 @@ async function deleteOldDir() {
   await fs.rm(outdir, { recursive: true, force: true })
 }
 
-async function runWebpack(callback) {
+async function runWebpack(isWithoutKatex, callback) {
   const compiler = webpack({
     entry: {
       'content-script': {
@@ -62,6 +62,14 @@ async function runWebpack(callback) {
       new BundleAnalyzerPlugin({
         analyzerMode: isAnalyzing ? 'static' : 'disable',
       }),
+      ...(isWithoutKatex
+        ? [
+            new webpack.NormalModuleReplacementPlugin(
+              /markdown\.jsx/,
+              './markdown-without-katex.jsx',
+            ),
+          ]
+        : []),
     ],
     resolve: {
       extensions: ['.jsx', '.mjs', '.js'],
@@ -173,42 +181,58 @@ async function copyFiles(entryPoints, targetDir) {
   )
 }
 
-async function build() {
-  await deleteOldDir()
-  await runWebpack(async (err, stats) => {
+async function finishOutput(outputDirSuffix) {
+  const commonFiles = [
+    { src: 'build/shared.js', dst: 'shared.js' },
+    { src: 'build/content-script.js', dst: 'content-script.js' },
+    { src: 'build/content-script.css', dst: 'content-script.css' },
+    { src: 'build/background.js', dst: 'background.js' },
+    { src: 'build/popup.js', dst: 'popup.js' },
+    { src: 'build/popup.css', dst: 'popup.css' },
+    { src: 'src/popup/index.html', dst: 'popup.html' },
+    { src: 'src/logo.png', dst: 'logo.png' },
+  ]
+
+  // chromium
+  const chromiumOutputDir = `./${outdir}/chromium${outputDirSuffix}`
+  await copyFiles(
+    [...commonFiles, { src: 'src/manifest.json', dst: 'manifest.json' }],
+    chromiumOutputDir,
+  )
+  if (isProduction) await zipFolder(chromiumOutputDir)
+
+  // firefox
+  const firefoxOutputDir = `./${outdir}/firefox${outputDirSuffix}`
+  await copyFiles(
+    [...commonFiles, { src: 'src/manifest.v2.json', dst: 'manifest.json' }],
+    firefoxOutputDir,
+  )
+  if (isProduction) await zipFolder(firefoxOutputDir)
+}
+
+function generateWebpackCallback(finishOutputFunc) {
+  return async function webpackCallback(err, stats) {
     if (err || stats.hasErrors()) {
       console.error(err || stats.toString())
       return
     }
     // console.log(stats.toString())
 
-    const commonFiles = [
-      { src: 'build/shared.js', dst: 'shared.js' },
-      { src: 'build/content-script.js', dst: 'content-script.js' },
-      { src: 'build/content-script.css', dst: 'content-script.css' },
-      { src: 'build/background.js', dst: 'background.js' },
-      { src: 'build/popup.js', dst: 'popup.js' },
-      { src: 'build/popup.css', dst: 'popup.css' },
-      { src: 'src/popup/index.html', dst: 'popup.html' },
-      { src: 'src/logo.png', dst: 'logo.png' },
-    ]
+    await finishOutputFunc()
+  }
+}
 
-    // chromium
-    await copyFiles(
-      [...commonFiles, { src: 'src/manifest.json', dst: 'manifest.json' }],
-      `./${outdir}/chromium`,
+async function build() {
+  await deleteOldDir()
+  if (isProduction && !isAnalyzing)
+    await runWebpack(
+      true,
+      generateWebpackCallback(() => finishOutput('-without-katex')),
     )
-
-    if (isProduction) await zipFolder(`./${outdir}/chromium`)
-
-    // firefox
-    await copyFiles(
-      [...commonFiles, { src: 'src/manifest.v2.json', dst: 'manifest.json' }],
-      `./${outdir}/firefox`,
-    )
-
-    if (isProduction) await zipFolder(`./${outdir}/firefox`)
-  })
+  await runWebpack(
+    false,
+    generateWebpackCallback(() => finishOutput('')),
+  )
 }
 
 build()
