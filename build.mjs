@@ -21,9 +21,18 @@ async function deleteOldDir() {
 async function runWebpack(callback) {
   const compiler = webpack({
     entry: {
-      'content-script': './src/content-script/index.jsx',
-      background: './src/background/index.mjs',
-      popup: './src/popup/index.jsx',
+      'content-script': {
+        import: './src/content-script/index.jsx',
+        dependOn: 'shared',
+      },
+      background: {
+        import: './src/background/index.mjs',
+      },
+      popup: {
+        import: './src/popup/index.jsx',
+        dependOn: 'shared',
+      },
+      shared: ['preact', 'webextension-polyfill', '@primer/octicons-react'],
     },
     output: {
       filename: '[name].js',
@@ -56,6 +65,9 @@ async function runWebpack(callback) {
     ],
     resolve: {
       extensions: ['.jsx', '.mjs', '.js'],
+      alias: {
+        parse5: path.resolve(__dirname, 'node_modules/parse5'),
+      },
     },
     module: {
       rules: [
@@ -171,6 +183,7 @@ async function build() {
     // console.log(stats.toString())
 
     const commonFiles = [
+      { src: 'build/shared.js', dst: 'shared.js' },
       { src: 'build/content-script.js', dst: 'content-script.js' },
       { src: 'build/content-script.css', dst: 'content-script.css' },
       { src: 'build/background.js', dst: 'background.js' },

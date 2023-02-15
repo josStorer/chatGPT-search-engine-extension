@@ -38,6 +38,7 @@ async function getAccessToken() {
 }
 
 Browser.runtime.onConnect.addListener((port) => {
+  console.debug('connected')
   port.onMessage.addListener(async (msg) => {
     console.debug('received msg', msg)
     const config = await getUserConfig()

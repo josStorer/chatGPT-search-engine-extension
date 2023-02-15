@@ -27,6 +27,7 @@
         "https://*/*"
       ],
       "js": [
+        "shared.js",
         "content-script.js"
       ],
       "css": [

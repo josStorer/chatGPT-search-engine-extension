@@ -27,6 +27,7 @@
     "github-markdown-css": "^5.2.0",
     "katex": "^0.16.4",
     "lodash-es": "^4.17.21",
+    "parse5": "^6.0.1",
     "preact": "^10.11.3",
     "prop-types": "^15.8.1",
     "react": "npm:@preact/compat@^17.1.2",
@@ -37,7 +38,8 @@
     "rehype-raw": "^6.1.1",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.20.13",
@@ -65,7 +67,6 @@
     "sass": "^1.58.1",
     "sass-loader": "^13.2.0",
     "terser-webpack-plugin": "^5.3.6",
-    "webextension-polyfill": "^0.10.0",
     "webpack": "^5.75.0",
     "webpack-bundle-analyzer": "^4.8.0"
   }

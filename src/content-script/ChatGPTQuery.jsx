@@ -3,8 +3,13 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { ChevronDownIcon, CopyIcon, XCircleIcon, LinkExternalIcon } from '@primer/octicons-react'
-import { motion } from 'framer-motion'
+import {
+  ChevronDownIcon,
+  CopyIcon,
+  XCircleIcon,
+  LinkExternalIcon,
+  CheckIcon,
+} from '@primer/octicons-react'
 import { isSafari } from './utils.mjs'
 
 /**
@@ -26,11 +31,6 @@ let session = {
   parentMessageId: null,
   conversationContent: null,
   useApiKey: null,
-}
-
-const copyAnimation = {
-  normal: { scale: 1 },
-  copied: { scale: 1.2, y: [0, -1.5, 3, 0] },
 }
 
 function TalkItem({ type, content, session, done }) {
@@ -61,11 +61,9 @@ function TalkItem({ type, content, session, done }) {
               </a>
             )}
             {session && (
-              <motion.span
+              <span
                 title="Copy"
                 className="gpt-util-icon"
-                animate={copied ? 'copied' : 'normal'}
-                variants={copyAnimation}
                 onClick={() => {
                   navigator.clipboard
                     .writeText(content)
@@ -73,12 +71,12 @@ function TalkItem({ type, content, session, done }) {
                     .then(() =>
                       setTimeout(() => {
                         setCopied(false)
-                      }, 400),
+                      }, 600),
                     )
                 }}
               >
-                <CopyIcon size={14} />
-              </motion.span>
+                {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+              </span>
             )}
             {!collapsed ? (
               <span title="Collapse" className="gpt-util-icon" onClick={() => setCollapsed(true)}>
@@ -154,11 +152,6 @@ class Talk extends Object {
 }
 
 function ChatGPTQuery(props) {
-  useEffect(() => {
-    session.question = props.question
-    port.postMessage({ session })
-  }, [props.question]) // usually only triggered once
-
   /**
    * @type {[Talk[], (talk: Talk[]) => void]}
    */
@@ -167,6 +160,11 @@ function ChatGPTQuery(props) {
   ])
   const [isReady, setIsReady] = useState(false)
   const [port, setPort] = useState(() => Browser.runtime.connect())
+
+  useEffect(() => {
+    session.question = props.question
+    port.postMessage({ session })
+  }, [props.question]) // usually only triggered once
 
   /**
    * @param {string} value
