@@ -1,15 +1,15 @@
 name: pre-release
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "src/**"
-      - "!src/**/*.json"
-      - "build.mjs"
-    tags-ignore:
-      - "v*"
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - "src/**"
+#      - "!src/**/*.json"
+#      - "build.mjs"
+#    tags-ignore:
+#      - "v*"
 
 jobs:
   build_and_release:
