@@ -10,12 +10,14 @@ import Browser from 'webextension-polyfill'
  * @type {Object.<string,Model>}
  */
 export const Models = {
-  normal: { value: 'text-davinci-002-render', desc: 'Normal (chatGPT)' },
-  davinci: { value: 'text-davinci-003', desc: 'Use API Key (Davinci, high price, high quality)' },
-  curie: { value: 'text-curie-001', desc: 'Use API Key (Curie, medium price, medium quality)' },
-  babbage: { value: 'text-babbage-001', desc: 'Use API Key (Babbagem, low price, low quality)' },
-  ada: { value: 'text-ada-001', desc: 'Use API Key (Ada, lowest price, lowest quality)' },
+  chatgptFree: { value: 'text-davinci-002-render-sha', desc: 'ChatGPT (Free)' },
+  chatgptApi: { value: 'gpt-3.5-turbo', desc: 'ChatGPT (API Key)' },
+  gptDavinci: { value: 'text-davinci-003', desc: 'GPT3 (API Key)' },
 }
+
+export const chatgptWebModelKeys = ['chatgptFree']
+export const gptApiModelKeys = ['gptDavinci']
+export const chatgptApiModelKeys = ['chatgptApi']
 
 export const TriggerMode = {
   always: 'Always',
@@ -38,7 +40,7 @@ export const defaultConfig = {
   /** @type {keyof ThemeMode}*/
   themeMode: 'auto',
   /** @type {keyof Models}*/
-  modelName: 'normal',
+  modelName: 'chatgptFree',
   apiKey: '',
   insertAtTop: false,
   siteRegex: 'match nothing',
@@ -51,7 +53,9 @@ export const defaultConfig = {
 }
 
 export function isUsingApiKey(config) {
-  return config.modelName !== 'normal'
+  return (
+    gptApiModelKeys.includes(config.modelName) || chatgptApiModelKeys.includes(config.modelName)
+  )
 }
 
 /**
@@ -76,6 +80,7 @@ export async function setAccessToken(accessToken) {
 }
 
 const TOKEN_DURATION = 30 * 24 * 3600 * 1000
+
 export async function clearOldAccessToken() {
   const duration = Date.now() - (await getUserConfig()).tokenSavedOn
   if (duration > TOKEN_DURATION) {

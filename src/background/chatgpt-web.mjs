@@ -1,6 +1,8 @@
+// web version
+
 import { fetchSSE } from './fetch-sse.mjs'
 import { isEmpty } from 'lodash-es'
-import { Models } from '../config.js'
+import { chatgptWebModelKeys, Models } from '../config.js'
 
 async function request(token, method, path, data) {
   const response = await fetch(`https://chat.openai.com/backend-api${path}`, {
@@ -44,7 +46,7 @@ export async function getModels(token) {
  * @param {Session} session
  * @param {string} accessToken
  */
-export async function generateAnswersWithChatGptApi(port, question, session, accessToken) {
+export async function generateAnswersWithChatgptWebApi(port, question, session, accessToken) {
   const deleteConversation = () => {
     setConversationProperty(accessToken, session.conversationId, { is_visible: false })
   }
@@ -78,7 +80,7 @@ export async function generateAnswersWithChatGptApi(port, question, session, acc
           },
         },
       ],
-      model: models ? models[0].slug : Models.normal.value,
+      model: models ? models[0].slug : Models[chatgptWebModelKeys[0]].value,
       parent_message_id: session.parentMessageId,
     }),
     onMessage(message) {

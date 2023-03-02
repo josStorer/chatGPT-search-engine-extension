@@ -2,7 +2,7 @@ import './styles.scss'
 import { render } from 'preact'
 import ChatGPTCard from './ChatGPTCard'
 import { config as siteConfig } from './search-engine-configs.mjs'
-import { getPossibleElementByQuerySelector, isSafari } from './utils.mjs'
+import { getPossibleElementByQuerySelector, isSafari } from '../utils.mjs'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
 
 /**

@@ -4,21 +4,21 @@ import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
 import {
+  CheckIcon,
   ChevronDownIcon,
   CopyIcon,
-  XCircleIcon,
   LinkExternalIcon,
-  CheckIcon,
+  XCircleIcon,
 } from '@primer/octicons-react'
-import { isSafari } from './utils.mjs'
+import { isSafari } from '../utils.mjs'
 
 /**
  * @typedef {object} Session
  * @property {string|null} question
- * @property {string|null} conversationId - chatGPT mode
- * @property {string|null} messageId - chatGPT mode
- * @property {string|null} parentMessageId - chatGPT mode
- * @property {string|null} conversationContent - API key mode
+ * @property {string|null} conversationId - chatGPT web mode
+ * @property {string|null} messageId - chatGPT web mode
+ * @property {string|null} parentMessageId - chatGPT web mode
+ * @property {Object[]|null} conversationRecords - API key mode
  * @property {bool|null} useApiKey
  */
 /**
@@ -29,7 +29,7 @@ let session = {
   conversationId: null,
   messageId: null,
   parentMessageId: null,
-  conversationContent: null,
+  conversationRecords: [],
   useApiKey: null,
 }
 
@@ -41,7 +41,7 @@ function TalkItem({ type, content, session, done }) {
     <div className={type} dir="auto">
       {type === 'answer' && (
         <div className="gpt-header">
-          <p>{session ? (session.useApiKey ? 'AI:' : 'ChatGPT:') : 'Loading...'}</p>
+          <p>{session ? 'ChatGPT:' : 'Loading...'}</p>
           <div style="display: flex; gap: 15px;">
             {done && !session.useApiKey && (
               <ChatGPTFeedback

@@ -1,10 +1,19 @@
 import { v4 as uuidv4 } from 'uuid'
 import Browser from 'webextension-polyfill'
-import { generateAnswersWithChatGptApi, sendMessageFeedback } from './chatgpt.mjs'
-import { getUserConfig, isUsingApiKey } from '../config.js'
-import { generateAnswersWithOpenAiApi } from './openai.mjs'
+import { generateAnswersWithChatgptWebApi, sendMessageFeedback } from './chatgpt-web.mjs'
+import {
+  chatgptApiModelKeys,
+  chatgptWebModelKeys,
+  getUserConfig,
+  gptApiModelKeys,
+  isUsingApiKey,
+} from '../config.js'
+import {
+  generateAnswersWithChatgptApi,
+  generateAnswersWithGptCompletionApi,
+} from './openai-api.mjs'
 import ExpiryMap from 'expiry-map'
-import { isSafari } from '../content-script/utils.mjs'
+import { isSafari } from '../utils.mjs'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)
@@ -48,21 +57,29 @@ Browser.runtime.onConnect.addListener((port) => {
     }
 
     try {
-      if (session.useApiKey) {
-        await generateAnswersWithOpenAiApi(
+      if (chatgptWebModelKeys.includes(config.modelName)) {
+        const accessToken = await getAccessToken()
+        session.messageId = uuidv4()
+        if (session.parentMessageId == null) {
+          session.parentMessageId = uuidv4()
+        }
+        await generateAnswersWithChatgptWebApi(port, session.question, session, accessToken)
+      } else if (gptApiModelKeys.includes(config.modelName)) {
+        await generateAnswersWithGptCompletionApi(
           port,
           session.question,
           session,
           config.apiKey,
           config.modelName,
         )
-      } else {
-        const accessToken = await getAccessToken()
-        session.messageId = uuidv4()
-        if (session.parentMessageId == null) {
-          session.parentMessageId = uuidv4()
-        }
-        await generateAnswersWithChatGptApi(port, session.question, session, accessToken)
+      } else if (chatgptApiModelKeys.includes(config.modelName)) {
+        await generateAnswersWithChatgptApi(
+          port,
+          session.question,
+          session,
+          config.apiKey,
+          config.modelName,
+        )
       }
     } catch (err) {
       console.error(err)
