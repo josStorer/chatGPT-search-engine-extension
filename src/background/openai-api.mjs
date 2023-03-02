@@ -12,7 +12,7 @@ const chatgptPromptBase =
 const gptPromptBase =
   `The following is a conversation with an AI assistant.` +
   `The assistant is helpful, creative, clever, and very friendly.` +
-  `When the assistant receive a question, it will analyse the language(usually english)  used and reply in the same language.\n\n` +
+  `When the assistant receive a question, it will analyse the language used(usually english) and reply in the same language.\n\n` +
   `Human: Hello, who are you?\n` +
   `AI: I am an AI created by OpenAI. How can I help you today?\n`
 
