@@ -54,6 +54,7 @@
   .markdown-body {
     padding: 15px;
     background-color: var(--theme-color);
+    color: var(--font-color);
 
     ul,
     ol {
@@ -76,7 +77,7 @@
   }
 
   .icon-and-text {
-    color: #8f9094;
+    color: var(--font-color);
     display: flex;
     align-items: center;
     padding: 15px;
@@ -88,7 +89,7 @@
   }
 
   .gpt-loading {
-    color: #b6b8ba;
+    color: var(--font-color);
     animation: gpt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
