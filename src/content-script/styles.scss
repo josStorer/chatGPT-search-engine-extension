@@ -105,6 +105,7 @@
     font-size: 15px;
     line-height: 1.6;
     border-radius: 8px;
+    word-break: break-all;
 
     pre {
       margin-top: 10px;
@@ -157,7 +158,6 @@
 
   .error {
     color: #ec4336;
-    word-break: break-all;
   }
 
   .interact-container {
