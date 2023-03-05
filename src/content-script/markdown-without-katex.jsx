@@ -2,6 +2,28 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
+import CopyButton from './CopyButton'
+import { useRef } from 'react'
+import PropTypes from 'prop-types'
+
+function Pre({ className, children }) {
+  const preRef = useRef(null)
+  return (
+    <pre className={className} ref={preRef} style="position: relative;">
+      <CopyButton
+        className="code-copy-btn"
+        contentFn={() => preRef.current.textContent}
+        size={14}
+      />
+      {children}
+    </pre>
+  )
+}
+
+Pre.propTypes = {
+  className: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired,
+}
 
 export function MarkdownRender(props) {
   const linkProperties = {
@@ -28,6 +50,7 @@ export function MarkdownRender(props) {
             {props.children}
           </a>
         ),
+        pre: Pre,
       }}
       {...props}
     >

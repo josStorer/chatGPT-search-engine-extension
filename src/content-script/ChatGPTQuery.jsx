@@ -3,14 +3,9 @@ import PropTypes from 'prop-types'
 import { MarkdownRender } from './markdown.jsx'
 import Browser from 'webextension-polyfill'
 import ChatGPTFeedback from './ChatGPTFeedback'
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  CopyIcon,
-  LinkExternalIcon,
-  XCircleIcon,
-} from '@primer/octicons-react'
+import { ChevronDownIcon, LinkExternalIcon, XCircleIcon } from '@primer/octicons-react'
 import { isSafari } from '../utils.mjs'
+import CopyButton from './CopyButton'
 
 /**
  * @typedef {object} Session
@@ -35,7 +30,6 @@ let session = {
 
 function TalkItem({ type, content, session, done }) {
   const [collapsed, setCollapsed] = useState(false)
-  const [copied, setCopied] = useState(false)
 
   return (
     <div className={type} dir="auto">
@@ -60,24 +54,7 @@ function TalkItem({ type, content, session, done }) {
                 <LinkExternalIcon size={14} />
               </a>
             )}
-            {session && (
-              <span
-                title="Copy"
-                className="gpt-util-icon"
-                onClick={() => {
-                  navigator.clipboard
-                    .writeText(content)
-                    .then(() => setCopied(true))
-                    .then(() =>
-                      setTimeout(() => {
-                        setCopied(false)
-                      }, 600),
-                    )
-                }}
-              >
-                {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-              </span>
-            )}
+            {session && <CopyButton contentFn={() => content} size={14} />}
             {!collapsed ? (
               <span title="Collapse" className="gpt-util-icon" onClick={() => setCollapsed(true)}>
                 <XCircleIcon size={14} />

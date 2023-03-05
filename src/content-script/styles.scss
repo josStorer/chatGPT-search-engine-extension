@@ -93,6 +93,14 @@
     animation: gpt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  .code-copy-btn {
+    color: inherit;
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    cursor: pointer;
+  }
+
   :is(.answer, .question, .error) {
     font-size: 15px;
     line-height: 1.6;
