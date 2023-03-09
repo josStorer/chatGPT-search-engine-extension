@@ -3,7 +3,7 @@ import { memo, useCallback, useState } from 'react'
 import { ThumbsupIcon, ThumbsdownIcon } from '@primer/octicons-react'
 import Browser from 'webextension-polyfill'
 
-const ChatGPTFeedback = (props) => {
+const FeedbackForChatGPTWeb = (props) => {
   const [action, setAction] = useState(null)
 
   const clickThumbsUp = useCallback(async () => {
@@ -56,9 +56,9 @@ const ChatGPTFeedback = (props) => {
   )
 }
 
-ChatGPTFeedback.propTypes = {
+FeedbackForChatGPTWeb.propTypes = {
   messageId: PropTypes.string.isRequired,
   conversationId: PropTypes.string.isRequired,
 }
 
-export default memo(ChatGPTFeedback)
+export default memo(FeedbackForChatGPTWeb)

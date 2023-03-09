@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
-import CopyButton from './CopyButton'
+import CopyButton from '../CopyButton'
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 

@@ -64,10 +64,14 @@ async function runWebpack(isWithoutKatex, callback) {
       }),
       ...(isWithoutKatex
         ? [
-            new webpack.NormalModuleReplacementPlugin(
-              /markdown\.jsx/,
-              './markdown-without-katex.jsx',
-            ),
+            new webpack.NormalModuleReplacementPlugin(/markdown\.jsx/, (result) => {
+              if (result.request) {
+                result.request = result.request.replace(
+                  'markdown.jsx',
+                  'markdown-without-katex.jsx',
+                )
+              }
+            }),
           ]
         : []),
     ],
@@ -82,6 +86,9 @@ async function runWebpack(isWithoutKatex, callback) {
         {
           test: /\.m?jsx?$/,
           exclude: /(node_modules)/,
+          resolve: {
+            fullySpecified: false,
+          },
           use: [
             {
               loader: 'babel-loader',

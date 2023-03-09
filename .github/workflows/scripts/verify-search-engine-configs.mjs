@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom'
-import { config } from '../../../src/content-script/search-engine-configs.mjs'
+import { config } from '../../../src/content-script/site-adapters'
 import fetch, { Headers } from 'node-fetch'
 
 const urls = {

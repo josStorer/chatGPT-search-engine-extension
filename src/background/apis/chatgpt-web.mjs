@@ -1,8 +1,8 @@
 // web version
 
-import { fetchSSE } from './fetch-sse.mjs'
+import { fetchSSE } from '../../utils'
 import { isEmpty } from 'lodash-es'
-import { chatgptWebModelKeys, Models } from '../config.js'
+import { chatgptWebModelKeys, Models } from '../../config'
 
 async function request(token, method, path, data) {
   const response = await fetch(`https://chat.openai.com/backend-api${path}`, {

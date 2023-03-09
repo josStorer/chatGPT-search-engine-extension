@@ -1,9 +1,30 @@
 import './styles.scss'
 import { render } from 'preact'
-import ChatGPTCard from './ChatGPTCard'
-import { config as siteConfig } from './search-engine-configs.mjs'
-import { getPossibleElementByQuerySelector, isSafari } from '../utils.mjs'
+import DecisionCardForSearch from '../components/DecisionCardForSearch'
+import { config as siteConfig } from './site-adapters'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
+import { getPossibleElementByQuerySelector, isSafari } from '../utils'
+
+/**
+ * @typedef {object} Session
+ * @property {string|null} question
+ * @property {string|null} conversationId - chatGPT web mode
+ * @property {string|null} messageId - chatGPT web mode
+ * @property {string|null} parentMessageId - chatGPT web mode
+ * @property {Object[]|null} conversationRecords - API key mode
+ * @property {bool|null} useApiKey
+ */
+/**
+ * @type {Session}
+ */
+window.session = {
+  question: null,
+  conversationId: null,
+  messageId: null,
+  parentMessageId: null,
+  conversationRecords: [],
+  useApiKey: null,
+}
 
 /**
  * @param {SiteConfig} siteConfig
@@ -17,7 +38,7 @@ async function mountComponent(siteConfig, userConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
   render(
-    <ChatGPTCard question={question} siteConfig={siteConfig} container={container} />,
+    <DecisionCardForSearch question={question} siteConfig={siteConfig} container={container} />,
     container,
   )
 }

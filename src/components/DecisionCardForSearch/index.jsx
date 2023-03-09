@@ -1,12 +1,12 @@
 import { LightBulbIcon, SearchIcon } from '@primer/octicons-react'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import ChatGPTQuery from './ChatGPTQuery'
-import { getPossibleElementByQuerySelector, endsWithQuestionMark } from '../utils.mjs'
-import { defaultConfig, getUserConfig } from '../config'
+import ConversationCardForSearch from '../ConversationCardForSearch'
+import { defaultConfig, getUserConfig } from '../../config'
 import Browser from 'webextension-polyfill'
+import { getPossibleElementByQuerySelector, endsWithQuestionMark } from '../../utils'
 
-function ChatGPTCard(props) {
+function DecisionCardForSearch(props) {
   const [triggered, setTriggered] = useState(false)
   const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
@@ -92,10 +92,10 @@ function ChatGPTCard(props) {
           if (question)
             switch (config.triggerMode) {
               case 'always':
-                return <ChatGPTQuery question={question} />
+                return <ConversationCardForSearch question={question} />
               case 'manually':
                 if (triggered) {
-                  return <ChatGPTQuery question={question} />
+                  return <ConversationCardForSearch question={question} />
                 }
                 return (
                   <p
@@ -107,7 +107,7 @@ function ChatGPTCard(props) {
                 )
               case 'questionMark':
                 if (endsWithQuestionMark(question.trim())) {
-                  return <ChatGPTQuery question={question} />
+                  return <ConversationCardForSearch question={question} />
                 }
                 return (
                   <p className="gpt-inner icon-and-text">
@@ -129,10 +129,10 @@ function ChatGPTCard(props) {
   )
 }
 
-ChatGPTCard.propTypes = {
+DecisionCardForSearch.propTypes = {
   question: PropTypes.string.isRequired,
   siteConfig: PropTypes.object.isRequired,
   container: PropTypes.object.isRequired,
 }
 
-export default ChatGPTCard
+export default DecisionCardForSearch

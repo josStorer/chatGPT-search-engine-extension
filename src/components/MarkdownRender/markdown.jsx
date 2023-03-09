@@ -5,7 +5,7 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import remarkGfm from 'remark-gfm'
-import CopyButton from './CopyButton'
+import CopyButton from '../CopyButton'
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 

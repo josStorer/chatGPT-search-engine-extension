@@ -1,19 +1,19 @@
 import { v4 as uuidv4 } from 'uuid'
 import Browser from 'webextension-polyfill'
-import { generateAnswersWithChatgptWebApi, sendMessageFeedback } from './chatgpt-web.mjs'
+import ExpiryMap from 'expiry-map'
+import { generateAnswersWithChatgptWebApi, sendMessageFeedback } from './apis/chatgpt-web'
+import {
+  generateAnswersWithChatgptApi,
+  generateAnswersWithGptCompletionApi,
+} from './apis/openai-api'
 import {
   chatgptApiModelKeys,
   chatgptWebModelKeys,
   getUserConfig,
   gptApiModelKeys,
   isUsingApiKey,
-} from '../config.js'
-import {
-  generateAnswersWithChatgptApi,
-  generateAnswersWithGptCompletionApi,
-} from './openai-api.mjs'
-import ExpiryMap from 'expiry-map'
-import { isSafari } from '../utils.mjs'
+} from '../config'
+import { isSafari } from '../utils'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)

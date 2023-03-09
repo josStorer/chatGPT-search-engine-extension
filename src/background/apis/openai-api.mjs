@@ -1,9 +1,8 @@
 // api version
 
-import { Models } from '../config.js'
-import { fetchSSE } from './fetch-sse.mjs'
+import { Models } from '../../config'
+import { fetchSSE, getConversationPairs } from '../../utils'
 import { isEmpty } from 'lodash-es'
-import { getChatPairs } from '../utils.mjs'
 
 const chatgptPromptBase =
   `You are a helpful, creative, clever, and very friendly assistant.` +
@@ -37,7 +36,9 @@ export async function generateAnswersWithGptCompletionApi(
   })
 
   const prompt =
-    gptPromptBase + getChatPairs(session.conversationRecords, false) + `Human:${question}\nAI:`
+    gptPromptBase +
+    getConversationPairs(session.conversationRecords, false) +
+    `Human:${question}\nAI:`
 
   let answer = ''
   await fetchSSE('https://api.openai.com/v1/completions', {
@@ -97,7 +98,7 @@ export async function generateAnswersWithChatgptApi(port, question, session, api
     controller.abort()
   })
 
-  const prompt = getChatPairs(session.conversationRecords, true)
+  const prompt = getConversationPairs(session.conversationRecords, true)
   prompt.unshift({ role: 'system', content: chatgptPromptBase })
   prompt.push({ role: 'user', content: question })
 
