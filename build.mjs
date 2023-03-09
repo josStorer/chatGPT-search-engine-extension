@@ -39,7 +39,7 @@ async function runWebpack(isWithoutKatex, callback) {
       path: path.resolve(__dirname, outdir),
     },
     mode: isProduction ? 'production' : 'development',
-    devtool: false,
+    devtool: isProduction ? false : 'inline-source-map',
     optimization: {
       minimizer: [
         new TerserPlugin({
