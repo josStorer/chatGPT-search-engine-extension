@@ -11,8 +11,8 @@ import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
  */
 async function mountComponent(siteConfig, userConfig) {
   let question
-  if (userConfig.inputQuery) question = getSearchInputValue([userConfig.inputQuery])
-  if (!question && siteConfig) question = getSearchInputValue(siteConfig.inputQuery)
+  if (userConfig.inputQuery) question = await getInput([userConfig.inputQuery])
+  if (!question && siteConfig) question = await getInput(siteConfig.inputQuery)
 
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
@@ -23,10 +23,11 @@ async function mountComponent(siteConfig, userConfig) {
 }
 
 /**
- * @param {string[]} inputQuery
- * @returns {string}
+ * @param {string[]|function} inputQuery
+ * @returns {Promise<string>}
  */
-function getSearchInputValue(inputQuery) {
+async function getInput(inputQuery) {
+  if (typeof inputQuery === 'function') return await inputQuery()
   const searchInput = getPossibleElementByQuerySelector(inputQuery)
   if (searchInput && searchInput.value) {
     return searchInput.value
@@ -69,7 +70,7 @@ async function run() {
     if (siteName in siteConfig) {
       const siteAction = siteConfig[siteName].action
       if (siteAction && siteAction.init) {
-        siteAction.init(location.hostname, userConfig, getSearchInputValue, mountComponent)
+        await siteAction.init(location.hostname, userConfig, getInput, mountComponent)
       }
     }
     mountComponent(siteConfig[siteName], userConfig)

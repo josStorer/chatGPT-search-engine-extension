@@ -1,8 +1,8 @@
 const init = {
-  baidu: (hostname, userConfig, getSearchInputValue, mountComponent) => {
+  baidu: async (hostname, userConfig, getInput, mountComponent) => {
     try {
       const targetNode = document.getElementById('wrapper_wrapper')
-      const observer = new MutationObserver((records) => {
+      const observer = new MutationObserver(async (records) => {
         if (
           records.some(
             (record) =>
@@ -10,7 +10,7 @@ const init = {
               [...record.addedNodes].some((node) => node.id === 'container'),
           )
         ) {
-          const searchValue = getSearchInputValue(config.baidu.inputQuery)
+          const searchValue = await getInput(config.baidu.inputQuery)
           if (searchValue) {
             mountComponent(config.baidu, userConfig)
           }
@@ -29,7 +29,7 @@ const init = {
  */
 /**
  * @typedef {object} SiteConfig
- * @property {string[]} inputQuery - for search box
+ * @property {string[]|function} inputQuery - for search box
  * @property {string[]} sidebarContainerQuery - prepend child to
  * @property {string[]} appendContainerQuery - if sidebarContainer not exists, append child to
  * @property {string[]} resultsContainerQuery - prepend child to if insertAtTop is true
