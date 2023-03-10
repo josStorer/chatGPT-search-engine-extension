@@ -49,10 +49,16 @@
     border-color: var(--theme-border-color);
     background-color: var(--theme-color);
     margin: 0;
+
+    hr {
+      height: 1px;
+      background-color: var(--theme-border-color);
+      border: none;
+    }
   }
 
   .markdown-body {
-    padding: 15px;
+    padding: 0 15px 5px;
     background-color: var(--theme-color);
     color: var(--font-color);
 
@@ -128,31 +134,32 @@
     p {
       margin: 0;
     }
+  }
 
-    .gpt-header {
+  .gpt-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    color: var(--font-color);
+
+    p {
+      font-weight: bold;
+    }
+
+    .gpt-feedback {
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
+      gap: 6px;
+      cursor: pointer;
+    }
 
-      p {
-        font-weight: bold;
-      }
+    .gpt-feedback-selected {
+      color: #f08080;
+    }
 
-      .gpt-feedback {
-        display: flex;
-        gap: 6px;
-        cursor: pointer;
-      }
-
-      .gpt-feedback-selected {
-        color: #f08080;
-      }
-
-      .gpt-util-icon {
-        cursor: pointer;
-      }
+    .gpt-util-icon {
+      cursor: pointer;
     }
   }
 
