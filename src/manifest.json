@@ -34,5 +34,15 @@
         "content-script.css"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "*.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ]
 }

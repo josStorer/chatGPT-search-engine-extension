@@ -4,6 +4,10 @@ import Browser from 'webextension-polyfill'
 import InputBox from '../InputBox'
 import ConversationItem from '../ConversationItem'
 import { isSafari } from '../../utils'
+import { DownloadIcon } from '@primer/octicons-react'
+import FileSaver from 'file-saver'
+
+const logo = Browser.runtime.getURL('logo.png')
 
 class ConversationItemData extends Object {
   /**
@@ -73,7 +77,7 @@ function ConversationCardForSearch(props) {
         window.session = msg.session
       }
       if (msg.done) {
-        UpdateAnswer('\n<hr>', true, 'answer', true)
+        UpdateAnswer('\n<hr/>', true, 'answer', true)
         setIsReady(true)
       }
       if (msg.error) {
@@ -99,7 +103,7 @@ function ConversationCardForSearch(props) {
           default:
             setConversationItemData([
               ...conversationItemData,
-              new ConversationItemData('error', msg.error + '\n<hr>'),
+              new ConversationItemData('error', msg.error + '\n<hr/>'),
             ])
             break
         }
@@ -114,6 +118,25 @@ function ConversationCardForSearch(props) {
 
   return (
     <div className="gpt-inner">
+      <div className="gpt-header">
+        <img src={logo} width="20" height="20" style="margin:5px 15px 0px;" />
+        <span
+          title="Save Conversation"
+          className="gpt-util-icon"
+          style="margin:15px 15px 10px;"
+          onClick={() => {
+            let output = ''
+            window.session.conversationRecords.forEach((data) => {
+              output += `Question:\n\n${data.question}\n\nAnswer:\n\n${data.answer}\n\n<hr/>\n\n`
+            })
+            const blob = new Blob([output], { type: 'text/plain;charset=utf-8' })
+            FileSaver.saveAs(blob, 'conversation.md')
+          }}
+        >
+          <DownloadIcon size={16} />
+        </span>
+      </div>
+      <hr />
       <div className="markdown-body">
         {conversationItemData.map((data, idx) => (
           <ConversationItem
@@ -128,7 +151,7 @@ function ConversationCardForSearch(props) {
       <InputBox
         enabled={isReady}
         onSubmit={(question) => {
-          const newQuestion = new ConversationItemData('question', '**You:**\n' + question)
+          const newQuestion = new ConversationItemData('question', question + '\n<hr/>')
           const newAnswer = new ConversationItemData(
             'answer',
             '<p class="gpt-loading">Waiting for response...</p>',
