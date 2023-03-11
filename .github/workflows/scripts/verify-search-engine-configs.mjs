@@ -1,6 +1,91 @@
 import { JSDOM } from 'jsdom'
-import { config } from '../../../src/content-script/site-adapters'
 import fetch, { Headers } from 'node-fetch'
+
+const config = {
+  google: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['#rhs'],
+    appendContainerQuery: ['#rcnt'],
+    resultsContainerQuery: ['#rso'],
+  },
+  bing: {
+    inputQuery: ["[name='q']"],
+    sidebarContainerQuery: ['#b_context'],
+    appendContainerQuery: [],
+    resultsContainerQuery: ['#b_results'],
+  },
+  yahoo: {
+    inputQuery: ["input[name='p']"],
+    sidebarContainerQuery: ['#right', '.Contents__inner.Contents__inner--sub'],
+    appendContainerQuery: ['#cols', '#contents__wrap'],
+    resultsContainerQuery: [
+      '#main-algo',
+      '.searchCenterMiddle',
+      '.Contents__inner.Contents__inner--main',
+      '#contents',
+    ],
+  },
+  duckduckgo: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['.results--sidebar.js-results-sidebar'],
+    appendContainerQuery: ['#links_wrapper'],
+    resultsContainerQuery: ['.results'],
+  },
+  startpage: {
+    inputQuery: ["input[name='query']"],
+    sidebarContainerQuery: ['.layout-web__sidebar.layout-web__sidebar--web'],
+    appendContainerQuery: ['.layout-web__body.layout-web__body--desktop'],
+    resultsContainerQuery: ['.mainline-results'],
+  },
+  baidu: {
+    inputQuery: ["input[id='kw']"],
+    sidebarContainerQuery: ['#content_right'],
+    appendContainerQuery: ['#container'],
+    resultsContainerQuery: ['#content_left', '#results'],
+  },
+  kagi: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['.right-content-box._0_right_sidebar'],
+    appendContainerQuery: ['#_0_app_content'],
+    resultsContainerQuery: ['#main', '#app'],
+  },
+  yandex: {
+    inputQuery: ["input[name='text']"],
+    sidebarContainerQuery: ['#search-result-aside'],
+    appendContainerQuery: [],
+    resultsContainerQuery: ['#search-result'],
+  },
+  naver: {
+    inputQuery: ["input[name='query']"],
+    sidebarContainerQuery: ['#sub_pack'],
+    appendContainerQuery: ['#content'],
+    resultsContainerQuery: ['#main_pack', '#ct'],
+  },
+  brave: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['#side-right'],
+    appendContainerQuery: [],
+    resultsContainerQuery: ['#results'],
+  },
+  searx: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['#sidebar_results', '#sidebar'],
+    appendContainerQuery: [],
+    resultsContainerQuery: ['#urls', '#main_results', '#results'],
+  },
+  ecosia: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['.sidebar.web__sidebar'],
+    appendContainerQuery: ['#main'],
+    resultsContainerQuery: ['.mainline'],
+  },
+  neeva: {
+    inputQuery: ["input[name='q']"],
+    sidebarContainerQuery: ['.result-group-layout__stickyContainer-iDIO8'],
+    appendContainerQuery: ['.search-index__searchHeaderContainer-2JD6q'],
+    resultsContainerQuery: ['.result-group-layout__component-1jzTe', '#search'],
+  },
+}
 
 const urls = {
   google: ['https://www.google.com/search?q=hello'],
