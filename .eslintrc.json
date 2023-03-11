@@ -12,7 +12,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off"
   },
-  "ignorePatterns": ["build/**"],
+  "ignorePatterns": ["build/**", "build.mjs"],
   "settings": {
     "react": {
       "version": "detect"
