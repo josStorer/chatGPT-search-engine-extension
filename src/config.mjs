@@ -31,6 +31,8 @@ export const ThemeMode = {
   auto: 'Auto',
 }
 
+export const maxResponseTokenLength = 1000
+
 /**
  * @typedef {typeof defaultConfig} UserConfig
  */

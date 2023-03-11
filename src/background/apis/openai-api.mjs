@@ -1,6 +1,6 @@
 // api version
 
-import { Models } from '../../config'
+import { maxResponseTokenLength, Models } from '../../config'
 import { fetchSSE, getConversationPairs } from '../../utils'
 import { isEmpty } from 'lodash-es'
 
@@ -52,7 +52,7 @@ export async function generateAnswersWithGptCompletionApi(
       prompt: prompt,
       model: Models[modelName].value,
       stream: true,
-      max_tokens: 1000,
+      max_tokens: maxResponseTokenLength,
     }),
     onMessage(message) {
       console.debug('sse message', message)
@@ -102,8 +102,6 @@ export async function generateAnswersWithChatgptApi(port, question, session, api
   prompt.unshift({ role: 'system', content: chatgptPromptBase })
   prompt.push({ role: 'user', content: question })
 
-  console.debug('dsdsd', prompt)
-
   let answer = ''
   await fetchSSE('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -116,7 +114,7 @@ export async function generateAnswersWithChatgptApi(port, question, session, api
       messages: prompt,
       model: Models[modelName].value,
       stream: true,
-      max_tokens: 1000,
+      max_tokens: maxResponseTokenLength,
     }),
     onMessage(message) {
       console.debug('sse message', message)
