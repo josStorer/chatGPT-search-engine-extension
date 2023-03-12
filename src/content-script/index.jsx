@@ -12,6 +12,15 @@ window.session = initSession()
  * @param {UserConfig} userConfig
  */
 async function mountComponent(siteConfig, userConfig) {
+  if (
+    !getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery) &&
+    !getPossibleElementByQuerySelector(siteConfig.appendContainerQuery) &&
+    !getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery) &&
+    !getPossibleElementByQuerySelector([userConfig.prependQuery]) &&
+    !getPossibleElementByQuerySelector([userConfig.appendQuery])
+  )
+    return
+
   document.querySelectorAll('.chat-gpt-container').forEach((e) => e.remove())
 
   let question
