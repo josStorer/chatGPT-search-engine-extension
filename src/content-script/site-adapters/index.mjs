@@ -1,4 +1,11 @@
 import baidu from './baidu'
+import bilibili from './bilibili'
+import youtube from './youtube'
+import github from './github'
+import gitlab from './gitlab'
+import zhihu from './zhihu'
+import reddit from './reddit'
+import quora from './quora'
 
 /**
  * @typedef {object} SiteConfigAction
@@ -101,5 +108,56 @@ export const config = {
     sidebarContainerQuery: ['.result-group-layout__stickyContainer-iDIO8'],
     appendContainerQuery: ['.search-index__searchHeaderContainer-2JD6q'],
     resultsContainerQuery: ['.result-group-layout__component-1jzTe', '#search'],
+  },
+  bilibili: {
+    inputQuery: bilibili.inputQuery,
+    sidebarContainerQuery: ['#danmukuBox'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+    action: {
+      init: bilibili.init,
+    },
+  },
+  youtube: {
+    inputQuery: youtube.inputQuery,
+    sidebarContainerQuery: ['#secondary'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+    action: {
+      init: youtube.init,
+    },
+  },
+  github: {
+    inputQuery: github.inputQuery,
+    sidebarContainerQuery: ['#diff', '.commit'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+    action: {
+      init: github.init,
+    },
+  },
+  gitlab: {
+    inputQuery: gitlab.inputQuery,
+    sidebarContainerQuery: ['.js-commit-box-info'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+  },
+  zhihu: {
+    inputQuery: zhihu.inputQuery,
+    sidebarContainerQuery: ['.Question-sideColumn'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+  },
+  reddit: {
+    inputQuery: reddit.inputQuery,
+    sidebarContainerQuery: ['.side .spacer .linkinfo'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
+  },
+  quora: {
+    inputQuery: quora.inputQuery,
+    sidebarContainerQuery: ['.q-box.PageContentsLayout___StyledBox-d2uxks-0'],
+    appendContainerQuery: [],
+    resultsContainerQuery: [],
   },
 }
