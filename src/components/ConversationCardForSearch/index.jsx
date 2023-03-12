@@ -87,7 +87,8 @@ function ConversationCardForSearch(props) {
             UpdateAnswer(
               `UNAUTHORIZED<br>Please login at https://chat.openai.com first${
                 isSafari() ? '<br>Then open https://chat.openai.com/api/auth/session' : ''
-              }<br>And refresh this page or type you question again`,
+              }<br>And refresh this page or type you question again` +
+                `<br><br>Consider creating an api key at https://platform.openai.com/account/api-keys<hr>`,
               false,
               'error',
             )
@@ -96,7 +97,8 @@ function ConversationCardForSearch(props) {
             UpdateAnswer(
               `OpenAI Security Check Required<br>Please open ${
                 isSafari() ? 'https://chat.openai.com/api/auth/session' : 'https://chat.openai.com'
-              }<br>And refresh this page or type you question again`,
+              }<br>And refresh this page or type you question again` +
+                `<br><br>Consider creating an api key at https://platform.openai.com/account/api-keys<hr>`,
               false,
               'error',
             )
