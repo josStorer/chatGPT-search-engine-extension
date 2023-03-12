@@ -3,28 +3,9 @@ import { render } from 'preact'
 import DecisionCardForSearch from '../components/DecisionCardForSearch'
 import { config as siteConfig } from './site-adapters'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
-import { getPossibleElementByQuerySelector, isSafari } from '../utils'
+import { getPossibleElementByQuerySelector, initSession, isSafari } from '../utils'
 
-/**
- * @typedef {object} Session
- * @property {string|null} question
- * @property {string|null} conversationId - chatGPT web mode
- * @property {string|null} messageId - chatGPT web mode
- * @property {string|null} parentMessageId - chatGPT web mode
- * @property {Object[]|null} conversationRecords - API key mode
- * @property {bool|null} useApiKey
- */
-/**
- * @type {Session}
- */
-window.session = {
-  question: null,
-  conversationId: null,
-  messageId: null,
-  parentMessageId: null,
-  conversationRecords: [],
-  useApiKey: null,
-}
+window.session = initSession()
 
 /**
  * @param {SiteConfig} siteConfig

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Browser from 'webextension-polyfill'
 import InputBox from '../InputBox'
 import ConversationItem from '../ConversationItem'
-import { isSafari } from '../../utils'
+import { initSession, isSafari } from '../../utils'
 import { DownloadIcon } from '@primer/octicons-react'
 import FileSaver from 'file-saver'
 
@@ -35,14 +35,7 @@ function ConversationCardForSearch(props) {
 
   useEffect(() => {
     // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
-    window.session = {
-      question: props.question,
-      conversationId: null,
-      messageId: null,
-      parentMessageId: null,
-      conversationRecords: [],
-      useApiKey: null,
-    }
+    window.session = initSession({ question: props.question })
     port.postMessage({ session: window.session })
   }, [props.question]) // usually only triggered once
 
