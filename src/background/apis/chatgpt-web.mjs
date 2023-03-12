@@ -60,6 +60,7 @@ export async function generateAnswersWithChatgptWebApi(port, question, session, 
 
   const models = await getModels(accessToken).catch(() => {})
 
+  let answer = ''
   await fetchSSE('https://chat.openai.com/backend-api/conversation', {
     method: 'POST',
     signal: controller.signal,
@@ -86,6 +87,8 @@ export async function generateAnswersWithChatgptWebApi(port, question, session, 
     onMessage(message) {
       console.debug('sse message', message)
       if (message === '[DONE]') {
+        session.conversationRecords.push({ question: question, answer: answer })
+        console.debug('conversation history', { content: session.conversationRecords })
         port.postMessage({ answer: null, done: true, session: session })
         return
       }
@@ -99,9 +102,9 @@ export async function generateAnswersWithChatgptWebApi(port, question, session, 
       if (data.conversation_id) session.conversationId = data.conversation_id
       if (data.message?.id) session.parentMessageId = data.message.id
 
-      const text = data.message?.content?.parts?.[0]
-      if (text) {
-        port.postMessage({ answer: text, done: false, session: session })
+      answer = data.message?.content?.parts?.[0]
+      if (answer) {
+        port.postMessage({ answer: answer, done: false, session: session })
       }
     },
     async onStart() {
