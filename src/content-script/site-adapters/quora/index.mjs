@@ -3,8 +3,9 @@ import { cropText } from '../../../utils/crop-text.mjs'
 export default {
   inputQuery: async () => {
     try {
+      if (location.pathname === '/') return
+
       const texts = document.querySelectorAll('.q-box.qu-userSelect--text')
-      console.log(texts)
       let title
       if (texts.length > 0) title = texts[0].textContent
       let answers = ''
