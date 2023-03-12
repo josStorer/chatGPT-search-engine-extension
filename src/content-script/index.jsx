@@ -31,10 +31,13 @@ window.session = {
  * @param {UserConfig} userConfig
  */
 async function mountComponent(siteConfig, userConfig) {
+  document.querySelectorAll('.chat-gpt-container').forEach((e) => e.remove())
+
   let question
   if (userConfig.inputQuery) question = await getInput([userConfig.inputQuery])
   if (!question && siteConfig) question = await getInput(siteConfig.inputQuery)
 
+  document.querySelectorAll('.chat-gpt-container').forEach((e) => e.remove())
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
   render(
