@@ -32,7 +32,7 @@ async function runWebpack(isWithoutKatex, callback) {
         import: './src/popup/index.jsx',
         dependOn: 'shared',
       },
-      shared: ['preact', 'webextension-polyfill', '@primer/octicons-react'],
+      shared: ['preact', 'webextension-polyfill', '@primer/octicons-react', './src/utils'],
     },
     output: {
       filename: '[name].js',

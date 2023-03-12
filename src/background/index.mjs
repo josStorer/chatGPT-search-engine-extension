@@ -13,7 +13,7 @@ import {
   gptApiModelKeys,
   isUsingApiKey,
 } from '../config'
-import { isSafari } from '../utils'
+import { isSafari } from '../utils/is-safari'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)

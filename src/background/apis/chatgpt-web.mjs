@@ -1,6 +1,6 @@
 // web version
 
-import { fetchSSE } from '../../utils'
+import { fetchSSE } from '../../utils/fetch-sse'
 import { isEmpty } from 'lodash-es'
 import { chatgptWebModelKeys, Models } from '../../config'
 

@@ -1,7 +1,8 @@
 // api version
 
 import { maxResponseTokenLength, Models } from '../../config'
-import { fetchSSE, getConversationPairs } from '../../utils'
+import { fetchSSE } from '../../utils/fetch-sse'
+import { getConversationPairs } from '../../utils/get-conversation-pairs'
 import { isEmpty } from 'lodash-es'
 
 const chatgptPromptBase =
