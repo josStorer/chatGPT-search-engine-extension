@@ -34,7 +34,15 @@ function ConversationCardForSearch(props) {
   const [port, setPort] = useState(() => Browser.runtime.connect())
 
   useEffect(() => {
-    window.session.question = props.question
+    // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
+    window.session = {
+      question: props.question,
+      conversationId: null,
+      messageId: null,
+      parentMessageId: null,
+      conversationRecords: [],
+      useApiKey: null,
+    }
     port.postMessage({ session: window.session })
   }, [props.question]) // usually only triggered once
 
