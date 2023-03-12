@@ -144,7 +144,7 @@ export const config = {
   },
   zhihu: {
     inputQuery: zhihu.inputQuery,
-    sidebarContainerQuery: ['.Question-sideColumn'],
+    sidebarContainerQuery: ['.Question-sideColumn', '.Post-Header'],
     appendContainerQuery: [],
     resultsContainerQuery: [],
   },
