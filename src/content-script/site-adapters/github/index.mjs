@@ -1,5 +1,4 @@
-import { cropText } from '../../../utils/crop-text.mjs'
-import { limitedFetch } from '../../../utils/limited-fetch.mjs'
+import { cropText, limitedFetch } from '../../../utils'
 import { config } from '../index.mjs'
 
 const getPatchUrl = async () => {

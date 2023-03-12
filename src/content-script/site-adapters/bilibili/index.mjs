@@ -1,4 +1,4 @@
-import { cropText } from '../../../utils/crop-text.mjs'
+import { cropText } from '../../../utils'
 import { config } from '../index.mjs'
 
 export default {
