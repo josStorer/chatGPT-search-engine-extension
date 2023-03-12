@@ -102,25 +102,29 @@ function DecisionCardForSearch(props) {
                     className="gpt-inner manual-btn icon-and-text"
                     onClick={() => setTriggered(true)}
                   >
-                    <SearchIcon size="small" /> Ask ChatGPT for this query
+                    <SearchIcon size="small" /> Ask ChatGPT
                   </p>
                 )
               case 'questionMark':
                 if (endsWithQuestionMark(question.trim())) {
                   return <ConversationCardForSearch question={question} />
                 }
+                if (triggered) {
+                  return <ConversationCardForSearch question={question} />
+                }
                 return (
-                  <p className="gpt-inner icon-and-text">
-                    <LightBulbIcon size="small" /> Trigger ChatGPT by appending a question mark
-                    after your query
+                  <p
+                    className="gpt-inner manual-btn icon-and-text"
+                    onClick={() => setTriggered(true)}
+                  >
+                    <SearchIcon size="small" /> Ask ChatGPT
                   </p>
                 )
             }
           else
             return (
               <p className="gpt-inner icon-and-text">
-                <LightBulbIcon size="small" /> No input found, set your input query in the extension
-                popup window
+                <LightBulbIcon size="small" /> No Input Found
               </p>
             )
         })()}
