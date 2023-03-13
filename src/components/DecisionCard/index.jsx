@@ -1,12 +1,12 @@
 import { LightBulbIcon, SearchIcon } from '@primer/octicons-react'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import ConversationCardForSearch from '../ConversationCardForSearch'
+import ConversationCard from '../ConversationCard'
 import { defaultConfig, getUserConfig } from '../../config'
 import Browser from 'webextension-polyfill'
 import { getPossibleElementByQuerySelector, endsWithQuestionMark } from '../../utils'
 
-function DecisionCardForSearch(props) {
+function DecisionCard(props) {
   const [triggered, setTriggered] = useState(false)
   const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
@@ -92,10 +92,10 @@ function DecisionCardForSearch(props) {
           if (question)
             switch (config.triggerMode) {
               case 'always':
-                return <ConversationCardForSearch session={props.session} question={question} />
+                return <ConversationCard session={props.session} question={question} />
               case 'manually':
                 if (triggered) {
-                  return <ConversationCardForSearch session={props.session} question={question} />
+                  return <ConversationCard session={props.session} question={question} />
                 }
                 return (
                   <p
@@ -107,10 +107,10 @@ function DecisionCardForSearch(props) {
                 )
               case 'questionMark':
                 if (endsWithQuestionMark(question.trim())) {
-                  return <ConversationCardForSearch session={props.session} question={question} />
+                  return <ConversationCard session={props.session} question={question} />
                 }
                 if (triggered) {
-                  return <ConversationCardForSearch session={props.session} question={question} />
+                  return <ConversationCard session={props.session} question={question} />
                 }
                 return (
                   <p
@@ -133,11 +133,11 @@ function DecisionCardForSearch(props) {
   )
 }
 
-DecisionCardForSearch.propTypes = {
+DecisionCard.propTypes = {
   session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
   siteConfig: PropTypes.object.isRequired,
   container: PropTypes.object.isRequired,
 }
 
-export default DecisionCardForSearch
+export default DecisionCard

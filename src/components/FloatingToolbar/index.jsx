@@ -1,6 +1,6 @@
 import Browser from 'webextension-polyfill'
 import { cloneElement, useEffect, useState } from 'react'
-import ConversationCardForSearch from '../ConversationCardForSearch'
+import ConversationCard from '../ConversationCard'
 import PropTypes from 'prop-types'
 import { defaultConfig, getUserConfig } from '../../config.mjs'
 import { config as toolsConfig } from '../../content-script/selection-tools'
@@ -71,7 +71,7 @@ function FloatingToolbar(props) {
         >
           <div className="gpt-selection-window">
             <div className="chat-gpt-container">
-              <ConversationCardForSearch
+              <ConversationCard
                 session={session}
                 question={prompt}
                 showDragbar={true}

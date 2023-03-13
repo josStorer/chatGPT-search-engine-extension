@@ -1,6 +1,6 @@
 import './styles.scss'
 import { render } from 'preact'
-import DecisionCardForSearch from '../components/DecisionCardForSearch'
+import DecisionCard from '../components/DecisionCard'
 import { config as siteConfig } from './site-adapters'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
 import {
@@ -35,7 +35,7 @@ async function mountComponent(siteConfig, userConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
   render(
-    <DecisionCardForSearch
+    <DecisionCard
       session={initSession()}
       question={question}
       siteConfig={siteConfig}

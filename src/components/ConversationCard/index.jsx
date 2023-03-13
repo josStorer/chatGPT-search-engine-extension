@@ -23,7 +23,7 @@ class ConversationItemData extends Object {
   }
 }
 
-function ConversationCardForSearch(props) {
+function ConversationCard(props) {
   /**
    * @type {[ConversationItemData[], (conversationItemData: ConversationItemData[]) => void]}
    */
@@ -182,11 +182,11 @@ function ConversationCardForSearch(props) {
   )
 }
 
-ConversationCardForSearch.propTypes = {
+ConversationCard.propTypes = {
   session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
   onUpdate: PropTypes.func,
   showDragbar: PropTypes.bool,
 }
 
-export default memo(ConversationCardForSearch)
+export default memo(ConversationCard)
