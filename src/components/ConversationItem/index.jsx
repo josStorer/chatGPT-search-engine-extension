@@ -36,13 +36,13 @@ export function ConversationItem({ type, content, session, done }) {
           <div className="gpt-header">
             <p>{session ? 'ChatGPT:' : 'Loading...'}</p>
             <div style="display: flex; gap: 15px;">
-              {done && !session.useApiKey && (
+              {done && session && session.conversationId && (
                 <FeedbackForChatGPTWeb
                   messageId={session.messageId}
                   conversationId={session.conversationId}
                 />
               )}
-              {session && session.conversationId && !session.useApiKey && (
+              {session && session.conversationId && (
                 <a
                   title="Continue on official website"
                   href={'https://chat.openai.com/chat/' + session.conversationId}

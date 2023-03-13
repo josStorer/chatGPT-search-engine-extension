@@ -32,6 +32,7 @@ function ConversationCardForSearch(props) {
   ])
   const [isReady, setIsReady] = useState(false)
   const [port, setPort] = useState(() => Browser.runtime.connect())
+  const [session, setSession] = useState(props.session)
 
   useEffect(() => {
     if (props.onUpdate) props.onUpdate()
@@ -39,8 +40,9 @@ function ConversationCardForSearch(props) {
 
   useEffect(() => {
     // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
-    props.session = initSession({ question: props.question })
-    port.postMessage({ session: props.session })
+    const newSession = initSession({ question: props.question })
+    setSession(newSession)
+    port.postMessage({ session: newSession })
   }, [props.question]) // usually only triggered once
 
   /**
@@ -58,7 +60,7 @@ function ConversationCardForSearch(props) {
         newType,
         appended ? copy[index].content + value : value,
       )
-      copy[index].session = { ...props.session }
+      copy[index].session = { ...session }
       copy[index].done = done
       return copy
     })
@@ -79,7 +81,7 @@ function ConversationCardForSearch(props) {
         UpdateAnswer(msg.answer, false, 'answer')
       }
       if (msg.session) {
-        props.session = msg.session
+        setSession(msg.session)
       }
       if (msg.done) {
         UpdateAnswer('\n<hr/>', true, 'answer', true)
@@ -133,7 +135,7 @@ function ConversationCardForSearch(props) {
           style="margin:15px 15px 10px;"
           onClick={() => {
             let output = ''
-            props.session.conversationRecords.forEach((data) => {
+            session.conversationRecords.forEach((data) => {
               output += `Question:\n\n${data.question}\n\nAnswer:\n\n${data.answer}\n\n<hr/>\n\n`
             })
             const blob = new Blob([output], { type: 'text/plain;charset=utf-8' })
@@ -166,9 +168,10 @@ function ConversationCardForSearch(props) {
           setConversationItemData([...conversationItemData, newQuestion, newAnswer])
           setIsReady(false)
 
-          props.session.question = question
+          const newSession = { ...session, question }
+          setSession(newSession)
           try {
-            port.postMessage({ session: props.session })
+            port.postMessage({ session: newSession })
           } catch (e) {
             UpdateAnswer(e, false, 'error')
           }

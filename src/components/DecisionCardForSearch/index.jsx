@@ -134,7 +134,7 @@ function DecisionCardForSearch(props) {
 }
 
 DecisionCardForSearch.propTypes = {
-  session: PropTypes.string.isRequired,
+  session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
   siteConfig: PropTypes.object.isRequired,
   container: PropTypes.object.isRequired,
