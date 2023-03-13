@@ -65,6 +65,8 @@
     padding: 5px 15px 10px;
     background-color: var(--theme-color);
     color: var(--font-color);
+    max-height: 800px;
+    overflow-y: auto;
 
     ul,
     ol {
@@ -226,11 +228,9 @@
 }
 
 .gpt-selection-window {
-  width: 450px;
-  max-height: 800px;
-  padding: 10px;
-  overflow-y: auto;
-  border-radius: 20px;
+  width: 600px;
+  height: auto;
+  border-radius: 8px;
   background-color: var(--theme-color);
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
 }

@@ -1,10 +1,10 @@
 import Browser from 'webextension-polyfill'
-import { cloneElement, useEffect, useRef, useState } from 'react'
+import { cloneElement, useEffect, useState } from 'react'
 import ConversationCardForSearch from '../ConversationCardForSearch'
 import PropTypes from 'prop-types'
 import { defaultConfig, getUserConfig } from '../../config.mjs'
 import { config as toolsConfig } from '../../content-script/selection-tools'
-import { initSession, setElementPositionInViewport, updateRefHeight } from '../../utils'
+import { initSession, setElementPositionInViewport } from '../../utils'
 import Draggable from 'react-draggable'
 
 const logo = Browser.runtime.getURL('logo.png')
@@ -17,7 +17,6 @@ function FloatingToolbar(props) {
   const [position, setPosition] = useState(props.position)
   const [virtualPosition, setVirtualPosition] = useState({ x: 0, y: 0 })
   const [session] = useState(initSession())
-  const toolWindow = useRef(null)
 
   useEffect(() => {
     getUserConfig()
@@ -70,14 +69,13 @@ function FloatingToolbar(props) {
           onStop={dragEvent.onStop}
           position={virtualPosition}
         >
-          <div className="gpt-selection-window" ref={toolWindow}>
+          <div className="gpt-selection-window">
             <div className="chat-gpt-container">
               <ConversationCardForSearch
                 session={session}
                 question={prompt}
                 showDragbar={true}
                 onUpdate={() => {
-                  updateRefHeight(toolWindow)
                   updatePosition()
                 }}
               />
