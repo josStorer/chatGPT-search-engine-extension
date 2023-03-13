@@ -92,7 +92,7 @@ async function prepareForSelectionTools() {
     setTimeout(() => {
       const selection = window.getSelection()?.toString()
       if (selection) {
-        const position = { x: e.pageX + 15, y: e.pageY - 15 }
+        const position = { x: e.clientX + 15, y: e.clientY - 15 }
         toolbarContainer = createElementAtPosition(position.x, position.y)
         toolbarContainer.className = 'toolbar-container'
         render(
