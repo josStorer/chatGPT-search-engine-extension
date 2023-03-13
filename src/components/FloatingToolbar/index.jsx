@@ -4,8 +4,7 @@ import ConversationCardForSearch from '../ConversationCardForSearch'
 import PropTypes from 'prop-types'
 import { defaultConfig, getUserConfig } from '../../config.mjs'
 import { config as toolsConfig } from '../../content-script/selection-tools'
-import { updateRefHeight } from '../../utils/update-ref-height.mjs'
-import { initSession } from '../../utils/index.mjs'
+import { setElementPositionInViewport, initSession, updateRefHeight } from '../../utils'
 
 const logo = Browser.runtime.getURL('logo.png')
 
@@ -38,6 +37,14 @@ function FloatingToolbar(props) {
     }
   }, [config])
 
+  const updatePosition = () => {
+    setElementPositionInViewport(props.container, props.position.x, props.position.y)
+  }
+
+  useEffect(() => {
+    updatePosition()
+  })
+
   if (!render) return <div />
 
   const tools = []
@@ -65,7 +72,10 @@ function FloatingToolbar(props) {
             <ConversationCardForSearch
               session={session}
               question={prompt}
-              onUpdate={() => updateRefHeight(toolWindow)}
+              onUpdate={() => {
+                updateRefHeight(toolWindow)
+                updatePosition()
+              }}
             />
           </div>
         </div>
@@ -81,6 +91,8 @@ function FloatingToolbar(props) {
 
 FloatingToolbar.propTypes = {
   selection: PropTypes.string.isRequired,
+  position: PropTypes.object.isRequired,
+  container: PropTypes.object.isRequired,
 }
 
 export default FloatingToolbar
