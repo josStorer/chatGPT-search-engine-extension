@@ -3,9 +3,13 @@ import { render } from 'preact'
 import DecisionCardForSearch from '../components/DecisionCardForSearch'
 import { config as siteConfig } from './site-adapters'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
-import { getPossibleElementByQuerySelector, initSession, isSafari } from '../utils'
-
-window.session = initSession()
+import {
+  createElementAtPosition,
+  getPossibleElementByQuerySelector,
+  initSession,
+  isSafari,
+} from '../utils'
+import FloatingToolbar from '../components/FloatingToolbar'
 
 /**
  * @param {SiteConfig} siteConfig
@@ -72,9 +76,40 @@ async function prepareForSafari() {
   }
 }
 
-async function run() {
-  if (isSafari()) await prepareForSafari()
+let toolbarContainer
 
+async function prepareForSelectionTools() {
+  document.addEventListener('mouseup', (e) => {
+    if (toolbarContainer && toolbarContainer.contains(e.target)) return
+
+    if (toolbarContainer) toolbarContainer.remove()
+    setTimeout(() => {
+      const selection = window.getSelection()?.toString()
+      if (selection) {
+        toolbarContainer = createElementAtPosition(e.pageX + 15, e.pageY - 15)
+        render(<FloatingToolbar selection={selection} />, toolbarContainer)
+      }
+    })
+  })
+  document.addEventListener('mousedown', (e) => {
+    if (toolbarContainer && toolbarContainer.contains(e.target)) return
+
+    if (toolbarContainer) toolbarContainer.remove()
+  })
+  document.addEventListener('keydown', (e) => {
+    if (
+      toolbarContainer &&
+      !toolbarContainer.contains(e.target) &&
+      (e.target.nodeName === 'INPUT' || e.target.nodeName === 'TEXTAREA')
+    ) {
+      setTimeout(() => {
+        if (!window.getSelection()?.toString()) toolbarContainer.remove()
+      })
+    }
+  })
+}
+
+async function prepareForStaticCard() {
   const userConfig = await getUserConfig()
   let siteRegex
   if (userConfig.userSiteRegexOnly) siteRegex = userConfig.siteRegex
@@ -94,6 +129,12 @@ async function run() {
     }
     mountComponent(siteConfig[siteName], userConfig)
   }
+}
+
+async function run() {
+  if (isSafari()) await prepareForSafari()
+  prepareForSelectionTools()
+  prepareForStaticCard()
 }
 
 run()

@@ -34,6 +34,10 @@ function ConversationCardForSearch(props) {
   const [port, setPort] = useState(() => Browser.runtime.connect())
 
   useEffect(() => {
+    if (props.onUpdate) props.onUpdate()
+  })
+
+  useEffect(() => {
     // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
     props.session = initSession({ question: props.question })
     port.postMessage({ session: props.session })
@@ -177,6 +181,7 @@ function ConversationCardForSearch(props) {
 ConversationCardForSearch.propTypes = {
   session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
+  onUpdate: PropTypes.func,
 }
 
 export default memo(ConversationCardForSearch)

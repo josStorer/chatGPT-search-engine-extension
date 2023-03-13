@@ -190,3 +190,35 @@
     opacity: 0.5;
   }
 }
+
+.gpt-selection-toolbar {
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  padding: 2px;
+  background-color: #ffffff;
+  box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gpt-selection-toolbar-button {
+  margin-left: 5px;
+  padding: 2px;
+  border-radius: 30px;
+  background-color: #ffffff;
+  color: #24292f;
+  cursor: pointer;
+}
+
+.gpt-selection-toolbar-button:hover {
+  background-color: #d4d5da;
+}
+
+.gpt-selection-window {
+  width: 450px;
+  max-height: 800px;
+  padding: 10px;
+  overflow-y: auto;
+  border-radius: 20px;
+  background-color: var(--theme-color);
+  box-shadow: 8px 4px 4px rgba(0, 0, 0, 0.2);
+}

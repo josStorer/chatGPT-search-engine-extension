@@ -33,6 +33,7 @@
     "preact": "^10.11.3",
     "prop-types": "^15.8.1",
     "react": "npm:@preact/compat@^17.1.2",
+    "react-bootstrap-icons": "^1.10.2",
     "react-dom": "npm:@preact/compat@^17.1.2",
     "react-markdown": "^8.0.5",
     "rehype-highlight": "^6.0.0",
