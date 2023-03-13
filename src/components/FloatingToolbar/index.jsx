@@ -43,7 +43,8 @@ function FloatingToolbar(props) {
 
   if (triggered) {
     const updatePosition = () => {
-      return setElementPositionInViewport(props.container, position.x, position.y)
+      const newPosition = setElementPositionInViewport(props.container, position.x, position.y)
+      if (position.x !== newPosition.x || position.y !== newPosition.y) setPosition(newPosition) // clear extra virtual position offset
     }
 
     const dragEvent = {
@@ -57,8 +58,7 @@ function FloatingToolbar(props) {
     }
 
     if (virtualPosition.x === 0 && virtualPosition.y === 0) {
-      const newPosition = updatePosition() // avoid jitter
-      if (position.x !== newPosition.x || position.y !== newPosition.y) setPosition(newPosition) // clear extra virtual position offset
+      updatePosition() // avoid jitter
     }
 
     return (
