@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { updateRefHeight } from '../../utils/update-ref-height.mjs'
+import { updateRefHeight } from '../../utils'
 
 export function InputBox({ onSubmit, enabled }) {
   const [value, setValue] = useState('')
