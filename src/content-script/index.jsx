@@ -31,7 +31,12 @@ async function mountComponent(siteConfig, userConfig) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
   render(
-    <DecisionCardForSearch question={question} siteConfig={siteConfig} container={container} />,
+    <DecisionCardForSearch
+      session={initSession()}
+      question={question}
+      siteConfig={siteConfig}
+      container={container}
+    />,
     container,
   )
 }

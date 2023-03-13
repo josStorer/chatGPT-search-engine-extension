@@ -92,10 +92,10 @@ function DecisionCardForSearch(props) {
           if (question)
             switch (config.triggerMode) {
               case 'always':
-                return <ConversationCardForSearch question={question} />
+                return <ConversationCardForSearch session={props.session} question={question} />
               case 'manually':
                 if (triggered) {
-                  return <ConversationCardForSearch question={question} />
+                  return <ConversationCardForSearch session={props.session} question={question} />
                 }
                 return (
                   <p
@@ -107,10 +107,10 @@ function DecisionCardForSearch(props) {
                 )
               case 'questionMark':
                 if (endsWithQuestionMark(question.trim())) {
-                  return <ConversationCardForSearch question={question} />
+                  return <ConversationCardForSearch session={props.session} question={question} />
                 }
                 if (triggered) {
-                  return <ConversationCardForSearch question={question} />
+                  return <ConversationCardForSearch session={props.session} question={question} />
                 }
                 return (
                   <p
@@ -134,6 +134,7 @@ function DecisionCardForSearch(props) {
 }
 
 DecisionCardForSearch.propTypes = {
+  session: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
   siteConfig: PropTypes.object.isRequired,
   container: PropTypes.object.isRequired,

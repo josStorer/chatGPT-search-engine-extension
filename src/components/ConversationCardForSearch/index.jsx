@@ -35,8 +35,8 @@ function ConversationCardForSearch(props) {
 
   useEffect(() => {
     // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
-    window.session = initSession({ question: props.question })
-    port.postMessage({ session: window.session })
+    props.session = initSession({ question: props.question })
+    port.postMessage({ session: props.session })
   }, [props.question]) // usually only triggered once
 
   /**
@@ -54,7 +54,7 @@ function ConversationCardForSearch(props) {
         newType,
         appended ? copy[index].content + value : value,
       )
-      copy[index].session = { ...window.session }
+      copy[index].session = { ...props.session }
       copy[index].done = done
       return copy
     })
@@ -75,7 +75,7 @@ function ConversationCardForSearch(props) {
         UpdateAnswer(msg.answer, false, 'answer')
       }
       if (msg.session) {
-        window.session = msg.session
+        props.session = msg.session
       }
       if (msg.done) {
         UpdateAnswer('\n<hr/>', true, 'answer', true)
@@ -129,7 +129,7 @@ function ConversationCardForSearch(props) {
           style="margin:15px 15px 10px;"
           onClick={() => {
             let output = ''
-            window.session.conversationRecords.forEach((data) => {
+            props.session.conversationRecords.forEach((data) => {
               output += `Question:\n\n${data.question}\n\nAnswer:\n\n${data.answer}\n\n<hr/>\n\n`
             })
             const blob = new Blob([output], { type: 'text/plain;charset=utf-8' })
@@ -162,9 +162,9 @@ function ConversationCardForSearch(props) {
           setConversationItemData([...conversationItemData, newQuestion, newAnswer])
           setIsReady(false)
 
-          window.session.question = question
+          props.session.question = question
           try {
-            port.postMessage({ session: window.session })
+            port.postMessage({ session: props.session })
           } catch (e) {
             UpdateAnswer(e, false, 'error')
           }
@@ -175,6 +175,7 @@ function ConversationCardForSearch(props) {
 }
 
 ConversationCardForSearch.propTypes = {
+  session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
 }
 
