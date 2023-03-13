@@ -1,21 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
+import { updateRefHeight } from '../../utils/update-ref-height.mjs'
 
 export function InputBox({ onSubmit, enabled }) {
   const [value, setValue] = useState('')
   const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.style.height = 'auto'
-    const computed = window.getComputedStyle(inputRef.current)
-    const height =
-      parseInt(computed.getPropertyValue('border-top-width'), 10) +
-      parseInt(computed.getPropertyValue('padding-top'), 10) +
-      inputRef.current.scrollHeight +
-      parseInt(computed.getPropertyValue('padding-bottom'), 10) +
-      parseInt(computed.getPropertyValue('border-bottom-width'), 10)
-
-    inputRef.current.style.height = `${height}px`
+    updateRefHeight(inputRef)
   })
 
   const onKeyDown = (e) => {
