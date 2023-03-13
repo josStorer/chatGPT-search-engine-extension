@@ -5,12 +5,14 @@
     --font-color: #c9d1d9;
     --theme-color: #202124;
     --theme-border-color: #3c4043;
+    --dragbar-color: #3c4043;
   }
   @media screen and (prefers-color-scheme: light) {
     @import 'highlight.js/scss/github.scss';
     --font-color: #24292f;
     --theme-color: #eaecf0;
     --theme-border-color: #aeafb2;
+    --dragbar-color: #dfe0e1;
   }
 }
 
@@ -21,6 +23,7 @@
   --font-color: #c9d1d9;
   --theme-color: #202124;
   --theme-border-color: #3c4043;
+  --dragbar-color: #3c4043;
 }
 
 [data-theme='light'] {
@@ -30,6 +33,7 @@
   --font-color: #24292f;
   --theme-color: #eaecf0;
   --theme-border-color: #aeafb2;
+  --dragbar-color: #ccced0;
 }
 
 .sidebar-free {
@@ -177,6 +181,14 @@
     color: var(--font-color);
     resize: none;
     max-height: 240px;
+  }
+
+  .dragbar {
+    cursor: move;
+    width: 250px;
+    height: 12px;
+    border-radius: 10px;
+    background-color: var(--dragbar-color);
   }
 }
 

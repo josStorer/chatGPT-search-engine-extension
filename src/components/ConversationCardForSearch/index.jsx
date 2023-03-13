@@ -129,6 +129,7 @@ function ConversationCardForSearch(props) {
     <div className="gpt-inner">
       <div className="gpt-header">
         <img src={logo} width="20" height="20" style="margin:5px 15px 0px;" />
+        {props.showDragbar && <div className="dragbar" />}
         <span
           title="Save Conversation"
           className="gpt-util-icon"
@@ -185,6 +186,7 @@ ConversationCardForSearch.propTypes = {
   session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
   onUpdate: PropTypes.func,
+  showDragbar: PropTypes.bool,
 }
 
 export default memo(ConversationCardForSearch)
