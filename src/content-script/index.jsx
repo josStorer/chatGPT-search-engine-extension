@@ -81,20 +81,35 @@ let toolbarContainer
 async function prepareForSelectionTools() {
   document.addEventListener('mouseup', (e) => {
     if (toolbarContainer && toolbarContainer.contains(e.target)) return
+    if (
+      toolbarContainer &&
+      window.getSelection()?.rangeCount > 0 &&
+      toolbarContainer.contains(window.getSelection()?.getRangeAt(0).endContainer.parentElement)
+    )
+      return
 
     if (toolbarContainer) toolbarContainer.remove()
     setTimeout(() => {
       const selection = window.getSelection()?.toString()
       if (selection) {
-        toolbarContainer = createElementAtPosition(e.pageX + 15, e.pageY - 15)
-        render(<FloatingToolbar selection={selection} />, toolbarContainer)
+        const position = { x: e.pageX + 15, y: e.pageY - 15 }
+        toolbarContainer = createElementAtPosition(position.x, position.y)
+        toolbarContainer.className = 'toolbar-container'
+        render(
+          <FloatingToolbar
+            selection={selection}
+            position={position}
+            container={toolbarContainer}
+          />,
+          toolbarContainer,
+        )
       }
     })
   })
   document.addEventListener('mousedown', (e) => {
     if (toolbarContainer && toolbarContainer.contains(e.target)) return
 
-    if (toolbarContainer) toolbarContainer.remove()
+    document.querySelectorAll('.toolbar-container').forEach((e) => e.remove())
   })
   document.addEventListener('keydown', (e) => {
     if (
