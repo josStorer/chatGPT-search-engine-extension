@@ -11,6 +11,7 @@
   },
   "permissions": [
     "storage",
+    "contextMenus",
     "https://*.openai.com/"
   ],
   "background": {

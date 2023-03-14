@@ -14,6 +14,7 @@ import {
   isUsingApiKey,
 } from '../config'
 import { isSafari } from '../utils/is-safari'
+import { config as toolsConfig } from '../content-script/selection-tools'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 const cache = new ExpiryMap(10 * 1000)
@@ -94,4 +95,42 @@ Browser.runtime.onMessage.addListener(async (message) => {
     const token = await getAccessToken()
     await sendMessageFeedback(token, message.data)
   }
+})
+
+Browser.contextMenus.removeAll().then(() => {
+  const menuId = 'ChatGPTBox-Menu'
+  Browser.contextMenus.create({
+    id: menuId,
+    title: 'ChatGPTBox',
+    contexts: ['all'],
+  })
+
+  Browser.contextMenus.create({
+    id: menuId + 'new',
+    parentId: menuId,
+    title: 'New Chat',
+    contexts: ['selection'],
+  })
+  for (const key in toolsConfig) {
+    const toolConfig = toolsConfig[key]
+    Browser.contextMenus.create({
+      id: menuId + key,
+      parentId: menuId,
+      title: toolConfig.label,
+      contexts: ['selection'],
+    })
+  }
+
+  Browser.contextMenus.onClicked.addListener((info, tab) => {
+    const itemId = info.menuItemId === menuId ? 'new' : info.menuItemId.replace(menuId, '')
+    const message = {
+      itemId: itemId,
+      selectionText: info.selectionText,
+    }
+    console.debug('menu clicked', message)
+    Browser.tabs.sendMessage(tab.id, {
+      type: 'MENU',
+      data: message,
+    })
+  })
 })

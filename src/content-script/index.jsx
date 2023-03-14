@@ -2,6 +2,7 @@ import './styles.scss'
 import { render } from 'preact'
 import DecisionCard from '../components/DecisionCard'
 import { config as siteConfig } from './site-adapters'
+import { config as toolsConfig } from './selection-tools'
 import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
 import {
   createElementAtPosition,
@@ -10,6 +11,7 @@ import {
   isSafari,
 } from '../utils'
 import FloatingToolbar from '../components/FloatingToolbar'
+import Browser from 'webextension-polyfill'
 
 /**
  * @param {SiteConfig} siteConfig
@@ -125,6 +127,55 @@ async function prepareForSelectionTools() {
   })
 }
 
+let menuX, menuY
+
+async function prepareForRightClickMenu() {
+  document.addEventListener('contextmenu', (e) => {
+    menuX = e.clientX
+    menuY = e.clientY
+  })
+
+  Browser.runtime.onMessage.addListener(async (message) => {
+    if (message.type === 'MENU') {
+      const data = message.data
+      if (data.itemId === 'new') {
+        const position = { x: menuX, y: menuY }
+        const container = createElementAtPosition(position.x, position.y)
+        container.className = 'toolbar-container-not-queryable'
+        render(
+          <FloatingToolbar
+            session={initSession()}
+            selection=""
+            position={position}
+            container={container}
+            triggered={true}
+            closeable={true}
+            onClose={() => container.remove()}
+          />,
+          container,
+        )
+      } else {
+        const position = { x: menuX, y: menuY }
+        const container = createElementAtPosition(position.x, position.y)
+        container.className = 'toolbar-container-not-queryable'
+        render(
+          <FloatingToolbar
+            session={initSession()}
+            selection={data.selectionText}
+            position={position}
+            container={container}
+            triggered={true}
+            closeable={true}
+            onClose={() => container.remove()}
+            prompt={toolsConfig[data.itemId].genPrompt(data.selectionText)}
+          />,
+          container,
+        )
+      }
+    }
+  })
+}
+
 async function prepareForStaticCard() {
   const userConfig = await getUserConfig()
   let siteRegex
@@ -151,6 +202,7 @@ async function run() {
   if (isSafari()) await prepareForSafari()
   prepareForSelectionTools()
   prepareForStaticCard()
+  prepareForRightClickMenu()
 }
 
 run()

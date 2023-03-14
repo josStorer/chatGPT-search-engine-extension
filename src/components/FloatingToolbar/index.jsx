@@ -10,7 +10,7 @@ import Draggable from 'react-draggable'
 const logo = Browser.runtime.getURL('logo.png')
 
 function FloatingToolbar(props) {
-  const [prompt, setPrompt] = useState('')
+  const [prompt, setPrompt] = useState(props.prompt)
   const [triggered, setTriggered] = useState(props.triggered)
   const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
@@ -122,6 +122,7 @@ FloatingToolbar.propTypes = {
   triggered: PropTypes.bool,
   closeable: PropTypes.bool,
   onClose: PropTypes.func,
+  prompt: PropTypes.string,
 }
 
 export default FloatingToolbar

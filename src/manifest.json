@@ -13,7 +13,8 @@
     "https://*.openai.com/"
   ],
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus"
   ],
   "background": {
     "service_worker": "background.js"
