@@ -4,19 +4,18 @@ import ConversationCard from '../ConversationCard'
 import PropTypes from 'prop-types'
 import { defaultConfig, getUserConfig } from '../../config.mjs'
 import { config as toolsConfig } from '../../content-script/selection-tools'
-import { initSession, setElementPositionInViewport } from '../../utils'
+import { setElementPositionInViewport } from '../../utils'
 import Draggable from 'react-draggable'
 
 const logo = Browser.runtime.getURL('logo.png')
 
 function FloatingToolbar(props) {
   const [prompt, setPrompt] = useState('')
-  const [triggered, setTriggered] = useState(false)
+  const [triggered, setTriggered] = useState(props.triggered)
   const [config, setConfig] = useState(defaultConfig)
   const [render, setRender] = useState(false)
   const [position, setPosition] = useState(props.position)
   const [virtualPosition, setVirtualPosition] = useState({ x: 0, y: 0 })
-  const [session] = useState(initSession())
 
   useEffect(() => {
     getUserConfig()
@@ -72,9 +71,11 @@ function FloatingToolbar(props) {
           <div className="gpt-selection-window">
             <div className="chat-gpt-container">
               <ConversationCard
-                session={session}
+                session={props.session}
                 question={prompt}
-                showDragbar={true}
+                draggable={true}
+                closeable={props.closeable}
+                onClose={props.onClose}
                 onUpdate={() => {
                   updatePosition()
                 }}
@@ -105,7 +106,7 @@ function FloatingToolbar(props) {
     return (
       <div data-theme={config.themeMode}>
         <div className="gpt-selection-toolbar">
-          <img src={logo} width="24" height="24" />
+          <img src={logo} width="24" height="24" style="user-select:none;" />
           {tools}
         </div>
       </div>
@@ -114,9 +115,13 @@ function FloatingToolbar(props) {
 }
 
 FloatingToolbar.propTypes = {
+  session: PropTypes.object.isRequired,
   selection: PropTypes.string.isRequired,
   position: PropTypes.object.isRequired,
   container: PropTypes.object.isRequired,
+  triggered: PropTypes.bool,
+  closeable: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 export default FloatingToolbar

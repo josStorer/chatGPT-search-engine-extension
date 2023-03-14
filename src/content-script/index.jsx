@@ -97,6 +97,7 @@ async function prepareForSelectionTools() {
         toolbarContainer.className = 'toolbar-container'
         render(
           <FloatingToolbar
+            session={initSession()}
             selection={selection}
             position={position}
             container={toolbarContainer}

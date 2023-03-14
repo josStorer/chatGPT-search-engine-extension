@@ -3,9 +3,12 @@ import PropTypes from 'prop-types'
 import Browser from 'webextension-polyfill'
 import InputBox from '../InputBox'
 import ConversationItem from '../ConversationItem'
-import { initSession, isSafari } from '../../utils'
+import { createElementAtPosition, initSession, isSafari } from '../../utils'
 import { DownloadIcon } from '@primer/octicons-react'
+import { WindowDesktop, XLg } from 'react-bootstrap-icons'
 import FileSaver from 'file-saver'
+import { render } from 'preact'
+import FloatingToolbar from '../FloatingToolbar'
 
 const logo = Browser.runtime.getURL('logo.png')
 
@@ -13,26 +16,50 @@ class ConversationItemData extends Object {
   /**
    * @param {'question'|'answer'|'error'} type
    * @param {string} content
+   * @param {object} session
+   * @param {bool} done
    */
-  constructor(type, content) {
+  constructor(type, content, session = null, done = false) {
     super()
     this.type = type
     this.content = content
-    this.session = null
-    this.done = false
+    this.session = session
+    this.done = done
   }
 }
 
 function ConversationCard(props) {
+  const [isReady, setIsReady] = useState(!props.question)
+  const [port, setPort] = useState(() => Browser.runtime.connect())
+  const [session, setSession] = useState(props.session)
   /**
    * @type {[ConversationItemData[], (conversationItemData: ConversationItemData[]) => void]}
    */
-  const [conversationItemData, setConversationItemData] = useState([
-    new ConversationItemData('answer', '<p class="gpt-loading">Waiting for response...</p>'),
-  ])
-  const [isReady, setIsReady] = useState(false)
-  const [port, setPort] = useState(() => Browser.runtime.connect())
-  const [session, setSession] = useState(props.session)
+  const [conversationItemData, setConversationItemData] = useState(
+    (() => {
+      if (props.session.conversationRecords.length === 0)
+        if (props.question)
+          return [
+            new ConversationItemData(
+              'answer',
+              '<p class="gpt-loading">Waiting for response...</p>',
+            ),
+          ]
+        else return []
+      else {
+        const ret = []
+        for (const record of props.session.conversationRecords) {
+          ret.push(
+            new ConversationItemData('question', record.question + '\n<hr/>', props.session, true),
+          )
+          ret.push(
+            new ConversationItemData('answer', record.answer + '\n<hr/>', props.session, true),
+          )
+        }
+        return ret
+      }
+    })(),
+  )
 
   useEffect(() => {
     if (props.onUpdate) props.onUpdate()
@@ -40,9 +67,11 @@ function ConversationCard(props) {
 
   useEffect(() => {
     // when the page is responsive, session may accumulate redundant data and needs to be cleared after remounting and before making a new request
-    const newSession = initSession({ question: props.question })
-    setSession(newSession)
-    port.postMessage({ session: newSession })
+    if (props.question) {
+      const newSession = initSession({ question: props.question })
+      setSession(newSession)
+      port.postMessage({ session: newSession })
+    }
   }, [props.question]) // usually only triggered once
 
   /**
@@ -128,8 +157,45 @@ function ConversationCard(props) {
   return (
     <div className="gpt-inner">
       <div className="gpt-header">
-        <img src={logo} width="20" height="20" style="margin:5px 15px 0px;" />
-        {props.showDragbar && <div className="dragbar" />}
+        {!props.closeable ? (
+          <img src={logo} width="20" height="20" style="margin:5px 15px 0px;user-select:none;" />
+        ) : (
+          <XLg
+            className="gpt-util-icon"
+            style="margin:5px 15px 0px;"
+            title="Close the Window"
+            size={16}
+            onClick={() => {
+              if (props.onClose) props.onClose()
+            }}
+          />
+        )}
+        {props.draggable ? (
+          <div className="dragbar" />
+        ) : (
+          <WindowDesktop
+            className="gpt-util-icon"
+            title="Float the Window"
+            size={16}
+            onClick={() => {
+              const position = { x: window.innerWidth / 2 - 300, y: window.innerHeight / 2 - 200 }
+              const toolbarContainer = createElementAtPosition(position.x, position.y)
+              toolbarContainer.className = 'toolbar-container-not-queryable'
+              render(
+                <FloatingToolbar
+                  session={session}
+                  selection=""
+                  position={position}
+                  container={toolbarContainer}
+                  closeable={true}
+                  triggered={true}
+                  onClose={() => toolbarContainer.remove()}
+                />,
+                toolbarContainer,
+              )
+            }}
+          />
+        )}
         <span
           title="Save Conversation"
           className="gpt-util-icon"
@@ -186,7 +252,9 @@ ConversationCard.propTypes = {
   session: PropTypes.object.isRequired,
   question: PropTypes.string.isRequired,
   onUpdate: PropTypes.func,
-  showDragbar: PropTypes.bool,
+  draggable: PropTypes.bool,
+  closeable: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 export default memo(ConversationCard)
