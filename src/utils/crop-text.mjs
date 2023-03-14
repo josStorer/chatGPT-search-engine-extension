@@ -31,17 +31,16 @@ export function cropText(
   endLength = 300,
   tiktoken = true,
 ) {
-  let length = tiktoken ? encode(text).length : text.length
-  if (length <= maxLength) return text
-
   const splits = text.split(/[,，.。?？!！;；\n]/).map((s) => s.trim())
   const splitsLength = splits.map((s) => (tiktoken ? encode(s).length : s.length))
-  length = splitsLength.reduce((sum, length) => sum + length, 0)
+  const length = splitsLength.reduce((sum, length) => sum + length, 0)
 
   const cropLength = length - startLength - endLength
   const cropTargetLength = maxLength - startLength - endLength
   const cropPercentage = cropTargetLength / cropLength
   const cropStep = Math.max(0, 1 / cropPercentage - 1)
+
+  if (cropStep === 0) return text
 
   let croppedText = ''
   let currentLength = 0
@@ -76,7 +75,7 @@ export function cropText(
 
   console.log(
     `maxLength: ${maxLength}\n` +
-      `croppedTextLength: ${tiktoken ? encode(croppedText).length : croppedText.length}\n` +
+      // `croppedTextLength: ${tiktoken ? encode(croppedText).length : croppedText.length}\n` +
       `desiredLength: ${currentLength}\n` +
       `content: ${croppedText}`,
   )
