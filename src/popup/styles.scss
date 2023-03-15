@@ -4,15 +4,13 @@
     @import 'highlight.js/scss/github-dark.scss';
     --font-color: #c9d1d9;
     --theme-color: #202124;
-    --theme-border-color: #3c4043;
-    --dragbar-color: #3c4043;
+    --active-color: #3c4043;
   }
   @media screen and (prefers-color-scheme: light) {
     @import 'highlight.js/scss/github.scss';
     --font-color: #24292f;
-    --theme-color: #eaecf0;
-    --theme-border-color: #aeafb2;
-    --dragbar-color: #dfe0e1;
+    --theme-color: #ffffff;
+    --active-color: #eaecf0;
   }
 }
 
@@ -22,8 +20,7 @@
 
   --font-color: #c9d1d9;
   --theme-color: #202124;
-  --theme-border-color: #3c4043;
-  --dragbar-color: #3c4043;
+  --active-color: #3c4043;
 }
 
 [data-theme='light'] {
@@ -31,9 +28,8 @@
   @import 'github-markdown-css/github-markdown-light.css';
 
   --font-color: #24292f;
-  --theme-color: #eaecf0;
-  --theme-border-color: #aeafb2;
-  --dragbar-color: #ccced0;
+  --theme-color: #ffffff;
+  --active-color: #eaecf0;
 }
 
 .container {
@@ -63,7 +59,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--dragbar-color);
+  background-color: var(--active-color);
   border-radius: 5px;
   padding: 6px;
 }
@@ -80,6 +76,6 @@
   color: var(--font-color);
 
   &--selected {
-    background: var(--dragbar-color);
+    background: var(--active-color);
   }
 }
