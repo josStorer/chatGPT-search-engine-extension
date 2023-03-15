@@ -1,6 +1,7 @@
 import { defaults } from 'lodash-es'
 import Browser from 'webextension-polyfill'
 import { isMobile } from './utils/is-mobile'
+import { config as toolsConfig } from './content-script/selection-tools'
 import { languages } from 'countries-list'
 
 /**
@@ -61,6 +62,11 @@ export const defaultConfig = {
   customChatGptWebApiUrl: 'https://chat.openai.com',
   customChatGptWebApiPath: '/backend-api/conversation',
   customOpenAiApiUrl: 'https://api.openai.com',
+  selectionTools: Object.keys(toolsConfig),
+  activeSelectionTools: Object.keys(toolsConfig),
+  // importing configuration will result in gpt-3-encoder being packaged into the output file
+  siteAdapters: ['bilibili', 'github', 'gitlab', 'quora', 'reddit', 'youtube', 'zhihu'],
+  activeSiteAdapters: ['bilibili', 'github', 'gitlab', 'quora', 'reddit', 'youtube', 'zhihu'],
 }
 
 export async function getUserLanguage() {

@@ -16,6 +16,7 @@ import './styles.scss'
 import { MarkGithubIcon } from '@primer/octicons-react'
 import Browser from 'webextension-polyfill'
 import PropTypes from 'prop-types'
+import { config as toolsConfig } from '../content-script/selection-tools'
 
 function GeneralPart({ config, updateConfig }) {
   return (
@@ -240,6 +241,33 @@ AdvancedPart.propTypes = {
   updateConfig: PropTypes.func.isRequired,
 }
 
+function SelectionTools({ config, updateConfig }) {
+  return (
+    <>
+      {config.selectionTools.map((key) => (
+        <label key={key}>
+          <input
+            type="checkbox"
+            checked={config.activeSelectionTools.includes(key)}
+            onChange={(e) => {
+              const checked = e.target.checked
+              const activeSelectionTools = config.activeSelectionTools.filter((i) => i !== key)
+              if (checked) activeSelectionTools.push(key)
+              updateConfig({ activeSelectionTools })
+            }}
+          />
+          {toolsConfig[key].label}
+        </label>
+      ))}
+    </>
+  )
+}
+
+SelectionTools.propTypes = {
+  config: PropTypes.object.isRequired,
+  updateConfig: PropTypes.func.isRequired,
+}
+
 // eslint-disable-next-line react/prop-types
 function Footer({ currentVersion, latestVersion }) {
   return (
@@ -305,11 +333,15 @@ function Popup() {
         <Tabs selectedTabClassName="popup-tab--selected">
           <TabList>
             <Tab className="popup-tab">General</Tab>
+            <Tab className="popup-tab">SelectionTools</Tab>
             <Tab className="popup-tab">Advanced</Tab>
           </TabList>
 
           <TabPanel>
             <GeneralPart config={config} updateConfig={updateConfig} />
+          </TabPanel>
+          <TabPanel>
+            <SelectionTools config={config} updateConfig={updateConfig} />
           </TabPanel>
           <TabPanel>
             <AdvancedPart config={config} updateConfig={updateConfig} />

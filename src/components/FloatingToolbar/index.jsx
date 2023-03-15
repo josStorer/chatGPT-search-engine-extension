@@ -38,7 +38,7 @@ function FloatingToolbar(props) {
     }
   }, [config])
 
-  if (!render) return <div />
+  if (!render || config.activeSelectionTools.length === 0) return <div />
 
   if (triggered) {
     const updatePosition = () => {
@@ -89,18 +89,20 @@ function FloatingToolbar(props) {
     const tools = []
 
     for (const key in toolsConfig) {
-      const toolConfig = toolsConfig[key]
-      tools.push(
-        cloneElement(toolConfig.icon, {
-          size: 20,
-          className: 'gpt-selection-toolbar-button',
-          title: toolConfig.label,
-          onClick: async () => {
-            setPrompt(await toolConfig.genPrompt(props.selection))
-            setTriggered(true)
-          },
-        }),
-      )
+      if (config.activeSelectionTools.includes(key)) {
+        const toolConfig = toolsConfig[key]
+        tools.push(
+          cloneElement(toolConfig.icon, {
+            size: 20,
+            className: 'gpt-selection-toolbar-button',
+            title: toolConfig.label,
+            onClick: async () => {
+              setPrompt(await toolConfig.genPrompt(props.selection))
+              setTriggered(true)
+            },
+          }),
+        )
+      }
     }
 
     return (
