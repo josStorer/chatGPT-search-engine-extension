@@ -19,6 +19,18 @@ import PropTypes from 'prop-types'
 import { config as toolsConfig } from '../content-script/selection-tools'
 
 function GeneralPart({ config, updateConfig }) {
+  const [balance, setBalance] = useState(null)
+
+  const getBalance = async () => {
+    const response = await fetch('https://api.openai.com/dashboard/billing/credit_grants', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${config.apiKey}`,
+      },
+    })
+    if (response.ok) setBalance((await response.json()).total_available.toFixed(2))
+  }
+
   return (
     <>
       <label>
@@ -87,7 +99,7 @@ function GeneralPart({ config, updateConfig }) {
                   updateConfig({ apiKey: apiKey })
                 }}
               />
-              {config.apiKey.length === 0 && (
+              {config.apiKey.length === 0 ? (
                 <a
                   href="https://platform.openai.com/account/api-keys"
                   target="_blank"
@@ -95,6 +107,14 @@ function GeneralPart({ config, updateConfig }) {
                 >
                   <button type="button">Get</button>
                 </a>
+              ) : balance ? (
+                <button type="button" onClick={getBalance}>
+                  {balance}
+                </button>
+              ) : (
+                <button type="button" onClick={getBalance}>
+                  Balance
+                </button>
               )}
             </span>
           )}
