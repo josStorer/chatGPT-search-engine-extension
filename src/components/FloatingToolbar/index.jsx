@@ -38,7 +38,7 @@ function FloatingToolbar(props) {
     }
   }, [config])
 
-  if (!render || config.activeSelectionTools.length === 0) return <div />
+  if (!render) return <div />
 
   if (triggered) {
     const updatePosition = () => {
@@ -86,6 +86,8 @@ function FloatingToolbar(props) {
       </div>
     )
   } else {
+    if (config.activeSelectionTools.length === 0) return <div />
+
     const tools = []
 
     for (const key in toolsConfig) {
