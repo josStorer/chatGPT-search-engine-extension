@@ -24,7 +24,10 @@ export default {
         })
       ).text()
 
-      let subtitleUrl = docText.substring(docText.indexOf('https://www.youtube.com/api/timedtext'))
+      const subtitleUrlStartAt = docText.indexOf('https://www.youtube.com/api/timedtext')
+      if (subtitleUrlStartAt === -1) return
+
+      let subtitleUrl = docText.substring(subtitleUrlStartAt)
       subtitleUrl = subtitleUrl.substring(0, subtitleUrl.indexOf('"'))
       subtitleUrl = subtitleUrl.replaceAll('\\u0026', '&')
 
@@ -32,6 +35,7 @@ export default {
       title = title.substring(0, title.indexOf('","'))
 
       const subtitleResponse = await fetch(subtitleUrl)
+      if (!subtitleResponse.ok) return
       let subtitleData = await subtitleResponse.text()
 
       let subtitleContent = ''
