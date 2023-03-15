@@ -12,9 +12,9 @@ import { languages } from 'countries-list'
  * @type {Object.<string,Model>}
  */
 export const Models = {
-  chatgptFree: { value: 'text-davinci-002-render-sha', desc: 'ChatGPT (Free)' },
-  chatgptApi: { value: 'gpt-3.5-turbo', desc: 'ChatGPT (API Key)' },
-  gptDavinci: { value: 'text-davinci-003', desc: 'GPT3 (API Key)' },
+  chatgptFree: { value: 'text-davinci-002-render-sha', desc: 'ChatGPT (Web)' },
+  chatgptApi: { value: 'gpt-3.5-turbo', desc: 'ChatGPT (GPT-3.5)' },
+  gptDavinci: { value: 'text-davinci-003', desc: 'GPT3' },
 }
 
 export const chatgptWebModelKeys = ['chatgptFree']

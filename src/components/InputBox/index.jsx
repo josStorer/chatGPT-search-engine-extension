@@ -25,7 +25,7 @@ export function InputBox({ onSubmit, enabled }) {
       disabled={!enabled}
       className="interact-input"
       placeholder={
-        enabled ? 'Type your question here' : 'Wait for the answer to finish and then continue here'
+        enabled ? 'Type your question here\nEnter to send, shift + enter to break line' : 'Wait for the answer to finish and then continue here'
       }
       value={value}
       onChange={(e) => setValue(e.target.value)}
