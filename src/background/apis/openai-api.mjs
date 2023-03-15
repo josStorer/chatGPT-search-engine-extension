@@ -1,6 +1,6 @@
 // api version
 
-import { maxResponseTokenLength, Models } from '../../config'
+import { maxResponseTokenLength, Models, getUserConfig } from '../../config'
 import { fetchSSE } from '../../utils/fetch-sse'
 import { getConversationPairs } from '../../utils/get-conversation-pairs'
 import { isEmpty } from 'lodash-es'
@@ -44,9 +44,10 @@ export async function generateAnswersWithGptCompletionApi(
     (await getGptPromptBase()) +
     getConversationPairs(session.conversationRecords, false) +
     `Human:${question}\nAI:`
+  const apiUrl = (await getUserConfig()).customOpenAiApiUrl
 
   let answer = ''
-  await fetchSSE('https://api.openai.com/v1/completions', {
+  await fetchSSE(`${apiUrl}/v1/completions`, {
     method: 'POST',
     signal: controller.signal,
     headers: {
@@ -106,9 +107,10 @@ export async function generateAnswersWithChatgptApi(port, question, session, api
   const prompt = getConversationPairs(session.conversationRecords, true)
   prompt.unshift({ role: 'system', content: await getChatgptPromptBase() })
   prompt.push({ role: 'user', content: question })
+  const apiUrl = (await getUserConfig()).customOpenAiApiUrl
 
   let answer = ''
-  await fetchSSE('https://api.openai.com/v1/chat/completions', {
+  await fetchSSE(`${apiUrl}/v1/chat/completions`, {
     method: 'POST',
     signal: controller.signal,
     headers: {

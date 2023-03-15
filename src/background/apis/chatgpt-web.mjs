@@ -2,10 +2,11 @@
 
 import { fetchSSE } from '../../utils/fetch-sse'
 import { isEmpty } from 'lodash-es'
-import { chatgptWebModelKeys, Models } from '../../config'
+import { chatgptWebModelKeys, getUserConfig, Models } from '../../config'
 
 async function request(token, method, path, data) {
-  const response = await fetch(`https://chat.openai.com/backend-api${path}`, {
+  const apiUrl = (await getUserConfig()).customChatGptWebApiUrl
+  const response = await fetch(`${apiUrl}/backend-api${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -59,9 +60,10 @@ export async function generateAnswersWithChatgptWebApi(port, question, session, 
   })
 
   const models = await getModels(accessToken).catch(() => {})
+  const config = await getUserConfig()
 
   let answer = ''
-  await fetchSSE('https://chat.openai.com/backend-api/conversation', {
+  await fetchSSE(`${config.customChatGptWebApiUrl}${config.customChatGptWebApiPath}`, {
     method: 'POST',
     signal: controller.signal,
     headers: {

@@ -58,7 +58,9 @@ export const defaultConfig = {
   tokenSavedOn: 0,
   preferredLanguage: navigator.language.substring(0, 2),
   userLanguage: navigator.language.substring(0, 2), // unchangeable
-  customApiUrl: '',
+  customChatGptWebApiUrl: 'https://chat.openai.com',
+  customChatGptWebApiPath: '/backend-api/conversation',
+  customOpenAiApiUrl: 'https://api.openai.com',
 }
 
 export async function getUserLanguage() {
