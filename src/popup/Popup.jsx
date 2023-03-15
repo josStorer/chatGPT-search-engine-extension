@@ -29,7 +29,7 @@ function Popup() {
       setConfig(config)
       setCurrentVersion(Browser.runtime.getManifest().version.replace('v', ''))
       fetch(
-        'https://api.github.com/repos/josstorer/chatgpt-search-engine-extension/releases/latest',
+        'https://api.github.com/repos/josstorer/chatGPTBox/releases/latest',
       ).then((response) =>
         response.json().then((data) => {
           setLatestVersion(data.tag_name.replace('v', ''))
@@ -225,7 +225,7 @@ function Popup() {
             (Latest:{' '}
             <a
               href={
-                'https://github.com/josStorer/chatGPT-search-engine-extension/releases/tag/v' +
+                'https://github.com/josStorer/chatGPTBox/releases/tag/v' +
                 latestVersion
               }
               target="_blank"
@@ -238,7 +238,7 @@ function Popup() {
         )}
       </>
       <a
-        href="https://github.com/josStorer/chatGPT-search-engine-extension"
+        href="https://github.com/josStorer/chatGPTBox"
         target="_blank"
         rel="nofollow noopener noreferrer"
         className="github-link"
