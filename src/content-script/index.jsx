@@ -197,6 +197,12 @@ async function prepareForStaticCard() {
         await siteAction.init(location.hostname, userConfig, getInput, mountComponent)
       }
     }
+    if (
+      userConfig.siteAdapters.includes(siteName) &&
+      !userConfig.activeSiteAdapters.includes(siteName)
+    )
+      return
+
     mountComponent(siteConfig[siteName], userConfig)
   }
 }
