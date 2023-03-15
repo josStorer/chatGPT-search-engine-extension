@@ -168,6 +168,10 @@ async function runWebpack(isWithoutKatex, callback) {
           test: /\.woff2$/,
           type: 'asset/inline',
         },
+        {
+          test: /\.jpg$/,
+          type: 'asset/inline',
+        },
       ],
     },
   })

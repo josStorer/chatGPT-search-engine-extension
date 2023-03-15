@@ -17,6 +17,7 @@ import { MarkGithubIcon } from '@primer/octicons-react'
 import Browser from 'webextension-polyfill'
 import PropTypes from 'prop-types'
 import { config as toolsConfig } from '../content-script/selection-tools'
+import wechatpay from './donation/wechatpay.jpg'
 
 function GeneralPart({ config, updateConfig }) {
   const [balance, setBalance] = useState(null)
@@ -315,6 +316,29 @@ SiteAdapters.propTypes = {
   updateConfig: PropTypes.func.isRequired,
 }
 
+function Donation() {
+  return (
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <a
+        href="https://www.buymeacoffee.com/josStorer"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+      >
+        <img
+          align="center"
+          alt="buymeacoffee"
+          src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg"
+        />
+      </a>
+      <hr />
+      <>
+        Wechat Pay
+        <img alt="wechatpay" src={wechatpay} />
+      </>
+    </div>
+  )
+}
+
 // eslint-disable-next-line react/prop-types
 function Footer({ currentVersion, latestVersion }) {
   return (
@@ -337,13 +361,16 @@ function Footer({ currentVersion, latestVersion }) {
           </>
         )}
       </div>
-      <a
-        href="https://github.com/josStorer/chatGPTBox"
-        target="_blank"
-        rel="nofollow noopener noreferrer"
-      >
-        <MarkGithubIcon />
-      </a>
+      <div>
+        <a
+          href="https://github.com/josStorer/chatGPTBox"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+        >
+          <span>Help | Changelog </span>
+          <MarkGithubIcon />
+        </a>
+      </div>
     </div>
   )
 }
@@ -383,6 +410,7 @@ function Popup() {
             <Tab className="popup-tab">SelectionTools</Tab>
             <Tab className="popup-tab">SiteAdapters</Tab>
             <Tab className="popup-tab">Advanced</Tab>
+            <Tab className="popup-tab">Donation</Tab>
           </TabList>
 
           <TabPanel>
@@ -396,6 +424,9 @@ function Popup() {
           </TabPanel>
           <TabPanel>
             <AdvancedPart config={config} updateConfig={updateConfig} />
+          </TabPanel>
+          <TabPanel>
+            <Donation />
           </TabPanel>
         </Tabs>
       </form>
