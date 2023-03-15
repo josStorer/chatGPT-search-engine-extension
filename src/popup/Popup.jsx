@@ -8,6 +8,7 @@ import {
   defaultConfig,
   Models,
   isUsingApiKey,
+  languageList,
 } from '../config'
 import './styles.css'
 import { MarkGithubIcon } from '@primer/octicons-react'
@@ -121,6 +122,26 @@ function Popup() {
                 )}
               </span>
             )}
+          </span>
+        </label>
+        <label>
+          <legend>Preferred Language</legend>
+          <span style="display: flex; gap: 15px;">
+            <select
+              required
+              onChange={(e) => {
+                const preferredLanguageKey = e.target.value
+                updateConfig({ preferredLanguage: preferredLanguageKey })
+              }}
+            >
+              {Object.entries(languageList).map(([k, v]) => {
+                return (
+                  <option value={k} key={k} selected={k === config.preferredLanguage}>
+                    {v.native}
+                  </option>
+                )
+              })}
+            </select>
           </span>
         </label>
         <label>

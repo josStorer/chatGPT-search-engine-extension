@@ -1,5 +1,7 @@
 import { defaults } from 'lodash-es'
 import Browser from 'webextension-polyfill'
+import { isMobile } from './utils/is-mobile'
+import { languages } from 'countries-list'
 
 /**
  * @typedef {object} Model
@@ -31,6 +33,8 @@ export const ThemeMode = {
   auto: 'Auto',
 }
 
+export const languageList = { auto: { name: 'Auto', native: 'Auto' }, ...languages }
+
 export const maxResponseTokenLength = 1000
 
 /**
@@ -38,13 +42,13 @@ export const maxResponseTokenLength = 1000
  */
 export const defaultConfig = {
   /** @type {keyof TriggerMode}*/
-  triggerMode: 'always',
+  triggerMode: 'manually',
   /** @type {keyof ThemeMode}*/
   themeMode: 'auto',
   /** @type {keyof Models}*/
   modelName: 'chatgptFree',
   apiKey: '',
-  insertAtTop: false,
+  insertAtTop: isMobile(),
   siteRegex: 'match nothing',
   userSiteRegexOnly: false,
   inputQuery: '',
@@ -52,6 +56,29 @@ export const defaultConfig = {
   prependQuery: '',
   accessToken: '',
   tokenSavedOn: 0,
+  preferredLanguage: navigator.language.substring(0, 2),
+  userLanguage: navigator.language.substring(0, 2), // unchangeable
+  customApiUrl: '',
+}
+
+export async function getUserLanguage() {
+  return languageList[defaultConfig.userLanguage].name
+}
+
+export async function getUserLanguageNative() {
+  return languageList[defaultConfig.userLanguage].native
+}
+
+export async function getPreferredLanguage() {
+  const config = await getUserConfig()
+  if (config.preferredLanguage === 'auto') return await getUserLanguage()
+  return languageList[config.preferredLanguage].name
+}
+
+export async function getPreferredLanguageNative() {
+  const config = await getUserConfig()
+  if (config.preferredLanguage === 'auto') return await getUserLanguageNative()
+  return languageList[config.preferredLanguage].native
 }
 
 export function isUsingApiKey(config) {

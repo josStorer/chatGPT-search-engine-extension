@@ -95,8 +95,8 @@ function FloatingToolbar(props) {
           size: 20,
           className: 'gpt-selection-toolbar-button',
           title: toolConfig.label,
-          onClick: () => {
-            setPrompt(toolConfig.genPrompt(props.selection))
+          onClick: async () => {
+            setPrompt(await toolConfig.genPrompt(props.selection))
             setTriggered(true)
           },
         }),

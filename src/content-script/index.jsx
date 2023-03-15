@@ -3,7 +3,7 @@ import { render } from 'preact'
 import DecisionCard from '../components/DecisionCard'
 import { config as siteConfig } from './site-adapters'
 import { config as toolsConfig } from './selection-tools'
-import { clearOldAccessToken, getUserConfig, setAccessToken } from '../config'
+import { clearOldAccessToken, getUserConfig, setAccessToken, getPreferredLanguage } from '../config'
 import {
   createElementAtPosition,
   getPossibleElementByQuerySelector,
@@ -52,7 +52,11 @@ async function mountComponent(siteConfig, userConfig) {
  * @returns {Promise<string>}
  */
 async function getInput(inputQuery) {
-  if (typeof inputQuery === 'function') return await inputQuery()
+  if (typeof inputQuery === 'function') {
+    const input = await inputQuery()
+    if (input) return `Reply in ${await getPreferredLanguage()}.\n` + input
+    return input
+  }
   const searchInput = getPossibleElementByQuerySelector(inputQuery)
   if (searchInput && searchInput.value) {
     return searchInput.value
@@ -167,7 +171,7 @@ async function prepareForRightClickMenu() {
             triggered={true}
             closeable={true}
             onClose={() => container.remove()}
-            prompt={toolsConfig[data.itemId].genPrompt(data.selectionText)}
+            prompt={await toolsConfig[data.itemId].genPrompt(data.selectionText)}
           />,
           container,
         )
@@ -177,7 +181,6 @@ async function prepareForRightClickMenu() {
 }
 
 async function prepareForStaticCard() {
-  const userConfig = await getUserConfig()
   let siteRegex
   if (userConfig.userSiteRegexOnly) siteRegex = userConfig.siteRegex
   else
@@ -198,7 +201,10 @@ async function prepareForStaticCard() {
   }
 }
 
+let userConfig
+
 async function run() {
+  userConfig = await getUserConfig()
   if (isSafari()) await prepareForSafari()
   prepareForSelectionTools()
   prepareForStaticCard()

@@ -5,16 +5,20 @@ import { fetchSSE } from '../../utils/fetch-sse'
 import { getConversationPairs } from '../../utils/get-conversation-pairs'
 import { isEmpty } from 'lodash-es'
 
-const chatgptPromptBase =
-  `You are a helpful, creative, clever, and very friendly assistant.` +
-  `When you receive a question, you will analyse the language used(usually english) and reply in the same language.`
+const getChatgptPromptBase = async () => {
+  return `You are a helpful, creative, clever, and very friendly assistant. You are familiar with various languages in the world.`
+}
 
-const gptPromptBase =
-  `The following is a conversation with an AI assistant.` +
-  `The assistant is helpful, creative, clever, and very friendly.` +
-  `When the assistant receive a question, it will analyse the language used(usually english) and reply in the same language.\n\n` +
-  `Human: Hello, who are you?\n` +
-  `AI: I am an AI created by OpenAI. How can I help you today?\n`
+const getGptPromptBase = async () => {
+  return (
+    `The following is a conversation with an AI assistant.` +
+    `The assistant is helpful, creative, clever, and very friendly. The assistant is familiar with various languages in the world.\n\n` +
+    `Human: Hello, who are you?\n` +
+    `AI: I am an AI created by OpenAI. How can I help you today?\n` +
+    `Human: 谢谢\n` +
+    `AI: 不客气\n`
+  )
+}
 
 /**
  * @param {Browser.Runtime.Port} port
@@ -37,7 +41,7 @@ export async function generateAnswersWithGptCompletionApi(
   })
 
   const prompt =
-    gptPromptBase +
+    (await getGptPromptBase()) +
     getConversationPairs(session.conversationRecords, false) +
     `Human:${question}\nAI:`
 
@@ -100,7 +104,7 @@ export async function generateAnswersWithChatgptApi(port, question, session, api
   })
 
   const prompt = getConversationPairs(session.conversationRecords, true)
-  prompt.unshift({ role: 'system', content: chatgptPromptBase })
+  prompt.unshift({ role: 'system', content: await getChatgptPromptBase() })
   prompt.push({ role: 'user', content: question })
 
   let answer = ''
