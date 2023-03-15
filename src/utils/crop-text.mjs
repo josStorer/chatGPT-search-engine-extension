@@ -31,7 +31,7 @@ export function cropText(
   endLength = 300,
   tiktoken = true,
 ) {
-  const splits = text.split(/[,，.。?？!！;；\n]/).map((s) => s.trim())
+  const splits = text.split(/[,，。?？!！;；]/).map((s) => s.trim())
   const splitsLength = splits.map((s) => (tiktoken ? encode(s).length : s.length))
   const length = splitsLength.reduce((sum, length) => sum + length, 0)
 
