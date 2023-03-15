@@ -1,4 +1,4 @@
-# ChatGPT for Search Engine
+# This repo has moved to [ChatGPTBox](https://github.com/josStorer/chatGPTBox). Due to the upstream repo being acquired and closed source, and there has been a period of time where issues and PRs in the upstream have gone unhandled. I decided to publish this extension to the store and keep open-source
 
 [![Verify search engine configs](https://github.com/josStorer/chatGPT-search-engine-extension/workflows/verify-configs/badge.svg)](https://github.com/josStorer/chatGPT-search-engine-extension/actions/workflows/verify-configs.yml)
 [![GitHub release](https://img.shields.io/github/release/josStorer/chatGPT-search-engine-extension.svg)](https://github.com/josStorer/chatGPT-search-engine-extension/releases/latest)
